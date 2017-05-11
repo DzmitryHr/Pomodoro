@@ -18,7 +18,7 @@
 
 -(void)validateUserWithToken:(NSString *)token successBlock:(void(^)(BOOL success, BOOL isValidUser))successBlock;
 
--(void)createObjectWithData:(NSDictionary *)data successBlock:(void(^)(BOOL success))successBlock;
+-(void)createObjectWithData:(NSDictionary *)data token:(NSString *)userToken successBlock:(void(^)(BOOL success))successBlock;
 
 
 -(void)updateObjectWithData:(NSDictionary *)data successBlock:(void(^)(BOOL success))successBlock;

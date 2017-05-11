@@ -15,7 +15,6 @@ const NSString *restKey = @"02A7A81F-2F3C-99DF-FFC6-2239C39EBF00";
 @interface HTTPCommunication()
 
 @property (nonatomic, strong) NSURLSession *session;
-@property (nonatomic, strong) NSString *userToken;
 
 @end
 
@@ -63,12 +62,13 @@ const NSString *restKey = @"02A7A81F-2F3C-99DF-FFC6-2239C39EBF00";
 }
 
 
--(void)doPOSTWithURL:(NSURL *)url andJSONData:(NSData *)data successBlock:(void(^)(NSData *))successBlock
+-(void)doPOSTWithURL:(NSURL *)url andJSONData:(NSData *)data andUserToken:(NSString *)userToken successBlock:(void(^)(NSData *data))successBlock
 {
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     request.HTTPMethod = @"POST";
     request.HTTPBody = data;
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:userToken forHTTPHeaderField:@"user-token"];
     
     [self dataWithRequest:request successBlock:successBlock];
 }
@@ -113,7 +113,7 @@ const NSString *restKey = @"02A7A81F-2F3C-99DF-FFC6-2239C39EBF00";
     
     NSURL *url = [self urlWithPath:@"users/register"];
  
-    [self doPOSTWithURL:url andJSONData:jsonData successBlock:^(NSData *data) {
+    [self doPOSTWithURL:url andJSONData:jsonData andUserToken:nil successBlock:^(NSData *data) {
         if (!data){
             successBlock(NO, nil);
             return;
@@ -142,7 +142,7 @@ const NSString *restKey = @"02A7A81F-2F3C-99DF-FFC6-2239C39EBF00";
     
     NSURL *url = [self urlWithPath:@"users/login"];
     
-    [self doPOSTWithURL:url andJSONData:jsonData successBlock:^(NSData *data) {
+    [self doPOSTWithURL:url andJSONData:jsonData andUserToken:nil successBlock:^(NSData *data) {
         if (!data){
             successBlock(NO, nil);
             return;
@@ -155,8 +155,7 @@ const NSString *restKey = @"02A7A81F-2F3C-99DF-FFC6-2239C39EBF00";
             return;
         }
         
-        self.userToken = userData[@"user-token"];
-        successBlock(YES, self.userToken);
+        successBlock(YES, userData[@"user-token"]);
         
     }];
 
@@ -167,8 +166,14 @@ const NSString *restKey = @"02A7A81F-2F3C-99DF-FFC6-2239C39EBF00";
 
 -(void)validateUserWithToken:(NSString *)token successBlock:(void(^)(BOOL success, BOOL isValidUser))successBlock
 {
-    NSString *partStringUrl = [NSString stringWithFormat:@"users/isvalidusertoken/%@",token];
-    NSURL *url = [self urlWithPath:partStringUrl];
+    if (!token) {
+        successBlock(NO, nil);
+        NSLog(@"missing token");
+        return;
+    }
+    
+    NSString *pathStringUrl = [NSString stringWithFormat:@"users/isvalidusertoken/%@",token];
+    NSURL *url = [self urlWithPath:pathStringUrl];
     
     [self doGETWithURL:url successBlock:^(NSData *data) {
         if (!data){
@@ -176,17 +181,44 @@ const NSString *restKey = @"02A7A81F-2F3C-99DF-FFC6-2239C39EBF00";
             return;
         }
         
+        // return data with NSString
+        NSString *strData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        BOOL isValid = [strData boolValue];
+        
+        successBlock(YES, isValid);
+        
         
     }];
     
     
 }
 
-
--(void)createObjectWithData:(NSDictionary *)data successBlock:(void(^)(BOOL success))successBlock
+//  should I get name Entity in method???
+//  should I return the objectID in successBlock???
+-(void)createObjectWithData:(NSDictionary *)data token:(NSString *)userToken successBlock:(void(^)(BOOL success))successBlock
 {
+    NSString *pathSrtingUrl =[NSString stringWithFormat:@"data/Tasks"];
+    NSURL *url = [self urlWithPath:pathSrtingUrl];
     
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:data options:0 error:nil];
+    
+    [self doPOSTWithURL:url andJSONData:jsonData andUserToken:userToken successBlock:^(NSData *data) {
+        if (!data){
+            successBlock(NO);
+            return;
+        }
+        
+        NSDictionary *objectData = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+        NSLog(@"createObjectWithData:: created objectID = %@",objectData[@"objectId"]);
+        
+        successBlock(YES);
+    }];
 
+    /*
+     if created then return from server: json (dictionary)
+     where there is:
+     "objectId": "D4A9D5C9-CE2A-6079-FF51-39D695310500"
+     */
 }
 
 
@@ -196,10 +228,25 @@ const NSString *restKey = @"02A7A81F-2F3C-99DF-FFC6-2239C39EBF00";
     
 }
 
-
+// for time???
+// for entity???
 -(void)retrieveObjectsWithSuccessBlock:(void(^)(BOOL succes, NSArray *objects))successBlock
 {
+    NSString *pathSrtingUrl =[NSString stringWithFormat:@"data/Tasks"];
+    NSURL *url = [self urlWithPath:pathSrtingUrl];
     
+    [self doGETWithURL:url successBlock:^(NSData *data) {
+        if (!data){
+            successBlock(NO, nil);
+            return;
+        };
+        
+        NSArray *objectsData = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+        
+        successBlock(YES, objectsData);
+        
+        
+    }];
 }
 
 

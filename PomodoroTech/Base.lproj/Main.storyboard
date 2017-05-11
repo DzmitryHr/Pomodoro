@@ -51,34 +51,48 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WJZ-xZ-uQz">
-                                <rect key="frame" x="42" y="334" width="73" height="30"/>
+                                <rect key="frame" x="26" y="322" width="73" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="register"/>
                                 <connections>
-                                    <action selector="getDataButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tLg-25-WR8"/>
+                                    <action selector="registerUserButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kHM-b1-9Cd"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EYs-jl-VO2">
-                                <rect key="frame" x="32" y="378" width="73" height="30"/>
+                                <rect key="frame" x="113" y="378" width="73" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="get data"/>
+                                <connections>
+                                    <action selector="retrieveData:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Tvw-wR-GjV"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zrj-9L-fLN">
+                                <rect key="frame" x="200" y="378" width="83" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="update data"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9y8-qh-FcT">
-                                <rect key="frame" x="224" y="378" width="73" height="30"/>
+                                <rect key="frame" x="19" y="378" width="78" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="send data"/>
+                                <state key="normal" title="create data"/>
+                                <connections>
+                                    <action selector="createData:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gH6-Zh-EP4"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ici-qa-A7K">
-                                <rect key="frame" x="117" y="334" width="73" height="30"/>
+                                <rect key="frame" x="113" y="322" width="73" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="signIn"/>
+                                <connections>
+                                    <action selector="signInButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="DwX-8K-A2g"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RTt-af-7ti">
-                                <rect key="frame" x="198" y="334" width="73" height="30"/>
+                                <rect key="frame" x="200" y="322" width="73" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="signOut"/>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="inf from net" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bI3-vV-6Iq">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="inf from net" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bI3-vV-6Iq">
                                 <rect key="frame" x="16" y="416" width="281" height="132"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -87,12 +101,11 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9r9-k6-tk3">
-                                <rect key="frame" x="118" y="378" width="86" height="30"/>
+                                <rect key="frame" x="106" y="349" width="86" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="validateUser"/>
                                 <connections>
-                                    <action selector="getDataButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0kF-04-osX"/>
-                                    <action selector="validateUserButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Vmq-ma-Eph"/>
+                                    <action selector="validateUserButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="v8c-RX-pgw"/>
                                 </connections>
                             </button>
                         </subviews>
