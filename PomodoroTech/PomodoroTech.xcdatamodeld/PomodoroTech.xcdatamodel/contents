@@ -14,7 +14,7 @@
         <relationship name="pomodors" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Pomodor" inverseName="whoseTask" inverseEntity="Pomodor" syncable="YES"/>
         <relationship name="whoseUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="tasks" inverseEntity="User" syncable="YES"/>
     </entity>
-    <entity name="Pomodor" representedClassName=".Pomodor" syncable="YES" codeGenerationType="class">
+    <entity name="Pomodor" representedClassName="Pomodor" syncable="YES" codeGenerationType="class">
         <attribute name="complit" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="destract" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="distroyed" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>

@@ -15,6 +15,7 @@ const NSString *restKey = @"02A7A81F-2F3C-99DF-FFC6-2239C39EBF00";
 @interface HTTPCommunication()
 
 @property (nonatomic, strong) NSURLSession *session;
+// this i save token
 
 @end
 
