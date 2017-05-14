@@ -184,6 +184,8 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="startTimerButton" destination="SEa-sc-MDL" id="jTd-dA-bwb"/>
+                        <outlet property="stopTimerButton" destination="N7q-4f-Lew" id="6Ah-Nx-Afh"/>
                         <outlet property="timePicker" destination="ic4-DB-BKQ" id="vWu-t3-l90"/>
                         <outlet property="timerLabel" destination="TMs-go-ffm" id="bNk-rR-Jta"/>
                     </connections>

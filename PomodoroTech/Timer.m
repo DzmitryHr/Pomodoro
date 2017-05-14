@@ -11,28 +11,46 @@
 
 @interface Timer()
 
-@property (nonatomic, assign, getter=isWorkTimer, readwrite) BOOL workTimer;
+@property (nonatomic, strong) NSTimer *nsTimer;
+@property (nonatomic, assign, readwrite) NSInteger timeToFinish;
 
 @end
 
 
 @implementation Timer
 
--(void)updateTimerDown
-{
-    
-}
 
-+(void)startTimerWithDuration:(NSInteger)durarion
+-(void) startTimerWithDuration:(NSInteger)durarion
 {
-    [NSTimer scheduledTimerWithTimeInterval:1 repeats:YES block:^(NSTimer * _Nonnull timer) {
-        
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"mm:ss"];
-        NSLog(@"%@", [dateFormatter stringFromDate:[NSDate date]]);
+    // time count to zero
+    __block NSInteger timeBackCount = durarion;
     
+    self.nsTimer = [NSTimer scheduledTimerWithTimeInterval:1 repeats:YES block:^(NSTimer * _Nonnull timer) {
+        
+        timeBackCount--;
+        self.timeToFinish = timeBackCount;
+        
+        if (!timeBackCount){
+            [self stopTimer];
+        }
     }];
     
 }
+
+-(void) stopTimer
+{
+    // stop time count
+    if ([self.nsTimer isValid]){
+        [self.nsTimer invalidate];
+    }
+    
+    //DO еслил таймер еще работает и считает помидор, то остановить его и помедор не защитать.
+    
+    if (!self.timeToFinish){
+        // сообщить другим, что таймер окончил свою работу
+    }
+    
+}
+
 
 @end

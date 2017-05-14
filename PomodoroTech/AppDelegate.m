@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "TimerController.h"
 
 @interface AppDelegate ()
 
@@ -27,8 +28,11 @@
     [self createObjectWithContext:self.contextPomodoro];
     [self printAllObjects:self.contextPomodoro];
     [self.contextPomodoro save:nil];
-*/  
- 
+*/
+    
+    //changed 25.f*60.f
+    [[TimerController sharedInstance] installTimerDuration:25.f*60.f] ; //create once TimerController
+    
     return YES;
 }
 

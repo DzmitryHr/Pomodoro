@@ -11,11 +11,9 @@
 @interface Timer : NSObject
 
 @property (nonatomic, assign) NSInteger duration;
-@property (nonatomic, assign) NSInteger timeToFinish;
-@property (nonatomic, assign, getter=isWorkTimer, readonly) BOOL workTimer;
+@property (nonatomic, assign, readonly) NSInteger timeToFinish; // format ms;
 
-
-+ (void)startTimerWithDuration:(NSInteger)durarion;
-+ (void)stopTimer;
+- (void)startTimerWithDuration:(NSInteger)durarion ;
+- (void)stopTimer;
 
 @end

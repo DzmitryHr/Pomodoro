@@ -9,11 +9,18 @@
 #import "TimerViewController.h"
 #import "Timer.h"
 
+#import "TimerController.h"
 
-@interface TimerViewController ()
+
+@interface TimerViewController () <TimerControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *timerLabel;
 @property (weak, nonatomic) IBOutlet UIDatePicker *timePicker;
+@property (weak, nonatomic) IBOutlet UIButton *startTimerButton;
+@property (weak, nonatomic) IBOutlet UIButton *stopTimerButton;
+
+@property (nonatomic, strong) Timer *timer;
+
 
 @property (assign, nonatomic) NSInteger durationTimePomodor;
 
@@ -26,10 +33,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     
+    
+    [self.startTimerButton setEnabled:YES];
+    [self.stopTimerButton setEnabled:NO];
+    
+    [[TimerController sharedInstance] setDelegate:self];
+    
+    //init
     [self.timePicker setHidden:YES];
 }
+
 
 
 - (IBAction)tapUILabel:(UITapGestureRecognizer *)sender
@@ -49,6 +63,25 @@
 {
     CGFloat durationSec = [self.timePicker countDownDuration];
     
+    [self repaintTimerLableWithTime:(NSInteger)durationSec];
+    
+}
+
+
+- (IBAction)startTimerButton:(UIButton *)sender
+{
+    [[TimerController sharedInstance] startTimer];
+}
+
+
+- (IBAction)stopTimerButton:(UIButton *)sender
+{
+    [[TimerController sharedInstance] stopTimer];
+}
+
+
+- (void)repaintTimerLableWithTime:(NSTimeInterval)durationSec
+{
     NSInteger hours = (NSInteger)durationSec/(60 * 60);
     NSInteger mins = (NSInteger)durationSec/60 - (hours * 60);
     NSInteger secs = (NSInteger)durationSec - (hours * 60 * 60) - (mins * 60);
@@ -56,18 +89,25 @@
     self.timerLabel.text = [NSString stringWithFormat:@"%02ld:%02ld", mins, secs];
 }
 
-
-- (IBAction)startTimerButton:(UIButton *)sender
+#pragma mark - TimerControllerDelegate
+-(void)timerControllerDidStarted:(TimerController *)timerController
 {
-    [Timer startTimerWithDuration:self.durationTimePomodor];
+    [self.startTimerButton setEnabled:NO];
+    [self.stopTimerButton setEnabled:YES];
 }
 
 
-- (IBAction)stopTimerButton:(UIButton *)sender
+-(void)timerControllerDidStop:(TimerController *)timerController
 {
-    
+    [self.startTimerButton setEnabled:YES];
+    [self.stopTimerButton setEnabled:NO];
+
 }
 
-//to do delegate from Timer where ui repaint 1sec;
+
+-(void)timerController:(TimerController *)timerController timeDidChanged:(NSTimeInterval)time
+{
+    [self repaintTimerLableWithTime:time];
+}
 
 @end
