@@ -6,6 +6,7 @@
 //  Copyright © 2017 Kronan. All rights reserved.
 //
 
+@import UserNotifications;
 #import "AppDelegate.h"
 #import "TimerController.h"
 
@@ -21,8 +22,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-
-/*
+   
+   /*
     [self deleteObjectFromCoreData:self.contextPomodoro];
     [self createObjectWithContext:self.contextPomodoro];
     [self createObjectWithContext:self.contextPomodoro];
@@ -30,10 +31,27 @@
     [self.contextPomodoro save:nil];
 */
     
+    [self requestAuthorizationForNotification];
+    
     //changed 25.f*60.f
     [[TimerController sharedInstance] installTimerDuration:25.f*60.f] ; //create once TimerController
     
     return YES;
+}
+
+
+- (void)requestAuthorizationForNotification
+{
+    UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
+   
+    UNAuthorizationOptions option = UNAuthorizationOptionAlert + UNAuthorizationOptionSound + UNAuthorizationOptionBadge;
+    
+    [center requestAuthorizationWithOptions:option
+                          completionHandler:^(BOOL granted, NSError * _Nullable error) {
+                              if (!granted){
+                                  NSLog(@"requestAuthorization: Something went wrong");
+                              };
+                          }];
 }
 
 
@@ -109,11 +127,14 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
 }
 
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+    
+    application.applicationIconBadgeNumber = 0;
 }
 
 

@@ -21,6 +21,7 @@
 		8CAE97AA1EC4F692009369E1 /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CAE97A91EC4F692009369E1 /* Timer.m */; };
 		8CAE97AD1EC4F6C3009369E1 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CAE97AC1EC4F6C3009369E1 /* TimerViewController.m */; };
 		8CAE97B11EC791F4009369E1 /* TimerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CAE97B01EC791F4009369E1 /* TimerController.m */; };
+		8CCB573B1ECB17CE00B06FA9 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CCB573A1ECB17CE00B06FA9 /* UserNotifications.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		8CAE97AC1EC4F6C3009369E1 /* TimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerViewController.m; sourceTree = "<group>"; };
 		8CAE97AF1EC791F4009369E1 /* TimerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimerController.h; path = Controllers/TimerController.h; sourceTree = "<group>"; };
 		8CAE97B01EC791F4009369E1 /* TimerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TimerController.m; path = Controllers/TimerController.m; sourceTree = "<group>"; };
+		8CCB573A1ECB17CE00B06FA9 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8CCB573B1ECB17CE00B06FA9 /* UserNotifications.framework in Frameworks */,
 				8C363B871EB7AE8B007729F8 /* CoreData.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -130,6 +133,7 @@
 		8C363B191EB68640007729F8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8CCB573A1ECB17CE00B06FA9 /* UserNotifications.framework */,
 				8C363B1A1EB68640007729F8 /* CoreData.framework */,
 			);
 			name = Frameworks;

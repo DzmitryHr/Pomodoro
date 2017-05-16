@@ -5,7 +5,7 @@
 //  Created by Kronan on 5/11/17.
 //  Copyright © 2017 Kronan. All rights reserved.
 //
-
+@import UserNotifications;
 #import "TimerViewController.h"
 #import "Timer.h"
 
@@ -21,14 +21,24 @@
 
 @property (nonatomic, strong) Timer *timer;
 
-
 @property (assign, nonatomic) NSInteger durationTimePomodor;
 
+@property (nonatomic, strong) UNMutableNotificationContent *localNotification;
 @end
 
 
 @implementation TimerViewController
 
+static const int MIN = 60;
+
+-(NSInteger)durationTimePomodor
+{
+    if (!_durationTimePomodor){
+        _durationTimePomodor = 1 * MIN;
+    };
+    [self repaintTimerLableWithTime:_durationTimePomodor];
+    return _durationTimePomodor;
+}
 
 - (void)viewDidLoad
 {
@@ -45,15 +55,20 @@
 }
 
 
+- (void)showPicker:(BOOL)show
+{
+    [self.timePicker setHidden:!show];
+}
+
 
 - (IBAction)tapUILabel:(UITapGestureRecognizer *)sender
 {
     if (self.timePicker.hidden){
-        [self.timePicker setHidden:NO];
+        [self showPicker:YES];
         //NSInteger timeLable = (int)self.timerLabel.text;  translate to intager???
-        [self.timePicker setCountDownDuration: 25.f * 60.f];
+        [self.timePicker setCountDownDuration: self.durationTimePomodor];
     } else {
-        [self.timePicker setHidden:YES];
+        [self showPicker:NO];
         self.durationTimePomodor = [self.timePicker countDownDuration];
     };
 };
@@ -70,7 +85,12 @@
 
 - (IBAction)startTimerButton:(UIButton *)sender
 {
-    [[TimerController sharedInstance] startTimer];
+    
+    [self showNotification];
+        
+    [[TimerController sharedInstance] startTimerWithDurationPomodor:self.durationTimePomodor];
+    [self showPicker:NO];
+    
 }
 
 
@@ -87,7 +107,9 @@
     NSInteger secs = (NSInteger)durationSec - (hours * 60 * 60) - (mins * 60);
     
     self.timerLabel.text = [NSString stringWithFormat:@"%02ld:%02ld", mins, secs];
+    self.durationTimePomodor = durationSec;
 }
+
 
 #pragma mark - TimerControllerDelegate
 -(void)timerControllerDidStarted:(TimerController *)timerController
@@ -110,4 +132,35 @@
     [self repaintTimerLableWithTime:time];
 }
 
+#pragma mark - Notification
+
+- (void)showNotification
+{
+    self.localNotification = [[UNMutableNotificationContent alloc] init];
+    
+    self.localNotification.title = [NSString localizedUserNotificationStringForKey:@"Time Down!"
+                                                          arguments:nil];
+    
+    self.localNotification.body = [NSString localizedUserNotificationStringForKey:@"Pomodor is eaten"
+                                                         arguments:nil];
+    
+    self.localNotification.sound = [UNNotificationSound defaultSound];
+    self.localNotification.badge = @([[UIApplication sharedApplication] applicationIconBadgeNumber] + 1);
+    
+    UNTimeIntervalNotificationTrigger* trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:self.durationTimePomodor
+                                                                                                    repeats:NO];
+    
+    UNNotificationRequest *notificationRequest = [UNNotificationRequest requestWithIdentifier:@"Time Down"
+                                                                                      content:self.localNotification
+                                                                                      trigger:trigger];
+    
+    UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
+    [center addNotificationRequest:notificationRequest
+             withCompletionHandler:^(NSError * _Nullable error) {
+                 if (!error){
+                     NSLog(@"Add NotificationRequest succeeded!");
+                 }
+             }];
+    
+}
 @end

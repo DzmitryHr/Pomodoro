@@ -22,9 +22,9 @@
 
 + (instancetype)sharedInstance;
 
--(void) startTimer;
--(void) stopTimer;
--(void) installTimerDuration:(NSTimeInterval)duration;
+- (void)startTimerWithDurationPomodor:(NSTimeInterval)durationPomodor;
+- (void)stopTimer;
+- (void)installTimerDuration:(NSTimeInterval)duration;
 
 
 @end

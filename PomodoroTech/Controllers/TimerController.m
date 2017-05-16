@@ -11,17 +11,21 @@ typedef NS_ENUM(NSInteger, TimerControllerState)
 {
     TimerControllerStateDefault = 0,
     
+    TimerControllerStateSetTimerDurationPomodor,
+    TimerControllerStateSetTimerDurationShortBreak,
+    TimerControllerStateSetTimerDurationLongBreak,
+    
     TimerControllerStatePendingStartTimer,
+    
     TimerControllerStateTimerStarted,
     TimerControllerStatePendingStopTimer,
+    TimerControllerStateTimerStopped,
     
     //TimerControllerStateSetDurationTimerPomodor = 1,
     
 //    TimerControllerStateStartTimerPomodor = 1,
 //    TimerControllerStateStartTimerShortBreak = 3,
 //    TimerControllerStateStartTimerLongBreak = 4,
-    
-    TimerControllerStateTimerStopped,
     
 //    TimerControllerStateChangeTask = 6,
 
@@ -31,14 +35,38 @@ typedef NS_ENUM(NSInteger, TimerControllerState)
 
 @property (nonatomic, assign) TimerControllerState currentState;
 @property (nonatomic, assign) NSTimeInterval timerDuration;
+@property (nonatomic, assign) NSTimeInterval timerDurationPomodor;
+@property (nonatomic, assign) NSTimeInterval timerDurationShortBreak;
+@property (nonatomic, assign) NSTimeInterval timerDurationLongBreak;
 @property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, strong) NSDate *startTime;
+
+@property (nonatomic, assign) NSInteger quantityOfShortBreak;
 
 @end
 
 
 
 @implementation TimerController
+
+static const int MIN = 60;
+- (NSTimeInterval)timerDurationShortBreak
+{
+    if (!_timerDurationShortBreak){
+        _timerDurationShortBreak = 2 * MIN;
+    }
+    return _timerDurationShortBreak;
+}
+
+
+- (NSTimeInterval)timerDurationLongBreak
+{
+    if (!_timerDurationLongBreak){
+        _timerDurationLongBreak = 3 * MIN;
+    }
+    return _timerDurationLongBreak;
+}
+
 
 + (instancetype)sharedInstance
 {
@@ -51,41 +79,52 @@ typedef NS_ENUM(NSInteger, TimerControllerState)
 }
 
 
--(void) startTimer
+- (void)startTimerWithDurationPomodor:(NSTimeInterval)durationPomodor
 {
+    self.timerDurationPomodor = durationPomodor;
+    [self installTimerDuration:durationPomodor];
     [self processState:TimerControllerStatePendingStartTimer];
     
 }
 
 
--(void) stopTimer
+- (void)startTimerWithDurationBreak:(NSTimeInterval)durationBreak
+{
+    [self installTimerDuration:durationBreak];
+    [self processState:TimerControllerStatePendingStartTimer];
+    
+}
+
+
+- (void)stopTimer
 {
     [self processState:TimerControllerStatePendingStopTimer];
     
 }
 
 
--(void) installTimerDuration:(NSTimeInterval)duration
+- (void)installTimerDuration:(NSTimeInterval)duration
 {
-    if (self.currentState == TimerControllerStateDefault ||
-        self.currentState == TimerControllerStateTimerStopped){
+    if (self.currentState != TimerControllerStateTimerStarted){
         self.timerDuration = duration;
     } else {
         @throw [NSException exceptionWithName:NSStringFromClass([self class]) reason:@"invalid currentState" userInfo:nil];
     }
-    
-    
 }
 
 
 -(void)processState:(TimerControllerState)state
 {
     switch (state) {
+            
         case TimerControllerStateDefault:
-            [self.delegate timerController:self timeDidChanged:self.timerDuration];
+            self.currentState = state;
+            [self.delegate timerController:self timeDidChanged:self.timerDurationPomodor];
             [self.delegate timerControllerDidStop:self];
             break;
+            
         case TimerControllerStatePendingStartTimer: {
+            self.currentState = state;
             self.startTime = [NSDate date];
             self.timer = [NSTimer scheduledTimerWithTimeInterval:1
                                                          repeats:YES
@@ -95,7 +134,9 @@ typedef NS_ENUM(NSInteger, TimerControllerState)
             [self.delegate timerControllerDidStarted:self];
             break;
         }
+            
         case TimerControllerStateTimerStarted:{
+            self.currentState = state;
             NSTimeInterval timeIntervalLost = [[NSDate date] timeIntervalSinceDate:self.startTime];
             
             if (timeIntervalLost >= self.timerDuration){
@@ -108,28 +149,43 @@ typedef NS_ENUM(NSInteger, TimerControllerState)
     
             break;
         }
+            
         case TimerControllerStatePendingStopTimer:{
+            self.currentState = state;
+           
             if (self.timer){
                 [self.timer invalidate];
                 self.timer = nil;
             }
-            [self.delegate timerController:self timeDidChanged:0];
-            [self processState:TimerControllerStateTimerStopped];
+
+            if (self.timerDuration == self.timerDurationPomodor){
+                if (self.quantityOfShortBreak < 4){
+                    self.quantityOfShortBreak++;
+                    [self startTimerWithDurationBreak:self.timerDurationShortBreak];
+                } else {
+                    self.quantityOfShortBreak = 0;
+                    [self startTimerWithDurationBreak:self.timerDurationLongBreak];
+                }
+            } else {
+                [self.delegate timerController:self timeDidChanged:0];
+                [self processState:TimerControllerStateTimerStopped];
+            };
+            
             break;
         }
+            
         case TimerControllerStateTimerStopped:{
-            [self.delegate timerController:self timeDidChanged:self.timerDuration];
+            self.currentState = state;
+            [self.delegate timerController:self timeDidChanged:self.timerDurationPomodor];
             [self.delegate timerControllerDidStop:self];
             
             break;
         }
             
-            
         default:
             break;
     }
     
-    self.currentState = state;
 }
 
 
