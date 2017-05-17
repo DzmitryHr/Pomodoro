@@ -48,6 +48,7 @@ static const int MIN = 60;
     [self.startTimerButton setEnabled:YES];
     [self.stopTimerButton setEnabled:NO];
     
+    //inst delegate TimerController
     [[TimerController sharedInstance] setDelegate:self];
     
     //init

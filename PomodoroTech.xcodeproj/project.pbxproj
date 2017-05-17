@@ -18,6 +18,7 @@
 		8C363B171EB367F0007729F8 /* TasksViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C363B161EB367F0007729F8 /* TasksViewCell.m */; };
 		8C363B871EB7AE8B007729F8 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C363B1A1EB68640007729F8 /* CoreData.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		8C9C85081EC054EC0002746A /* HTTPCommunication.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C9C85071EC054EC0002746A /* HTTPCommunication.m */; };
+		8CACBF6E1ECC832F0036D106 /* CoreDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CACBF6D1ECC832F0036D106 /* CoreDataController.m */; };
 		8CAE97AA1EC4F692009369E1 /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CAE97A91EC4F692009369E1 /* Timer.m */; };
 		8CAE97AD1EC4F6C3009369E1 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CAE97AC1EC4F6C3009369E1 /* TimerViewController.m */; };
 		8CAE97B11EC791F4009369E1 /* TimerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CAE97B01EC791F4009369E1 /* TimerController.m */; };
@@ -43,6 +44,8 @@
 		8C363B1A1EB68640007729F8 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8C9C85061EC054EC0002746A /* HTTPCommunication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTTPCommunication.h; path = Data/HTTPCommunication.h; sourceTree = SOURCE_ROOT; };
 		8C9C85071EC054EC0002746A /* HTTPCommunication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTTPCommunication.m; path = Data/HTTPCommunication.m; sourceTree = SOURCE_ROOT; };
+		8CACBF6C1ECC832F0036D106 /* CoreDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreDataController.h; path = Controllers/CoreDataController.h; sourceTree = "<group>"; };
+		8CACBF6D1ECC832F0036D106 /* CoreDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreDataController.m; path = Controllers/CoreDataController.m; sourceTree = "<group>"; };
 		8CAE97A81EC4F692009369E1 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
 		8CAE97A91EC4F692009369E1 /* Timer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Timer.m; sourceTree = "<group>"; };
 		8CAE97AB1EC4F6C3009369E1 /* TimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerViewController.h; sourceTree = "<group>"; };
@@ -156,6 +159,8 @@
 				8CAE97B01EC791F4009369E1 /* TimerController.m */,
 				8CAE97AB1EC4F6C3009369E1 /* TimerViewController.h */,
 				8CAE97AC1EC4F6C3009369E1 /* TimerViewController.m */,
+				8CACBF6C1ECC832F0036D106 /* CoreDataController.h */,
+				8CACBF6D1ECC832F0036D106 /* CoreDataController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -233,6 +238,7 @@
 			files = (
 				8C363B021EB3510F007729F8 /* PomodoroTech.xcdatamodeld in Sources */,
 				8C9C85081EC054EC0002746A /* HTTPCommunication.m in Sources */,
+				8CACBF6E1ECC832F0036D106 /* CoreDataController.m in Sources */,
 				8C363B171EB367F0007729F8 /* TasksViewCell.m in Sources */,
 				8CAE97AD1EC4F6C3009369E1 /* TimerViewController.m in Sources */,
 				8CAE97AA1EC4F692009369E1 /* Timer.m in Sources */,

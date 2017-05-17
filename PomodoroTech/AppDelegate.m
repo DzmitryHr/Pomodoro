@@ -23,16 +23,30 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
    
-   /*
-    [self deleteObjectFromCoreData:self.contextPomodoro];
-    [self createObjectWithContext:self.contextPomodoro];
-    [self createObjectWithContext:self.contextPomodoro];
-    [self printAllObjects:self.contextPomodoro];
-    [self.contextPomodoro save:nil];
-*/
+    [self deleteObjectFromCoreData:self.contextPomodoro withEntityName:@"Task"];
     
+    NSManagedObject *user = [self selectUser];
+    NSLog(@" user name = %@", [user valueForKey:@"login"]);
+    
+
+    NSManagedObject *task = [self selectTask];
+    if (![task valueForKey:@"whoseUser"]){
+        [task setValue:user forKey:@"whoseUser"];
+    }
+    NSLog(@" task name = %@", [task valueForKey:@"name"]);
+    
+    
+    
+    
+    [self createObjectContext:self.contextPomodoro withEntityName:@"User" withName:@"TwoUser"];
+    
+    
+    [self printObjects:self.contextPomodoro withEntityName:@"User"];
+    
+    
+    // Notification
     [self requestAuthorizationForNotification];
-    
+
     //changed 25.f*60.f
     [[TimerController sharedInstance] installTimerDuration:25.f*60.f] ; //create once TimerController
     
@@ -40,20 +54,58 @@
 }
 
 
-- (void)requestAuthorizationForNotification
+#pragma mark - CoreData
+
+// Select or Create defaultUSER
+// We must have one user with an activeAttribute = YES
+- (NSManagedObject *)selectUser
 {
-    UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
-   
-    UNAuthorizationOptions option = UNAuthorizationOptionAlert + UNAuthorizationOptionSound + UNAuthorizationOptionBadge;
+    NSArray *activeUsers = [self getObjectsFromCoreData:self.contextPomodoro withEntityName:@"User" andActiveAttribute:YES];
+    [self printObjects:self.contextPomodoro withEntityName:@"User"];
     
-    [center requestAuthorizationWithOptions:option
-                          completionHandler:^(BOOL granted, NSError * _Nullable error) {
-                              if (!granted){
-                                  NSLog(@"requestAuthorization: Something went wrong");
-                              };
-                          }];
+    switch (activeUsers.count) {
+        case 0:
+            [self createObjectContext:self.contextPomodoro withEntityName:@"User" withName:@"defaultUser"];
+            activeUsers = [self getObjectsFromCoreData:self.contextPomodoro withEntityName:@"User" andActiveAttribute:YES];
+            break;
+        case 1:
+            nil;
+            break;
+        default:
+            NSLog(@"Bad UsersData, more than one User have attributeActive = YES");
+            break;
+    }
+    NSManagedObject *user = [activeUsers firstObject];
+    NSLog(@" user name = %@", [user valueForKey:@"login"]);
+   
+    return user;
 }
 
+
+// Select or Create defaultTASK
+// We must have one task with an activeAttribute = YES
+- (NSManagedObject *)selectTask
+{
+    NSArray *activeTasks = [self getObjectsFromCoreData:self.contextPomodoro withEntityName:@"Task" andActiveAttribute:YES];
+    [self printObjects:self.contextPomodoro withEntityName:@"Task"];
+    
+    switch (activeTasks.count) {
+        case 0:
+            [self createObjectContext:self.contextPomodoro withEntityName:@"Task" withName:@"defaultTask"];
+            activeTasks = [self getObjectsFromCoreData:self.contextPomodoro withEntityName:@"Task" andActiveAttribute:YES];
+            break;
+        case 1:
+            nil;
+            break;
+        default:
+            NSLog(@"Bad TasksData, more than one User have attributeActive = YES");
+            break;
+    }
+    NSManagedObject *task = [activeTasks firstObject];
+    NSLog(@" task name = %@", [task valueForKey:@"name"]);
+    
+    return task;
+}
 
 - (NSManagedObjectContext *)contextPomodoro
 {
@@ -64,25 +116,35 @@
 }
 
 
-- (void)createObjectWithContext:(NSManagedObjectContext *)context
+- (void)createObjectContext:(NSManagedObjectContext *)context
+             withEntityName:(NSString *)entityName
+                   withName:(NSString *)name
 {
-    GRTask *task1 = [NSEntityDescription insertNewObjectForEntityForName:@"GRTask"
-                                                  inManagedObjectContext:context];
+    NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:entityName
+                                                            inManagedObjectContext:context];
     
-    [task1 setValue:@"progrCoreDataTask" forKey:@"name"];
-    task1.plannedPomedors = 1 + arc4random_uniform(8);
-    task1.createTime = [NSDate dateWithTimeIntervalSinceNow:30];
+    if ([entityName isEqualToString: @"Task"]){
+        [object setValue:name forKey:@"name"];
+        [object setValue:@YES forKey:@"active"];
+        [object setValue:[NSDate date] forKey:@"createTime"];
+        
+    }
+        
     
-    [task1.managedObjectContext save:nil];
+    if ([entityName isEqualToString: @"User"]){
+        [object setValue:name forKey:@"login"];
+        [object setValue:@YES forKey:@"active"];
+    }
     
-    NSLog(@"===========created task1");
-    NSLog(@"%@", task1);
+    [object.managedObjectContext save:nil];
+    
+    NSLog(@"===========created = %@", entityName);
 }
 
 
-- (void)deleteObjectFromCoreData:(NSManagedObjectContext *)context
+- (void)deleteObjectFromCoreData:(NSManagedObjectContext *)context withEntityName:entityName
 {
-    NSArray *allObjects = [self giveObjectsFromCoreData:context];
+    NSArray *allObjects = [self getObjectsFromCoreData:context withEntityName:entityName andActiveAttribute:NO];
     
     for (id object in allObjects) {
         [context deleteObject:object];
@@ -92,9 +154,9 @@
 }
 
 
-- (void)printAllObjects:(NSManagedObjectContext *)context
+- (void)printObjects:(NSManagedObjectContext *)context withEntityName:entityName
 {
-    NSArray *allObjects = [self giveObjectsFromCoreData:context];
+    NSArray *allObjects = [self getObjectsFromCoreData:context withEntityName:entityName andActiveAttribute:NO];
     
     int i = 0;
     for (id object in allObjects) {
@@ -105,16 +167,45 @@
 }
 
 
-- (NSArray *)giveObjectsFromCoreData:(NSManagedObjectContext *)context
+- (NSArray *)getObjectsFromCoreData:(NSManagedObjectContext *)context
+                      withEntityName:(NSString *)entityName
+                  andActiveAttribute:(BOOL)isActive
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    NSEntityDescription *description = [NSEntityDescription entityForName:@"GRTask" inManagedObjectContext:context];
+    NSEntityDescription *description = [NSEntityDescription entityForName:entityName inManagedObjectContext:context];
+    
     [request setEntity:description];
+    //[request setResultType:(NSDictionaryResultType)];
+    
+    if (isActive){
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"active == YES"];
+        request.predicate = predicate;
+    }
+
     
     NSError *requestErr = nil;
     NSArray *resultArray = [context executeFetchRequest:request error: &requestErr];
+    if (requestErr){
+        NSLog(@"giveObjectsFromCoreData err = %@", [requestErr localizedDescription]);
+    }
     
     return resultArray;
+}
+
+
+#pragma mark - Notification
+- (void)requestAuthorizationForNotification
+{
+    UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
+    
+    UNAuthorizationOptions option = UNAuthorizationOptionAlert + UNAuthorizationOptionSound + UNAuthorizationOptionBadge;
+    
+    [center requestAuthorizationWithOptions:option
+                          completionHandler:^(BOOL granted, NSError * _Nullable error) {
+                              if (!granted){
+                                  NSLog(@"requestAuthorization: Something went wrong");
+                              };
+                          }];
 }
 
 
