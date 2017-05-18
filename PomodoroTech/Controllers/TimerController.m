@@ -7,6 +7,8 @@
 //
 
 #import "TimerController.h"
+#import "CoreDataController.h"
+
 typedef NS_ENUM(NSInteger, TimerControllerState)
 {
     TimerControllerStateDefault = 0,
@@ -42,6 +44,8 @@ typedef NS_ENUM(NSInteger, TimerControllerState)
 @property (nonatomic, strong) NSDate *startTime;
 
 @property (nonatomic, assign) NSInteger quantityOfShortBreak;
+
+
 
 @end
 

@@ -180,10 +180,19 @@
                                     <action selector="stopTimerButton:" destination="Lov-KD-nvb" eventType="touchUpInside" id="iih-QZ-6J5"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="information" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="30x-w6-7Uu">
+                                <rect key="frame" x="16" y="85" width="288" height="95"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="informationLabel" destination="30x-w6-7Uu" id="WJX-hP-Cs3"/>
                         <outlet property="startTimerButton" destination="SEa-sc-MDL" id="jTd-dA-bwb"/>
                         <outlet property="stopTimerButton" destination="N7q-4f-Lew" id="6Ah-Nx-Afh"/>
                         <outlet property="timePicker" destination="ic4-DB-BKQ" id="vWu-t3-l90"/>

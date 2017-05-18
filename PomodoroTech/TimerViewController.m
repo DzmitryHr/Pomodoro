@@ -7,9 +7,9 @@
 //
 @import UserNotifications;
 #import "TimerViewController.h"
-#import "Timer.h"
 
 #import "TimerController.h"
+#import "CoreDataController.h"
 
 
 @interface TimerViewController () <TimerControllerDelegate>
@@ -18,8 +18,7 @@
 @property (weak, nonatomic) IBOutlet UIDatePicker *timePicker;
 @property (weak, nonatomic) IBOutlet UIButton *startTimerButton;
 @property (weak, nonatomic) IBOutlet UIButton *stopTimerButton;
-
-@property (nonatomic, strong) Timer *timer;
+@property (weak, nonatomic) IBOutlet UILabel *informationLabel;
 
 @property (assign, nonatomic) NSInteger durationTimePomodor;
 
@@ -44,7 +43,6 @@ static const int MIN = 60;
 {
     [super viewDidLoad];
     
-    
     [self.startTimerButton setEnabled:YES];
     [self.stopTimerButton setEnabled:NO];
     
@@ -53,6 +51,8 @@ static const int MIN = 60;
     
     //init
     [self.timePicker setHidden:YES];
+    
+    [self updateUI];
 }
 
 
@@ -112,7 +112,17 @@ static const int MIN = 60;
 }
 
 
+- (void)updateUI
+{
+    CDUser *user = [[CoreDataController sharedInstance] user];
+    CDTask *task = [[CoreDataController sharedInstance] task];
+    NSString *inf = [NSString stringWithFormat:@" User: %@ \n Task: %@ \n Pomodors: %lu", user.login, task.name, task.pomodors.count]; // all pomodors - choose complit pomodors
+   self.informationLabel.text = inf;
+}
+
+
 #pragma mark - TimerControllerDelegate
+
 -(void)timerControllerDidStarted:(TimerController *)timerController
 {
     [self.startTimerButton setEnabled:NO];
@@ -132,6 +142,7 @@ static const int MIN = 60;
 {
     [self repaintTimerLableWithTime:time];
 }
+
 
 #pragma mark - Notification
 

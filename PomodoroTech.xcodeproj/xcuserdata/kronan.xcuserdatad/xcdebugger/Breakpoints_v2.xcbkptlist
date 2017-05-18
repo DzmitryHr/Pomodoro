@@ -42,7 +42,7 @@
                   moduleName = "PomodoroTech"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/kronan/Desktop/Pomodoro/PomodoroTech/PomodoroTech/ViewController.m"
-                  timestampString = "516748502.801307"
+                  timestampString = "516804812.71109"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "91"
@@ -57,7 +57,7 @@
                   moduleName = "PomodoroTech"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/kronan/Desktop/Pomodoro/PomodoroTech/PomodoroTech/ViewController.m"
-                  timestampString = "516748502.803595"
+                  timestampString = "516804812.715325"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "91"
@@ -154,7 +154,7 @@
                   moduleName = "PomodoroTech"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/kronan/Desktop/Pomodoro/PomodoroTech/PomodoroTech/ViewController.m"
-                  timestampString = "516748502.852767"
+                  timestampString = "516804812.744917"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "105"
@@ -169,7 +169,7 @@
                   moduleName = "PomodoroTech"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/kronan/Desktop/Pomodoro/PomodoroTech/PomodoroTech/ViewController.m"
-                  timestampString = "516748502.854952"
+                  timestampString = "516804812.747084"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "105"
@@ -186,92 +186,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PomodoroTech/Controllers/TimerController.m"
-            timestampString = "516571562.906002"
+            timestampString = "516790335.08628"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "167"
-            endingLineNumber = "167"
+            startingLineNumber = "171"
+            endingLineNumber = "171"
             landmarkName = "-processState:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PomodoroTech/AppDelegate.m"
-            timestampString = "516748502.750155"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "139"
-            endingLineNumber = "139"
-            landmarkName = "-createObjectContext:withEntityName:withName:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PomodoroTech/AppDelegate.m"
-            timestampString = "516748502.750155"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "42"
-            endingLineNumber = "42"
-            landmarkName = "-application:didFinishLaunchingWithOptions:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PomodoroTech/AppDelegate.m"
-            timestampString = "516748502.750155"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "125"
-            endingLineNumber = "125"
-            landmarkName = "-createObjectContext:withEntityName:withName:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PomodoroTech/AppDelegate.m"
-            timestampString = "516748229.268732"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "29"
-            endingLineNumber = "29"
-            landmarkName = "-application:didFinishLaunchingWithOptions:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PomodoroTech/AppDelegate.m"
-            timestampString = "516748502.750155"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "36"
-            endingLineNumber = "36"
-            landmarkName = "-application:didFinishLaunchingWithOptions:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
