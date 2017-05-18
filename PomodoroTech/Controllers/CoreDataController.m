@@ -22,8 +22,13 @@
 - (CDUser *)user
 {
     if (!_user){
-        _user = [self selectActiveUser];
+        
+            NSString *entityName = @"CDUser";
+            _user = (CDUser*)[self createObject:self.contextPomodoro withEntityName:entityName];
+            _user.login = @"defaultUser";
     }
+    
+    [_user.managedObjectContext save:nil];
     
     return _user;
 }
@@ -32,15 +37,20 @@
 - (CDTask *)task
 {
     if (!_task){
-        _task = [self selectActiveTask];
-    }
+        
+        NSString *entityName = @"CDTask";
+        _task = (CDTask*)[self createObject:self.contextPomodoro withEntityName:entityName];
+        _task.name = @"defaultTask";
+        _task.createTime = [NSDate date];
     
-    _task.whoseUser = self.user;
+    }
 
+    [_task.managedObjectContext save:nil];
+    
     return _task;
 }
 
-
+// rewrite
 - (CDPomodor *)pomodor
 {
     if (!_pomodor){
@@ -53,10 +63,38 @@
 }
 
 
+- (CDCondition *)condition
+{
+    if (!_condition){
+        NSString *entityName = @"CDCondition";
+        NSArray *conditionObjects = [self getObjectsFromCoreData:self.contextPomodoro withEntityName:entityName];
+        // We must have one CONDITION in CoreData;
+        switch (conditionObjects.count) {
+            case 0:
+                _condition = (CDCondition*)[self createObject:self.contextPomodoro withEntityName:entityName];
+                break;
+            case 1:
+                _condition = (CDCondition *)[conditionObjects firstObject];
+                break;
+            default:
+                _condition = nil;
+                
+                @throw [NSException exceptionWithName:NSStringFromClass([self class]) reason:@"invalid Condition objects from CoreData" userInfo:nil];
+                break;
+        }
+    }
+    
+    [_condition.managedObjectContext save:nil];
+    
+    return _condition;
+}
+
+
 - (NSManagedObjectContext *)contextPomodoro
 {
-    if (!_contextPomodoro)
+    if (!_contextPomodoro){
         _contextPomodoro = [[self persistentContainer] newBackgroundContext];
+    }
     
     return _contextPomodoro;
 }
@@ -159,6 +197,18 @@
 }
 
 
+- (NSManagedObject *)createObject:(NSManagedObjectContext *)context
+                   withEntityName:(NSString *)entityName
+{
+    NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:entityName
+                                                            inManagedObjectContext:context];
+    
+    [object.managedObjectContext save:nil];
+    
+    return object;
+}
+
+
 - (void)createObject:(NSManagedObjectContext *)context
              withEntityName:(NSString *)entityName
                    withName:(NSString *)name
@@ -184,7 +234,7 @@
         CDPomodor *pomodorObject = (CDPomodor *)object;
         pomodorObject.active = @YES;
         pomodorObject.createTime = [NSDate date];
-        pomodorObject.duration = nil;
+//        pomodorObject.duration = nil;
         pomodorObject.complit = nil; // complit or destroy
     }
 
@@ -216,6 +266,25 @@
         i++;
     }
     NSLog(@"=== all elements in DB %i", i);
+}
+
+
+- (NSArray *)getObjectsFromCoreData:(NSManagedObjectContext *)context
+                     withEntityName:(NSString *)entityName
+{
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    
+    NSEntityDescription *description = [NSEntityDescription entityForName:entityName inManagedObjectContext:context];
+    
+    [request setEntity:description];
+    
+    NSError *requestErr = nil;
+    NSArray *resultArray = [context executeFetchRequest:request error: &requestErr];
+    if (requestErr){
+        NSLog(@"giveObjectsFromCoreData err = %@", [requestErr localizedDescription]);
+    }
+    
+    return resultArray;
 }
 
 

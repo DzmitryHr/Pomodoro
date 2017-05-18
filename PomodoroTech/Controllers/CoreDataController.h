@@ -12,6 +12,7 @@
 #import "CDTask+CoreDataClass.h"
 #import "CDPomodor+CoreDataClass.h"
 #import "CDBreak+CoreDataClass.h"
+#import "CDCondition+CoreDataClass.h"
 
 @interface CoreDataController : NSObject
 
@@ -22,6 +23,7 @@
 @property (nonatomic, strong) CDTask *task;
 @property (nonatomic, strong) CDPomodor *pomodor;
 @property (nonatomic, strong) CDBreak   *breakP;
+@property (nonatomic, strong) CDCondition *condition;
 
 - (void)saveContext;
 

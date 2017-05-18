@@ -21,13 +21,15 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
    
-    
+    // -----
+    // init in CoordinatorController - sharedInstance
+    // DEFAUL_DURATION_POMODOR = 25 * MIN;
+    // DEFAUL_DURATION_SHORT_BREAK = 5 * MIN;
+    // DEFAUL_DURATION_LONG_BREAK = 15 * MIN;
+    // -----
     
     // Notification
     [self requestAuthorizationForNotification];
-    
-    //changed 25.f*60.f
-    [[TimerController sharedInstance] installTimerDuration:25.f*60.f] ; //create once TimerController
     
     return YES;
 }

@@ -141,7 +141,7 @@
                                     <!--2017-09-08 19:56:18 +0000-->
                                 </date>
                                 <connections>
-                                    <action selector="changedTimeDuration:" destination="Lov-KD-nvb" eventType="valueChanged" id="tSn-JE-uLp"/>
+                                    <action selector="changeDurationPomodor:" destination="Lov-KD-nvb" eventType="valueChanged" id="rJs-1L-BMw"/>
                                 </connections>
                             </datePicker>
                             <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="25:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TMs-go-ffm">
