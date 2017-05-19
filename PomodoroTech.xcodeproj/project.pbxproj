@@ -99,6 +99,7 @@
 				8C363AF81EB3510F007729F8 /* AppDelegate.m */,
 				8CAE97AE1EC791A2009369E1 /* Controllers */,
 				8C363B141EB367A0007729F8 /* Data */,
+				8CACBF9C1ECED4510036D106 /* ? */,
 				8C363B181EB64958007729F8 /* UI */,
 				8C363AFD1EB3510F007729F8 /* Main.storyboard */,
 				8C363B031EB3510F007729F8 /* Assets.xcassets */,
@@ -122,8 +123,6 @@
 			children = (
 				8C9C85061EC054EC0002746A /* HTTPCommunication.h */,
 				8C9C85071EC054EC0002746A /* HTTPCommunication.m */,
-				8CAE97A81EC4F692009369E1 /* Timer.h */,
-				8CAE97A91EC4F692009369E1 /* Timer.m */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -158,13 +157,22 @@
 			name = CoreData;
 			sourceTree = "<group>";
 		};
+		8CACBF9C1ECED4510036D106 /* ? */ = {
+			isa = PBXGroup;
+			children = (
+				8CACBF6F1ECD674D0036D106 /* initController.h */,
+				8CACBF701ECD674D0036D106 /* initController.m */,
+				8CAE97A81EC4F692009369E1 /* Timer.h */,
+				8CAE97A91EC4F692009369E1 /* Timer.m */,
+			);
+			name = "?";
+			sourceTree = "<group>";
+		};
 		8CAE97AE1EC791A2009369E1 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				8CACBF991ECE19EA0036D106 /* CoordinatorController.h */,
 				8CACBF9A1ECE19EA0036D106 /* CoordinatorController.m */,
-				8CACBF6F1ECD674D0036D106 /* initController.h */,
-				8CACBF701ECD674D0036D106 /* initController.m */,
 				8CACBF6C1ECC832F0036D106 /* CoreDataController.h */,
 				8CACBF6D1ECC832F0036D106 /* CoreDataController.m */,
 				8CAE97AF1EC791F4009369E1 /* TimerController.h */,

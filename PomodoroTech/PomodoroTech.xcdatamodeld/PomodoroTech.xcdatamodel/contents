@@ -5,12 +5,15 @@
         <attribute name="complit" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="createTime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="duration" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="currentCondition" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDCondition" inverseName="currentBreak" inverseEntity="CDCondition" syncable="YES"/>
         <relationship name="whoseTask" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDTask" inverseName="breaks" inverseEntity="CDTask" syncable="YES"/>
     </entity>
     <entity name="CDCondition" representedClassName="CDCondition" syncable="YES" codeGenerationType="class">
         <attribute name="durationLongBreak" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="durationPomodor" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="durationShortBreak" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="currentBreak" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDBreak" inverseName="currentCondition" inverseEntity="CDBreak" syncable="YES"/>
+        <relationship name="currentPomodor" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDPomodor" inverseName="currentCondition" inverseEntity="CDPomodor" syncable="YES"/>
         <relationship name="currentTask" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDTask" inverseName="currentCondition" inverseEntity="CDTask" syncable="YES"/>
         <relationship name="currentUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDUser" inverseName="currentCondition" inverseEntity="CDUser" syncable="YES"/>
     </entity>
@@ -19,6 +22,7 @@
         <attribute name="complit" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="createTime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="duration" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="currentCondition" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDCondition" inverseName="currentPomodor" inverseEntity="CDCondition" syncable="YES"/>
         <relationship name="whoseTask" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDTask" inverseName="pomodors" inverseEntity="CDTask" syncable="YES"/>
     </entity>
     <entity name="CDTask" representedClassName="CDTask" syncable="YES" codeGenerationType="class">
@@ -37,10 +41,10 @@
         <relationship name="tasks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDTask" inverseName="whoseUser" inverseEntity="CDTask" syncable="YES"/>
     </entity>
     <elements>
-        <element name="CDBreak" positionX="-19307" positionY="-484" width="128" height="118"/>
-        <element name="CDPomodor" positionX="-19308" positionY="-342" width="128" height="118"/>
-        <element name="CDTask" positionX="-19125" positionY="-432" width="128" height="148"/>
-        <element name="CDUser" positionX="-18776" positionY="-387" width="128" height="103"/>
-        <element name="CDCondition" positionX="-18954" positionY="-621" width="128" height="118"/>
+        <element name="CDBreak" positionX="-19061" positionY="-737" width="128" height="133"/>
+        <element name="CDPomodor" positionX="-19061" positionY="-584" width="128" height="133"/>
+        <element name="CDTask" positionX="-19253" positionY="-558" width="128" height="148"/>
+        <element name="CDUser" positionX="-19058" positionY="-369" width="128" height="103"/>
+        <element name="CDCondition" positionX="-18803" positionY="-573" width="128" height="148"/>
     </elements>
 </model>

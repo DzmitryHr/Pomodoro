@@ -28,4 +28,7 @@
 - (CDUser *)giveCurrentUser;
 - (CDTask *)giveCurrentTask;
 
+// run count duration pomodor (WORK) and run count Long or Short BREAK (Break)
+- (void)runWorkCycle;
+
 @end

@@ -244,6 +244,28 @@
 }
 
 
+- (CDPomodor *)createPomodor
+{
+    NSString *entityName = @"CDPomodor";
+    CDPomodor *pomodor = (CDPomodor *)[self createObject:self.contextPomodoro withEntityName:entityName];
+    
+    [pomodor.managedObjectContext save:nil];
+    
+    return pomodor;
+}
+
+
+- (CDBreak *)createBreak
+{
+    NSString *entityName = @"CDBreak";
+    CDBreak *breaK = (CDBreak *)[self createObject:self.contextPomodoro withEntityName:entityName];
+    
+    [breaK.managedObjectContext save:nil];
+    
+    return breaK;
+}
+
+
 - (void)deleteObjectFromCoreData:(NSManagedObjectContext *)context withEntityName:entityName
 {
     NSArray *allObjects = [self getObjectsFromCoreData:context withEntityName:entityName andActiveAttribute:NO];

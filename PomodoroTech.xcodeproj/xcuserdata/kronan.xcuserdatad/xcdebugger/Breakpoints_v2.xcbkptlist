@@ -42,7 +42,7 @@
                   moduleName = "PomodoroTech"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/kronan/Desktop/Pomodoro/PomodoroTech/PomodoroTech/ViewController.m"
-                  timestampString = "516840065.863723"
+                  timestampString = "516893038.551547"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "91"
@@ -57,7 +57,7 @@
                   moduleName = "PomodoroTech"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/kronan/Desktop/Pomodoro/PomodoroTech/PomodoroTech/ViewController.m"
-                  timestampString = "516840065.866759"
+                  timestampString = "516893038.554202"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "91"
@@ -154,7 +154,7 @@
                   moduleName = "PomodoroTech"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/kronan/Desktop/Pomodoro/PomodoroTech/PomodoroTech/ViewController.m"
-                  timestampString = "516840065.898771"
+                  timestampString = "516893038.629655"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "105"
@@ -169,7 +169,7 @@
                   moduleName = "PomodoroTech"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/kronan/Desktop/Pomodoro/PomodoroTech/PomodoroTech/ViewController.m"
-                  timestampString = "516840065.901371"
+                  timestampString = "516893038.631485"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "105"
@@ -192,6 +192,102 @@
             startingLineNumber = "171"
             endingLineNumber = "171"
             landmarkName = "-processState:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PomodoroTech/TimerViewController.m"
+            timestampString = "516892173.879771"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "144"
+            endingLineNumber = "144"
+            landmarkName = "-updateUI"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PomodoroTech/Controllers/CoordinatorController.m"
+            timestampString = "516892646.725698"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "242"
+            endingLineNumber = "242"
+            landmarkName = "-createNewPomodor"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PomodoroTech/TimerViewController.m"
+            timestampString = "516892388.85665"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "140"
+            endingLineNumber = "140"
+            landmarkName = "-updateUI"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PomodoroTech/Controllers/CoordinatorController.m"
+            timestampString = "516892609.317702"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "107"
+            endingLineNumber = "107"
+            landmarkName = "-task"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PomodoroTech/Controllers/CoreDataController.m"
+            timestampString = "516892944.82182"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "-pomodor"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PomodoroTech/Controllers/CoreDataController.m"
+            timestampString = "516893030.718135"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "201"
+            endingLineNumber = "201"
+            landmarkName = "-createObject:withEntityName:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

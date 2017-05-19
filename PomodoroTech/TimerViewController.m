@@ -105,12 +105,16 @@
 
 - (IBAction)startTimerButton:(UIButton *)sender
 {
+    //where???
     [self showNotification];
         
     [[TimerController sharedInstance] startTimerWithDurationPomodor:self.durationPomodor];
  
     [self showPicker:NO];
     [self.timePicker setEnabled:NO];
+    
+    // chops and changes
+    [[CoordinatorController sharedInstance] runWorkCycle];
 }
 
 

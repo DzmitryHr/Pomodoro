@@ -29,4 +29,7 @@
 
 + (instancetype)sharedInstance;
 
+- (CDPomodor *)createPomodor;
+- (CDBreak *)createBreak;
+
 @end
