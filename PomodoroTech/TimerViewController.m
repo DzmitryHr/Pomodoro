@@ -7,12 +7,11 @@
 //
 @import UserNotifications;
 #import "TimerViewController.h"
-#import "TimerController.h"
 
 #import "CoordinatorController.h"
 
 
-@interface TimerViewController () <TimerControllerDelegate>
+@interface TimerViewController () <CoordinatorControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *timerLabel;
 @property (weak, nonatomic) IBOutlet UIDatePicker *timePicker;
@@ -20,9 +19,11 @@
 @property (weak, nonatomic) IBOutlet UIButton *stopTimerButton;
 @property (weak, nonatomic) IBOutlet UILabel *informationLabel;
 
-@property (assign, nonatomic) NSInteger durationPomodor;
+@property (assign, nonatomic) NSInteger currentTimerValue;
+@property (nonatomic, strong) CoordinatorController *coordinator;
 
 @property (nonatomic, strong) UNMutableNotificationContent *localNotification;
+
 @end
 
 
@@ -30,27 +31,30 @@
 @implementation TimerViewController
 
 
-@synthesize durationPomodor = _durationPomodor;
-
 #pragma mark - init
 
-- (NSInteger)durationPomodor
+- (CoordinatorController *)coordinator
 {
-    if (!_durationPomodor){
-        _durationPomodor = [[CoordinatorController sharedInstance] giveCurentDurationPomodor];
-    };
+    if (!_coordinator){
+        _coordinator = [[CoordinatorController alloc] init];
+    }
     
-    [self repaintTimerLableWithTime:_durationPomodor];
-    
-    return _durationPomodor;
+    return _coordinator;
 }
 
 
-- (void)setDurationPomodor:(NSInteger)durationPomodor
+@synthesize currentTimerValue = _currentTimerValue;
+
+
+- (NSInteger)currentTimerValue
 {
-    _durationPomodor = durationPomodor;
+    if (!_currentTimerValue){
+        _currentTimerValue = [self.coordinator uiTimer];
+    };
     
-    [[CoordinatorController sharedInstance] changeCurrentDurationPomodor:_durationPomodor];
+    [self repaintTimerLableWithTime:_currentTimerValue];
+    
+    return _currentTimerValue;
 }
 
 
@@ -58,11 +62,13 @@
 {
     [super viewDidLoad];
     
-    //inst delegate TimerController
-    [[TimerController sharedInstance] setDelegate:self];
+    
+    //inst delegate CoordinatorController
+    [[self coordinator] setDelegate:self];
     
     [self.startTimerButton setEnabled:YES];
     [self.stopTimerButton setEnabled:NO];
+    
     [self.timePicker setHidden:YES];
     
     [self updateUI];
@@ -70,26 +76,20 @@
 
 #pragma mark - other
 
-- (void)showPicker:(BOOL)show
-{
-    [self.timePicker setHidden:!show];
-}
-
 
 - (IBAction)tapUILabel:(UITapGestureRecognizer *)sender
 {
-    if (![self.timePicker isEnabled]){
+    if (!self.timePicker.enabled){
         return;
     }
     
-    if (self.timePicker.hidden){
-        [self showPicker:YES];
-        //NSInteger timeLable = (int)self.timerLabel.text;  translate to intager???
-        [self.timePicker setCountDownDuration: self.durationPomodor];
-    } else {
-        [self showPicker:NO];
-        self.durationPomodor = [self.timePicker countDownDuration];
-    };
+    self.timePicker.hidden ? [self.timePicker setHidden:NO] : [self.timePicker setHidden:YES] ;
+    
+    if (!self.timePicker.hidden){
+        [self.timePicker setDatePickerMode:UIDatePickerModeCountDownTimer];
+        self.timePicker.countDownDuration = self.currentTimerValue;
+    }
+    
 };
 
 
@@ -97,30 +97,41 @@
 {
     CGFloat durationSec = [self.timePicker countDownDuration];
     
-    self.durationPomodor = (NSInteger)durationSec;
+    self.currentTimerValue = (NSInteger)durationSec;
+    
+    [self.coordinator changeCurrentDurationPomodor:_currentTimerValue];
 
-    [self repaintTimerLableWithTime:self.durationPomodor];
+    [self repaintTimerLableWithTime:self.currentTimerValue];
 }
 
 
 - (IBAction)startTimerButton:(UIButton *)sender
 {
-    //where???
-    [self showNotification];
+    // where???
+    // [self showNotification];
         
-    [[TimerController sharedInstance] startTimerWithDurationPomodor:self.durationPomodor];
- 
-    [self showPicker:NO];
+    [self.startTimerButton setEnabled:NO];
+    [self.stopTimerButton setEnabled:YES];
     [self.timePicker setEnabled:NO];
     
+    [self.timePicker setHidden:YES];
+    
+    [self updateUI];
+    
     // chops and changes
-    [[CoordinatorController sharedInstance] runWorkCycle];
+    [self.coordinator runWorkCycle];
 }
 
 
 - (IBAction)stopTimerButton:(UIButton *)sender
 {
-    [[TimerController sharedInstance] stopTimer];
+    [self.startTimerButton setEnabled:YES];
+    [self.stopTimerButton setEnabled:NO];
+    [self.timePicker setEnabled:YES];
+    
+    [self.coordinator stopWorkCycle];
+    
+    [self updateUI];
 }
 
 
@@ -136,36 +147,20 @@
 
 - (void)updateUI
 {
-    CDUser *user = [[CoordinatorController sharedInstance] giveCurrentUser];
-    CDTask *task = [[CoordinatorController sharedInstance] giveCurrentTask];
+    CDUser *user = [self.coordinator giveCurrentUser];
+    CDTask *task = [self.coordinator giveCurrentTask];
     NSString *inf = [NSString stringWithFormat:@" User: %@ \n Task: %@ \n Pomodors: %lu", user.login, task.name, task.pomodors.count]; // all pomodors - choose complit pomodors
    self.informationLabel.text = inf;
     
-    [self repaintTimerLableWithTime:self.durationPomodor];
+    [self repaintTimerLableWithTime:self.currentTimerValue];
 }
 
+#pragma mark - CoordinatorControllerDelegate
 
-#pragma mark - TimerControllerDelegate
-
--(void)timerControllerDidStarted:(TimerController *)timerController
+- (void)coordinatorController:(CoordinatorController *)coordinator timerDidChanged:(NSTimeInterval)time;
 {
-    [self.startTimerButton setEnabled:NO];
-    [self.stopTimerButton setEnabled:YES];
-}
-
-
--(void)timerControllerDidStop:(TimerController *)timerController
-{
-    [self.startTimerButton setEnabled:YES];
-    [self.stopTimerButton setEnabled:NO];
-    [self.timePicker setEnabled:YES];
-
-}
-
-
--(void)timerController:(TimerController *)timerController timeDidChanged:(NSTimeInterval)time
-{
-    [self repaintTimerLableWithTime:time];
+    self.currentTimerValue = time;
+    [self updateUI];
 }
 
 
@@ -184,7 +179,7 @@
     self.localNotification.sound = [UNNotificationSound defaultSound];
     self.localNotification.badge = @([[UIApplication sharedApplication] applicationIconBadgeNumber] + 1);
     
-    UNTimeIntervalNotificationTrigger* trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:self.durationPomodor
+    UNTimeIntervalNotificationTrigger* trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:self.currentTimerValue
                                                                                                     repeats:NO];
     
     UNNotificationRequest *notificationRequest = [UNNotificationRequest requestWithIdentifier:@"Time Down"

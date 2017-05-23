@@ -10,6 +10,10 @@
 
 @interface CoreDataController()
 
+@property (nonatomic, strong) CDUser *user;
+@property (nonatomic, strong) CDTask *task;
+@property (nonatomic, strong) CDPomodor *pomodor;
+@property (nonatomic, strong) CDBreak   *breakP;
 
 @end
 
@@ -23,9 +27,8 @@
 {
     if (!_user){
         
-            NSString *entityName = @"CDUser";
-            _user = (CDUser*)[self createObject:self.contextPomodoro withEntityName:entityName];
-            _user.login = @"defaultUser";
+        NSString *entityName = @"CDUser";
+        _user = (CDUser*)[self getLastObject:self.contextPomodoro withEntityName:entityName];
     }
     
     [_user.managedObjectContext save:nil];
@@ -39,10 +42,7 @@
     if (!_task){
         
         NSString *entityName = @"CDTask";
-        _task = (CDTask*)[self createObject:self.contextPomodoro withEntityName:entityName];
-        _task.name = @"defaultTask";
-        _task.createTime = [NSDate date];
-    
+        _task = (CDTask*)[self getLastObject:self.contextPomodoro withEntityName:entityName];;
     }
 
     [_task.managedObjectContext save:nil];
@@ -50,43 +50,15 @@
     return _task;
 }
 
-// rewrite
+
 - (CDPomodor *)pomodor
 {
     if (!_pomodor){
-        _pomodor = [self selectActivePomodor];
+        NSString *entityName = @"CDPomodor";
+        _pomodor = (CDPomodor*)[self createObject:self.contextPomodoro withEntityName:entityName];
     }
-    
-    _pomodor.whoseTask = self.task;
-    
+
     return _pomodor;
-}
-
-
-- (CDCondition *)condition
-{
-    if (!_condition){
-        NSString *entityName = @"CDCondition";
-        NSArray *conditionObjects = [self getObjectsFromCoreData:self.contextPomodoro withEntityName:entityName];
-        // We must have one CONDITION in CoreData;
-        switch (conditionObjects.count) {
-            case 0:
-                _condition = (CDCondition*)[self createObject:self.contextPomodoro withEntityName:entityName];
-                break;
-            case 1:
-                _condition = (CDCondition *)[conditionObjects firstObject];
-                break;
-            default:
-                _condition = nil;
-                
-                @throw [NSException exceptionWithName:NSStringFromClass([self class]) reason:@"invalid Condition objects from CoreData" userInfo:nil];
-                break;
-        }
-    }
-    
-    [_condition.managedObjectContext save:nil];
-    
-    return _condition;
 }
 
 
@@ -100,100 +72,78 @@
 }
 
 
-+ (instancetype)sharedInstance
-{
-    static CoreDataController *sharedInstance = nil;
-    
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedInstance = [[CoreDataController alloc] init];
-    });
-    
-    return sharedInstance;
-}
-
 #pragma mark - CoreData
 
-// Select or Create defaultUSER
-// We must have one user with an activeAttribute = YES
-- (CDUser *)selectActiveUser
+
+- (CDUser *)createUserWithLogin:(NSString *)login
 {
-    NSString *stringName = @"CDUser";
+    NSString *entityName = @"CDUser";
+    CDUser *user = (CDUser *)[self createObject:self.contextPomodoro withEntityName:entityName];
     
-    NSArray *activeUsers = [self getObjectsFromCoreData:self.contextPomodoro withEntityName:stringName andActiveAttribute:YES];
-    [self printObjects:self.contextPomodoro withEntityName:stringName];
+    self.user = user;
     
-    switch (activeUsers.count) {
-        case 0:
-            [self createObject:self.contextPomodoro withEntityName:stringName withName:@"defaultUser"];
-            activeUsers = [self getObjectsFromCoreData:self.contextPomodoro withEntityName:stringName andActiveAttribute:YES];
-            break;
-        case 1:
-            nil;
-            break;
-        default:
-            NSLog(@"Bad UsersData, more than one User have attributeActive = YES");
-            break;
-    }
-    CDUser *user = [activeUsers firstObject];
-    NSLog(@" user name = %@", [user valueForKey:@"login"]);
+    user.createTime = [NSDate date];
+    user.login = login;
     
     return user;
 }
 
 
-// Select or Create defaultTASK
-// We must have one task with an activeAttribute = YES
-- (CDTask *)selectActiveTask
+- (CDTask *)createTaskWithName:(NSString *)name
 {
-    NSString *stringName = @"CDTask";
-
-    NSArray *activeTasks = [self getObjectsFromCoreData:self.contextPomodoro withEntityName:stringName andActiveAttribute:YES];
-    [self printObjects:self.contextPomodoro withEntityName:stringName];
+    NSString *entityName = @"CDTask";
+    CDTask *task = (CDTask *)[self createObject:self.contextPomodoro withEntityName:entityName];
     
-    switch (activeTasks.count) {
-        case 0:
-            [self createObject:self.contextPomodoro withEntityName:stringName withName:@"defaultTask"];
-            activeTasks = [self getObjectsFromCoreData:self.contextPomodoro withEntityName:stringName andActiveAttribute:YES];
-            break;
-        case 1:
-            nil;
-            break;
-        default:
-            NSLog(@"Bad TasksData, more than one User have attributeActive = YES");
-            break;
+    self.task = task;
+    
+    task.createTime = [NSDate date];
+    task.name = name;
+    
+    if (self.user){
+        task.whoseUser = self.user;
     }
-    CDTask *task = [activeTasks firstObject];
-    NSLog(@" task name = %@", [task valueForKey:@"name"]);
-    
     
     return task;
 }
 
 
-- (CDPomodor *)selectActivePomodor
+- (CDPomodor *)createPomodorWithDuration:(NSInteger)pomodorDuration
 {
-    NSString *stringName = @"CDPomodor";
+    NSString *entityName = @"CDPomodor";
+    CDPomodor *pomodor = (CDPomodor *)[self createObject:self.contextPomodoro withEntityName:entityName];
     
-    NSArray *activePomodors = [self getObjectsFromCoreData:self.contextPomodoro withEntityName:stringName andActiveAttribute:YES];
+    self.pomodor = pomodor;
     
-    switch (activePomodors.count) {
-        case 0:
-            [self createObject:self.contextPomodoro withEntityName:stringName withName:nil];
-            activePomodors = [self getObjectsFromCoreData:self.contextPomodoro withEntityName:stringName andActiveAttribute:YES];
-            break;
-        case 1:
-            nil;
-            break;
-        default:
-            NSLog(@"Bad PomodorData, more than one Pomodor have attributeActive = YES");
-            break;
+    pomodor.createTime = [NSDate date];
+    pomodor.duration = @(pomodorDuration);
+    pomodor.complit = @(NO);
+    
+    if (self.task){
+        pomodor.whoseTask = self.task;
     }
     
-    CDPomodor *pomodor = [activePomodors firstObject];
-    NSLog(@" pomodor create time = %@", pomodor.createTime);
+    [pomodor.managedObjectContext save:nil];
     
     return pomodor;
+}
+
+
+- (CDBreak *)createBreakWithDuration:(NSInteger)breakDuration
+{
+    NSString *entityName = @"CDBreak";
+    CDBreak *breaK = (CDBreak *)[self createObject:self.contextPomodoro withEntityName:entityName];
+    
+    breaK.createTime = [NSDate date];
+    breaK.duration = @(breakDuration);
+    breaK.complit = @(NO);
+    
+    if (self.task){
+        breaK.whoseTask = self.task;
+    }
+    
+    [breaK.managedObjectContext save:nil];
+    
+    return breaK;
 }
 
 
@@ -209,66 +159,9 @@
 }
 
 
-- (void)createObject:(NSManagedObjectContext *)context
-             withEntityName:(NSString *)entityName
-                   withName:(NSString *)name
+- (void)deleteAllObjectFromCoreData:(NSManagedObjectContext *)context withEntityName:entityName
 {
-    NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:entityName
-                                                            inManagedObjectContext:context];
-    
-    if ([entityName isEqualToString: @"CDTask"]){
-        [object setValue:name forKey:@"name"];
-        [object setValue:@YES forKey:@"active"];
-        [object setValue:[NSDate date] forKey:@"createTime"];
-        
-    }
-    
-    
-    if ([entityName isEqualToString: @"CDUser"]){
-        [object setValue:name forKey:@"login"];
-        [object setValue:@YES forKey:@"active"];
-    }
-
-    if ([entityName isEqualToString:@"CDPomodor"])
-    {
-        CDPomodor *pomodorObject = (CDPomodor *)object;
-        pomodorObject.active = @YES;
-        pomodorObject.createTime = [NSDate date];
-//        pomodorObject.duration = nil;
-        pomodorObject.complit = nil; // complit or destroy
-    }
-
-    [object.managedObjectContext save:nil];
-    
-    NSLog(@"===========created = %@", entityName);
-}
-
-
-- (CDPomodor *)createPomodor
-{
-    NSString *entityName = @"CDPomodor";
-    CDPomodor *pomodor = (CDPomodor *)[self createObject:self.contextPomodoro withEntityName:entityName];
-    
-    [pomodor.managedObjectContext save:nil];
-    
-    return pomodor;
-}
-
-
-- (CDBreak *)createBreak
-{
-    NSString *entityName = @"CDBreak";
-    CDBreak *breaK = (CDBreak *)[self createObject:self.contextPomodoro withEntityName:entityName];
-    
-    [breaK.managedObjectContext save:nil];
-    
-    return breaK;
-}
-
-
-- (void)deleteObjectFromCoreData:(NSManagedObjectContext *)context withEntityName:entityName
-{
-    NSArray *allObjects = [self getObjectsFromCoreData:context withEntityName:entityName andActiveAttribute:NO];
+    NSArray *allObjects = [self getObjectsFromCoreData:context withEntityName:entityName];
     
     for (id object in allObjects) {
         [context deleteObject:object];
@@ -280,7 +173,7 @@
 
 - (void)printObjects:(NSManagedObjectContext *)context withEntityName:entityName
 {
-    NSArray *allObjects = [self getObjectsFromCoreData:context withEntityName:entityName andActiveAttribute:NO];
+    NSArray *allObjects = [self getObjectsFromCoreData:context withEntityName:entityName];
     
     int i = 0;
     for (id object in allObjects) {
@@ -295,7 +188,7 @@
                      withEntityName:(NSString *)entityName
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    
+ 
     NSEntityDescription *description = [NSEntityDescription entityForName:entityName inManagedObjectContext:context];
     
     [request setEntity:description];
@@ -310,32 +203,39 @@
 }
 
 
-- (NSArray *)getObjectsFromCoreData:(NSManagedObjectContext *)context
-                     withEntityName:(NSString *)entityName
-                 andActiveAttribute:(BOOL)isActive
+- (NSManagedObjectContext *)getLastObject:(NSManagedObjectContext *)context
+                           withEntityName:(NSString *)entityName
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     
     NSEntityDescription *description = [NSEntityDescription entityForName:entityName inManagedObjectContext:context];
     
     [request setEntity:description];
-    //[request setResultType:(NSDictionaryResultType)];
+
+    [request setFetchLimit:1];
     
-    if (isActive){
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"active == YES"];
-        request.predicate = predicate;
-    }
-    
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"createTime" ascending:YES];
+    NSArray *sortDescriptors = @[sortDescriptor];
+    [request setSortDescriptors:sortDescriptors];
     
     NSError *requestErr = nil;
     NSArray *resultArray = [context executeFetchRequest:request error: &requestErr];
-    if (requestErr){
-        NSLog(@"giveObjectsFromCoreData err = %@", [requestErr localizedDescription]);
-    }
     
-    return resultArray;
+    
+    return [resultArray lastObject];
 }
 
+
+- (CDUser *)getActiveUser
+{
+    return self.user;
+}
+
+
+- (CDTask *)getActiveTask
+{
+    return self.task;
+}
 
 #pragma mark - Core Data stack
 

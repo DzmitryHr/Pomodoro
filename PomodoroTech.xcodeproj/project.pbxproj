@@ -19,11 +19,8 @@
 		8C363B871EB7AE8B007729F8 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C363B1A1EB68640007729F8 /* CoreData.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		8C9C85081EC054EC0002746A /* HTTPCommunication.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C9C85071EC054EC0002746A /* HTTPCommunication.m */; };
 		8CACBF6E1ECC832F0036D106 /* CoreDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CACBF6D1ECC832F0036D106 /* CoreDataController.m */; };
-		8CACBF711ECD674D0036D106 /* initController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CACBF701ECD674D0036D106 /* initController.m */; };
 		8CACBF9B1ECE19EA0036D106 /* CoordinatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CACBF9A1ECE19EA0036D106 /* CoordinatorController.m */; };
-		8CAE97AA1EC4F692009369E1 /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CAE97A91EC4F692009369E1 /* Timer.m */; };
 		8CAE97AD1EC4F6C3009369E1 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CAE97AC1EC4F6C3009369E1 /* TimerViewController.m */; };
-		8CAE97B11EC791F4009369E1 /* TimerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CAE97B01EC791F4009369E1 /* TimerController.m */; };
 		8CCB573B1ECB17CE00B06FA9 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CCB573A1ECB17CE00B06FA9 /* UserNotifications.framework */; };
 /* End PBXBuildFile section */
 
@@ -48,16 +45,10 @@
 		8C9C85071EC054EC0002746A /* HTTPCommunication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTTPCommunication.m; path = Data/HTTPCommunication.m; sourceTree = SOURCE_ROOT; };
 		8CACBF6C1ECC832F0036D106 /* CoreDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreDataController.h; path = Controllers/CoreDataController.h; sourceTree = "<group>"; };
 		8CACBF6D1ECC832F0036D106 /* CoreDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreDataController.m; path = Controllers/CoreDataController.m; sourceTree = "<group>"; };
-		8CACBF6F1ECD674D0036D106 /* initController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = initController.h; path = Controllers/initController.h; sourceTree = "<group>"; };
-		8CACBF701ECD674D0036D106 /* initController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = initController.m; path = Controllers/initController.m; sourceTree = "<group>"; };
 		8CACBF991ECE19EA0036D106 /* CoordinatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoordinatorController.h; path = Controllers/CoordinatorController.h; sourceTree = "<group>"; };
 		8CACBF9A1ECE19EA0036D106 /* CoordinatorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoordinatorController.m; path = Controllers/CoordinatorController.m; sourceTree = "<group>"; };
-		8CAE97A81EC4F692009369E1 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
-		8CAE97A91EC4F692009369E1 /* Timer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Timer.m; sourceTree = "<group>"; };
 		8CAE97AB1EC4F6C3009369E1 /* TimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerViewController.h; sourceTree = "<group>"; };
 		8CAE97AC1EC4F6C3009369E1 /* TimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerViewController.m; sourceTree = "<group>"; };
-		8CAE97AF1EC791F4009369E1 /* TimerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimerController.h; path = Controllers/TimerController.h; sourceTree = "<group>"; };
-		8CAE97B01EC791F4009369E1 /* TimerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TimerController.m; path = Controllers/TimerController.m; sourceTree = "<group>"; };
 		8CCB573A1ECB17CE00B06FA9 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -99,7 +90,6 @@
 				8C363AF81EB3510F007729F8 /* AppDelegate.m */,
 				8CAE97AE1EC791A2009369E1 /* Controllers */,
 				8C363B141EB367A0007729F8 /* Data */,
-				8CACBF9C1ECED4510036D106 /* ? */,
 				8C363B181EB64958007729F8 /* UI */,
 				8C363AFD1EB3510F007729F8 /* Main.storyboard */,
 				8C363B031EB3510F007729F8 /* Assets.xcassets */,
@@ -157,17 +147,6 @@
 			name = CoreData;
 			sourceTree = "<group>";
 		};
-		8CACBF9C1ECED4510036D106 /* ? */ = {
-			isa = PBXGroup;
-			children = (
-				8CACBF6F1ECD674D0036D106 /* initController.h */,
-				8CACBF701ECD674D0036D106 /* initController.m */,
-				8CAE97A81EC4F692009369E1 /* Timer.h */,
-				8CAE97A91EC4F692009369E1 /* Timer.m */,
-			);
-			name = "?";
-			sourceTree = "<group>";
-		};
 		8CAE97AE1EC791A2009369E1 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -175,8 +154,6 @@
 				8CACBF9A1ECE19EA0036D106 /* CoordinatorController.m */,
 				8CACBF6C1ECC832F0036D106 /* CoreDataController.h */,
 				8CACBF6D1ECC832F0036D106 /* CoreDataController.m */,
-				8CAE97AF1EC791F4009369E1 /* TimerController.h */,
-				8CAE97B01EC791F4009369E1 /* TimerController.m */,
 				8CAE97AB1EC4F6C3009369E1 /* TimerViewController.h */,
 				8CAE97AC1EC4F6C3009369E1 /* TimerViewController.m */,
 			);
@@ -257,13 +234,10 @@
 				8C363B021EB3510F007729F8 /* PomodoroTech.xcdatamodeld in Sources */,
 				8C9C85081EC054EC0002746A /* HTTPCommunication.m in Sources */,
 				8CACBF6E1ECC832F0036D106 /* CoreDataController.m in Sources */,
-				8CACBF711ECD674D0036D106 /* initController.m in Sources */,
 				8C363B171EB367F0007729F8 /* TasksViewCell.m in Sources */,
 				8CAE97AD1EC4F6C3009369E1 /* TimerViewController.m in Sources */,
-				8CAE97AA1EC4F692009369E1 /* Timer.m in Sources */,
 				8CACBF9B1ECE19EA0036D106 /* CoordinatorController.m in Sources */,
 				8C363B131EB355B9007729F8 /* TasksViewController.m in Sources */,
-				8CAE97B11EC791F4009369E1 /* TimerController.m in Sources */,
 				8C363AFC1EB3510F007729F8 /* ViewController.m in Sources */,
 				8C363AF91EB3510F007729F8 /* AppDelegate.m in Sources */,
 				8C363AF61EB3510F007729F8 /* main.m in Sources */,

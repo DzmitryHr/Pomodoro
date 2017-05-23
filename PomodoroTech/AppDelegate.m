@@ -8,7 +8,6 @@
 
 @import UserNotifications;
 #import "AppDelegate.h"
-#import "TimerController.h"
 #import "CoreDataController.h"
 
 @interface AppDelegate ()
@@ -21,12 +20,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
    
-    // -----
-    // init in CoordinatorController - sharedInstance
-    // DEFAUL_DURATION_POMODOR = 25 * MIN;
-    // DEFAUL_DURATION_SHORT_BREAK = 5 * MIN;
-    // DEFAUL_DURATION_LONG_BREAK = 15 * MIN;
-    // -----
     
     // Notification
     [self requestAuthorizationForNotification];
@@ -80,7 +73,7 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     // Saves changes in the application's managed object context before the application terminates.
     
-    [[CoreDataController sharedInstance] saveContext];
+ //   [[CoreDataController sharedInstance] saveContext];
 }
 
 

@@ -12,6 +12,8 @@
 
 typedef NS_ENUM(NSInteger, CoordinatorControllerState)
 {
+    // stateInit = 0,
+    
     statePrepareToCountPomodor = 0,
     stateCountingPomodor,
     
@@ -31,23 +33,41 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerState)
 @interface CoordinatorController()
 
 
-@property (nonatomic, assign) CoordinatorControllerState currentState;
+@property (nonatomic, readwrite, assign) CoordinatorControllerState currentState;
 
 @property (nonatomic, strong) CDUser *user;
 @property (nonatomic, strong) CDTask *task;
 @property (nonatomic, strong) CDPomodor *pomodor;
 @property (nonatomic, strong) CDBreak *breaK;
-@property (nonatomic, strong) CDCondition *condition;
+
+@property (nonatomic, assign) NSInteger durationPomodor;
+@property (nonatomic, assign) NSInteger durationShortBreak;
+@property (nonatomic, assign) NSInteger durationLongBreak;
+
+@property (nonatomic, strong) NSUserDefaults *defaulTimeSetting;
+
+@property (nonatomic, strong) CoreDataController *coreData;
+
+@property (nonatomic, strong) NSTimer *timer;
+
+@property (nonatomic, readwrite, assign) NSTimeInterval uiTimer;
+
 
 @end
 
 
 @implementation CoordinatorController
 
-static const int MIN = 60;
-static const int DEFAUL_DURATION_POMODOR = 25 * MIN;
-static const int DEFAUL_DURATION_SHORT_BREAK = 5 * MIN;
-static const int DEFAUL_DURATION_LONG_BREAK = 15 * MIN;
+static const NSInteger MIN = 60;
+static const NSInteger DEFAUL_DURATION_POMODOR = 25 * MIN;
+static const NSInteger DEFAUL_DURATION_SHORT_BREAK = 5 * MIN;
+static const NSInteger DEFAUL_DURATION_LONG_BREAK = 15 * MIN;
+static const NSInteger AMOUNT_POMODOR_FOR_LONG_BREAK = 4;
+
+NSString * const titleDurationPomodor = @"durationPomodor";
+NSString * const titleDurationShortBreak = @"durationShortBreak";
+NSString * const titleDurationLongBreak = @"durationLongBreak";
+
 
 
 #pragma mark - init
@@ -57,109 +77,80 @@ static const int DEFAUL_DURATION_LONG_BREAK = 15 * MIN;
 {
     self = [super init];
     
-    if (self){
-        CDCondition *condition = [[CoreDataController sharedInstance] condition];
+    if (!self.defaulTimeSetting){
         
-        if (!condition.durationPomodor){
-            condition.durationPomodor = DEFAUL_DURATION_POMODOR;
-        };
+        self.defaulTimeSetting = [NSUserDefaults standardUserDefaults];
+        [self.defaulTimeSetting setInteger:DEFAUL_DURATION_POMODOR forKey:titleDurationPomodor];
+        [self.defaulTimeSetting setInteger:DEFAUL_DURATION_SHORT_BREAK forKey:titleDurationShortBreak];
+        [self.defaulTimeSetting setInteger:DEFAUL_DURATION_LONG_BREAK forKey:titleDurationLongBreak];
         
-        if (!condition.durationShortBreak){
-            condition.durationShortBreak = DEFAUL_DURATION_SHORT_BREAK;
-        };
+        self.durationPomodor = DEFAUL_DURATION_POMODOR;
+        self.durationShortBreak = DEFAUL_DURATION_SHORT_BREAK;
+        self.durationLongBreak = DEFAUL_DURATION_LONG_BREAK;
         
-        if (!condition.durationLongBreak){
-            condition.durationLongBreak = DEFAUL_DURATION_LONG_BREAK;
-        };
+        [self.defaulTimeSetting synchronize];
+
+        self.coreData = [[CoreDataController alloc] init];
         
-        CDUser *user = [[CoreDataController sharedInstance] user];
+        if (!self.user){
+            CDUser *user = [self.coreData getActiveUser];
+            self.user = user;
+            
+            if (!user){
+                self.user = [self.coreData createUserWithLogin:@"defaultUser"];
+            }
+        }
         
-        CDTask *task = [[CoreDataController sharedInstance] task];
-        
-        task.whoseUser = user;
-        
-        condition.currentUser = user;
-        condition.currentTask = task;
-        
-        self.user = user;
-        self.task = task;
-        
-        [condition.managedObjectContext save:nil];
+        if (!self.task){
+            CDTask *task = [self.coreData getActiveTask];
+            self.task = task;
+            
+            if (!task){
+                self.task = [self.coreData createTaskWithName:@"defaultTask"];
+            }
+        }
     }
+    
+    self.currentState = stateReadyForWork;
+    
+    self.uiTimer = self.durationPomodor;
     
     return self;
 }
 
 
-- (CDPomodor *)pomodor
+- (void)setUiTimer:(NSTimeInterval)uiTimer
 {
-    if (!_pomodor){
-        [self createNewPomodor];
-    }
-    
-    return _pomodor;
-    
+    _uiTimer = uiTimer;
+    [self.delegate coordinatorController:self timerDidChanged:uiTimer];
 }
-
-- (CDTask *)task
-{
-    if (!_task){
-        NSLog(@"=============================================");
-    }
-    
-    return _task;
-}
-
--(CDCondition *)condition
-{
-    if (!_condition){
-        _condition = [[CoreDataController sharedInstance] condition];
-    }
-    
-    return _condition;
-}
-
-
-+ (instancetype)sharedInstance
-{
-    static CoordinatorController *sharedInstance = nil;
-    static dispatch_once_t onceToken;
-    
-    dispatch_once(&onceToken, ^{
-        sharedInstance = [[CoordinatorController alloc] init];
-    });
-    
-    return sharedInstance;
-}
-
 
 #pragma mark - ohter metods
 
 - (NSInteger)giveCurentDurationPomodor
 {
-    return self.condition.durationPomodor;
+    NSInteger durationPomodor = [self.defaulTimeSetting integerForKey:titleDurationPomodor];
+    return durationPomodor;
 }
 
 
 - (void)changeCurrentDurationPomodor:(NSInteger)newCurrentDurationPomodor
 {
-    //self.condition.durationPomodor = [NSNumber numberWithInteger:newCurrentDurationPomodor];
-    
-    self.condition.durationPomodor = newCurrentDurationPomodor;
-    
-    [self.condition.managedObjectContext save:nil];
+    self.durationPomodor = newCurrentDurationPomodor;
+    [self.defaulTimeSetting setInteger:newCurrentDurationPomodor forKey:titleDurationPomodor];
+    [self.defaulTimeSetting synchronize];
 }
 
 
 - (CDUser *)giveCurrentUser
 {
-    return self.condition.currentUser;
+    return self.user;
 }
 
 
 - (CDTask *)giveCurrentTask
 {
-    return self.condition.currentTask;    
+    return  self.task;
 }
 
 
@@ -167,6 +158,13 @@ static const int DEFAUL_DURATION_LONG_BREAK = 15 * MIN;
 {
     [entity.managedObjectContext save:nil];
 }
+
+// init current state???
+- (CoordinatorControllerState)giveCureentState
+{
+    return self.currentState;
+}
+
 
 
 #pragma mark - State
@@ -179,38 +177,95 @@ static const int DEFAUL_DURATION_LONG_BREAK = 15 * MIN;
 }
 
 
+- (void)stopWorkCycle
+{
+    self.currentState = stateStopCount;
+    
+    [self processState];
+}
+
+
 - (void)processState
 {
     switch (self.currentState) {
         
         case statePrepareToCountPomodor:{
             
-            [self createNewPomodor];
-            // [timerStartCount: durationPomodor];
+            self.pomodor = [self createNewPomodor];
+            //self.pomodor.duration = @(self.durationPomodor);
+            
+            self.uiTimer = [self.pomodor.duration integerValue];
+            
+            [self startTimer];
+            
             self.currentState = stateCountingPomodor;
             
             break;
         }
             
         case stateCountingPomodor:{
-            // if (timer == stop)
+            
+            NSTimeInterval timeIntervalLost = (NSTimeInterval)lround([[NSDate date] timeIntervalSinceDate:self.pomodor.createTime]);
+            
+            if (timeIntervalLost >= (NSTimeInterval)self.durationPomodor){
+            
+                self.currentState = statePrepareToCountBreak;
+                
+                
+            } else {
+                
+                self.uiTimer = self.durationPomodor - timeIntervalLost;
+            }
             
             break;
         }
             
         case statePrepareToCountBreak:{
             
+            [self stopTimer];
+            
+            if ((self.task.pomodors.count % AMOUNT_POMODOR_FOR_LONG_BREAK) == 0){
+                self.breaK = [self createNewBreakWithDuration:self.durationLongBreak];
+            } else {
+                self.breaK = [self createNewBreakWithDuration:self.durationShortBreak];
+            }
+            
+            self.uiTimer = [self.breaK.duration integerValue];
+            
+            [self startTimer];
+            
+            self.currentState = stateCountingBreak;
             
             break;
         }
             
         case stateCountingBreak:{
             
+            NSTimeInterval durationBreak = (NSTimeInterval)([self.breaK.duration integerValue]);
+            
+            NSTimeInterval timeIntervalLost = (NSTimeInterval)lround([[NSDate date] timeIntervalSinceDate:self.breaK.createTime]);
+            
+            if (timeIntervalLost >= durationBreak){
+                
+                self.pomodor.complit = @(YES);
+                
+                self.currentState = stateStopCount;
+                
+            } else {
+                
+                self.uiTimer = durationBreak - timeIntervalLost;
+            }
             
             break;
         }
             
         case stateStopCount:{
+            
+            [self stopTimer];
+            
+            self.uiTimer = [self.pomodor.duration integerValue];
+            
+            self.currentState = stateReadyForWork;
             
             
             break;
@@ -218,6 +273,7 @@ static const int DEFAUL_DURATION_LONG_BREAK = 15 * MIN;
             
         case stateReadyForWork:{
             
+            self.uiTimer = self.durationPomodor;
             
             break;
         }
@@ -235,41 +291,52 @@ static const int DEFAUL_DURATION_LONG_BREAK = 15 * MIN;
     
 }
 
-#pragma mark - methods for State
 
-- (void)createNewPomodor
+- (void)startTimer
 {
-    CDPomodor *pomodor = [[CoreDataController sharedInstance] createPomodor];
-    
-    pomodor.complit = NO;
-    pomodor.createTime = [NSDate date];
-    pomodor.duration = self.condition.durationPomodor;
-    
-    pomodor.whoseTask = self.condition.currentTask;
-    pomodor.currentCondition = self.condition;
-    
-    [self saveCoreDataForEntity:pomodor];
-    
-    self.pomodor = pomodor;
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:1
+                                    repeats:YES
+                                      block:^(NSTimer * _Nonnull timer) {
+                                          [self processState];
+                                      }];
 }
 
-static const int AMOUNT_POMODOR_FOR_LONG_BREAK = 4;
 
-- (void)createNewBreak
+-(void)stopTimer
 {
-    CDBreak *breaK = [[CoreDataController sharedInstance] createBreak];
+    [self.timer invalidate];
+    self.timer = nil;
+
+}
+
+
+#pragma mark - methods for State
+
+- (CDPomodor *)createNewPomodor
+{
+    CDPomodor *pomodor = [self.coreData createPomodorWithDuration:self.durationPomodor];
     
-    breaK.complit = NO;
-    breaK.createTime = [NSDate date];
-    if (!self.task.pomodors.count % AMOUNT_POMODOR_FOR_LONG_BREAK){
-        breaK.duration = self.condition.durationLongBreak;
-    } else {
-        breaK.duration = self.condition.durationShortBreak;
-    };
+    if (!pomodor.whoseTask && !self.task){
+       pomodor.whoseTask = self.task;
+    }
+   
+    [self saveCoreDataForEntity:pomodor];
+    
+    return pomodor;
+}
+
+
+- (CDBreak *)createNewBreakWithDuration:(NSInteger)duration
+{
+    CDBreak *breaK = [self.coreData createBreakWithDuration:duration];
+    
+    if (!breaK.whoseTask && !self.task){
+        breaK.whoseTask = self.task;
+    }
     
     [self saveCoreDataForEntity:breaK];
     
-    self.breaK = breaK;
+    return breaK;
 }
 
 

@@ -9,18 +9,20 @@
 #import <Foundation/Foundation.h>
 #import "CoreDataController.h"
 
+@class CoordinatorController;
+
+@protocol CoordinatorControllerDelegate<NSObject>
+@required
+- (void)coordinatorController:(CoordinatorController *)coordinator timerDidChanged:(NSTimeInterval)time;
+@end
+
+
 @interface CoordinatorController : NSObject
 
-//@property (nonatomic, assign) NSInteger durationPomodoro;
-//@property (nonatomic, assign) NSInteger durationLongBreak;
-//@property (nonatomic, assign) NSInteger durationShortBreak;
 
-//@property (nonatomic, strong) CDUser *user;
-//@property (nonatomic, strong) CDTask *task;
-//@property (nonatomic, strong) CDPomodor *pomodor;
-//@property (nonatomic, strong) CDCondition *condition;
+@property (nonatomic, weak) id <CoordinatorControllerDelegate> delegate;
 
-+ (instancetype)sharedInstance;
+@property (nonatomic, readonly, assign) NSTimeInterval uiTimer;
 
 - (NSInteger)giveCurentDurationPomodor;
 - (void)changeCurrentDurationPomodor:(NSInteger)newCurrentDurationPomodor;
@@ -28,7 +30,11 @@
 - (CDUser *)giveCurrentUser;
 - (CDTask *)giveCurrentTask;
 
+
 // run count duration pomodor (WORK) and run count Long or Short BREAK (Break)
 - (void)runWorkCycle;
+
+- (void)stopWorkCycle;
+
 
 @end

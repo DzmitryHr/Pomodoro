@@ -12,24 +12,26 @@
 #import "CDTask+CoreDataClass.h"
 #import "CDPomodor+CoreDataClass.h"
 #import "CDBreak+CoreDataClass.h"
-#import "CDCondition+CoreDataClass.h"
 
 @interface CoreDataController : NSObject
 
 @property (readonly, strong) NSPersistentContainer *persistentContainer;
 @property (nonatomic, strong) NSManagedObjectContext *contextPomodoro;
 
-@property (nonatomic, strong) CDUser *user;
-@property (nonatomic, strong) CDTask *task;
-@property (nonatomic, strong) CDPomodor *pomodor;
-@property (nonatomic, strong) CDBreak   *breakP;
-@property (nonatomic, strong) CDCondition *condition;
+//@property (nonatomic, strong) CDUser *currentUser;
+//@property (nonatomic, strong) CDTask *currentTask;
+//@property (nonatomic, strong) CDPomodor *currentPomodor;
+//@property (nonatomic, strong) CDBreak   *currentBreakP;
 
 - (void)saveContext;
 
-+ (instancetype)sharedInstance;
+- (CDUser *)getActiveUser;
+- (CDTask *)getActiveTask;
 
-- (CDPomodor *)createPomodor;
-- (CDBreak *)createBreak;
+- (CDUser *)createUserWithLogin:(NSString *)login;
+- (CDTask *)createTaskWithName:(NSString *)name;
+
+- (CDPomodor *)createPomodorWithDuration:(NSInteger)pomodorDuration;
+- (CDBreak *)createBreakWithDuration:(NSInteger)breakDuration;
 
 @end
