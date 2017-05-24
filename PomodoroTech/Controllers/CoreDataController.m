@@ -214,6 +214,7 @@
 
     [request setFetchLimit:1];
     
+    // sorting no createTime
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"createTime" ascending:YES];
     NSArray *sortDescriptors = @[sortDescriptor];
     [request setSortDescriptors:sortDescriptors];
@@ -226,13 +227,13 @@
 }
 
 
-- (CDUser *)getActiveUser
+- (CDUser *)getCurrentUser
 {
     return self.user;
 }
 
 
-- (CDTask *)getActiveTask
+- (CDTask *)getCurrentTask
 {
     return self.task;
 }

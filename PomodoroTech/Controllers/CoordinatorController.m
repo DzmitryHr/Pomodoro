@@ -8,6 +8,7 @@
 
 #import "CoordinatorController.h"
 #import "CoreDataController.h"
+#import "Configurator.h"
 
 
 typedef NS_ENUM(NSInteger, CoordinatorControllerState)
@@ -40,11 +41,12 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerState)
 @property (nonatomic, strong) CDPomodor *pomodor;
 @property (nonatomic, strong) CDBreak *breaK;
 
-@property (nonatomic, assign) NSInteger durationPomodor;
-@property (nonatomic, assign) NSInteger durationShortBreak;
-@property (nonatomic, assign) NSInteger durationLongBreak;
+@property (nonatomic, assign) NSTimeInterval durationPomodor;
+@property (nonatomic, assign) NSTimeInterval durationShortBreak;
+@property (nonatomic, assign) NSTimeInterval durationLongBreak;
+@property (nonatomic, assign) NSInteger amountPomodorsForLongBreak;
 
-@property (nonatomic, strong) NSUserDefaults *defaulTimeSetting;
+@property (nonatomic, strong) Configurator *configurator;
 
 @property (nonatomic, strong) CoreDataController *coreData;
 
@@ -58,18 +60,6 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerState)
 
 @implementation CoordinatorController
 
-static const NSInteger MIN = 60;
-static const NSInteger DEFAUL_DURATION_POMODOR = 25 * MIN;
-static const NSInteger DEFAUL_DURATION_SHORT_BREAK = 5 * MIN;
-static const NSInteger DEFAUL_DURATION_LONG_BREAK = 15 * MIN;
-static const NSInteger AMOUNT_POMODOR_FOR_LONG_BREAK = 4;
-
-NSString * const titleDurationPomodor = @"durationPomodor";
-NSString * const titleDurationShortBreak = @"durationShortBreak";
-NSString * const titleDurationLongBreak = @"durationLongBreak";
-
-
-
 #pragma mark - init
 
 // initialization
@@ -77,23 +67,19 @@ NSString * const titleDurationLongBreak = @"durationLongBreak";
 {
     self = [super init];
     
-    if (!self.defaulTimeSetting){
+    if (self){
         
-        self.defaulTimeSetting = [NSUserDefaults standardUserDefaults];
-        [self.defaulTimeSetting setInteger:DEFAUL_DURATION_POMODOR forKey:titleDurationPomodor];
-        [self.defaulTimeSetting setInteger:DEFAUL_DURATION_SHORT_BREAK forKey:titleDurationShortBreak];
-        [self.defaulTimeSetting setInteger:DEFAUL_DURATION_LONG_BREAK forKey:titleDurationLongBreak];
+        self.configurator = [[Configurator alloc] init];
         
-        self.durationPomodor = DEFAUL_DURATION_POMODOR;
-        self.durationShortBreak = DEFAUL_DURATION_SHORT_BREAK;
-        self.durationLongBreak = DEFAUL_DURATION_LONG_BREAK;
+        self.durationPomodor = self.configurator.durationPomodor;
+        self.durationShortBreak = self.configurator.durationShortBreak;
+        self.durationLongBreak = self.configurator.durationLongBreak;
+        self.amountPomodorsForLongBreak = self.configurator.amountPomodorsForLongBreak;
         
-        [self.defaulTimeSetting synchronize];
-
         self.coreData = [[CoreDataController alloc] init];
         
         if (!self.user){
-            CDUser *user = [self.coreData getActiveUser];
+            CDUser *user = [self.coreData getCurrentUser];
             self.user = user;
             
             if (!user){
@@ -102,22 +88,47 @@ NSString * const titleDurationLongBreak = @"durationLongBreak";
         }
         
         if (!self.task){
-            CDTask *task = [self.coreData getActiveTask];
+            CDTask *task = [self.coreData getCurrentTask];
             self.task = task;
             
             if (!task){
                 self.task = [self.coreData createTaskWithName:@"defaultTask"];
             }
         }
+        
+        // init current state
+        self.currentState = stateReadyForWork;
+        
+        self.uiTimer = self.durationPomodor;
+        
     }
-    
-    self.currentState = stateReadyForWork;
-    
-    self.uiTimer = self.durationPomodor;
     
     return self;
 }
 
+- (void)setDurationPomodor:(NSTimeInterval)durationPomodor
+{
+    _durationPomodor = durationPomodor;
+    self.configurator.durationPomodor = durationPomodor;
+}
+
+- (void)setDurationShortBreak:(NSTimeInterval)durationShortBreak
+{
+    _durationShortBreak = durationShortBreak;
+    self.configurator.durationShortBreak = durationShortBreak;
+}
+
+- (void)setDurationLongBreak:(NSTimeInterval)durationLongBreak
+{
+    _durationLongBreak = durationLongBreak;
+    self.configurator.durationLongBreak = durationLongBreak;
+}
+
+- (void)setAmountPomodorsForLongBreak:(NSInteger)amountPomodorsForLongBreak
+{
+    _amountPomodorsForLongBreak = amountPomodorsForLongBreak;
+    self.configurator.amountPomodorsForLongBreak = amountPomodorsForLongBreak;
+}
 
 - (void)setUiTimer:(NSTimeInterval)uiTimer
 {
@@ -125,20 +136,18 @@ NSString * const titleDurationLongBreak = @"durationLongBreak";
     [self.delegate coordinatorController:self timerDidChanged:uiTimer];
 }
 
+
 #pragma mark - ohter metods
 
 - (NSInteger)giveCurentDurationPomodor
 {
-    NSInteger durationPomodor = [self.defaulTimeSetting integerForKey:titleDurationPomodor];
-    return durationPomodor;
+   return(self.pomodor ? (NSTimeInterval)[self.pomodor.duration integerValue] : self.durationPomodor);
 }
 
 
 - (void)changeCurrentDurationPomodor:(NSInteger)newCurrentDurationPomodor
 {
     self.durationPomodor = newCurrentDurationPomodor;
-    [self.defaulTimeSetting setInteger:newCurrentDurationPomodor forKey:titleDurationPomodor];
-    [self.defaulTimeSetting synchronize];
 }
 
 
@@ -159,12 +168,11 @@ NSString * const titleDurationLongBreak = @"durationLongBreak";
     [entity.managedObjectContext save:nil];
 }
 
-// init current state???
+
 - (CoordinatorControllerState)giveCureentState
 {
     return self.currentState;
 }
-
 
 
 #pragma mark - State
@@ -205,26 +213,28 @@ NSString * const titleDurationLongBreak = @"durationLongBreak";
             
         case stateCountingPomodor:{
             
+            NSTimeInterval durationCurrentPomodor = (NSTimeInterval)[self.pomodor.duration integerValue];
+            
             NSTimeInterval timeIntervalLost = (NSTimeInterval)lround([[NSDate date] timeIntervalSinceDate:self.pomodor.createTime]);
             
-            if (timeIntervalLost >= (NSTimeInterval)self.durationPomodor){
+            if (timeIntervalLost >= durationCurrentPomodor){
             
                 self.currentState = statePrepareToCountBreak;
                 
                 
             } else {
                 
-                self.uiTimer = self.durationPomodor - timeIntervalLost;
+                self.uiTimer = durationCurrentPomodor - timeIntervalLost;
             }
             
             break;
         }
             
         case statePrepareToCountBreak:{
-            
+
             [self stopTimer];
             
-            if ((self.task.pomodors.count % AMOUNT_POMODOR_FOR_LONG_BREAK) == 0){
+            if ((self.task.pomodors.count % self.amountPomodorsForLongBreak) == 0){
                 self.breaK = [self createNewBreakWithDuration:self.durationLongBreak];
             } else {
                 self.breaK = [self createNewBreakWithDuration:self.durationShortBreak];
@@ -263,7 +273,7 @@ NSString * const titleDurationLongBreak = @"durationLongBreak";
             
             [self stopTimer];
             
-            self.uiTimer = [self.pomodor.duration integerValue];
+            self.uiTimer = self.durationPomodor;
             
             self.currentState = stateReadyForWork;
             
@@ -294,6 +304,8 @@ NSString * const titleDurationLongBreak = @"durationLongBreak";
 
 - (void)startTimer
 {
+    [self stopTimer];
+    
     self.timer = [NSTimer scheduledTimerWithTimeInterval:1
                                     repeats:YES
                                       block:^(NSTimer * _Nonnull timer) {

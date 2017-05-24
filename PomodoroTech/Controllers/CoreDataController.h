@@ -18,15 +18,11 @@
 @property (readonly, strong) NSPersistentContainer *persistentContainer;
 @property (nonatomic, strong) NSManagedObjectContext *contextPomodoro;
 
-//@property (nonatomic, strong) CDUser *currentUser;
-//@property (nonatomic, strong) CDTask *currentTask;
-//@property (nonatomic, strong) CDPomodor *currentPomodor;
-//@property (nonatomic, strong) CDBreak   *currentBreakP;
 
 - (void)saveContext;
 
-- (CDUser *)getActiveUser;
-- (CDTask *)getActiveTask;
+- (CDUser *)getCurrentUser;
+- (CDTask *)getCurrentTask;
 
 - (CDUser *)createUserWithLogin:(NSString *)login;
 - (CDTask *)createTaskWithName:(NSString *)name;

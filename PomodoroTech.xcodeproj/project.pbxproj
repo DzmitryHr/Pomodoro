@@ -22,6 +22,7 @@
 		8CACBF9B1ECE19EA0036D106 /* CoordinatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CACBF9A1ECE19EA0036D106 /* CoordinatorController.m */; };
 		8CAE97AD1EC4F6C3009369E1 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CAE97AC1EC4F6C3009369E1 /* TimerViewController.m */; };
 		8CCB573B1ECB17CE00B06FA9 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CCB573A1ECB17CE00B06FA9 /* UserNotifications.framework */; };
+		8CD3157D1ED54D0600543A18 /* Configurator.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD3157C1ED54D0600543A18 /* Configurator.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,8 @@
 		8CAE97AB1EC4F6C3009369E1 /* TimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerViewController.h; sourceTree = "<group>"; };
 		8CAE97AC1EC4F6C3009369E1 /* TimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerViewController.m; sourceTree = "<group>"; };
 		8CCB573A1ECB17CE00B06FA9 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		8CD3157B1ED54D0600543A18 /* Configurator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Configurator.h; path = Data/Configurator.h; sourceTree = "<group>"; };
+		8CD3157C1ED54D0600543A18 /* Configurator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Configurator.m; path = Data/Configurator.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,8 +91,8 @@
 				8C363B681EB72C8D007729F8 /* CoreData */,
 				8C363AF71EB3510F007729F8 /* AppDelegate.h */,
 				8C363AF81EB3510F007729F8 /* AppDelegate.m */,
-				8CAE97AE1EC791A2009369E1 /* Controllers */,
 				8C363B141EB367A0007729F8 /* Data */,
+				8CAE97AE1EC791A2009369E1 /* Controllers */,
 				8C363B181EB64958007729F8 /* UI */,
 				8C363AFD1EB3510F007729F8 /* Main.storyboard */,
 				8C363B031EB3510F007729F8 /* Assets.xcassets */,
@@ -113,6 +116,8 @@
 			children = (
 				8C9C85061EC054EC0002746A /* HTTPCommunication.h */,
 				8C9C85071EC054EC0002746A /* HTTPCommunication.m */,
+				8CD3157B1ED54D0600543A18 /* Configurator.h */,
+				8CD3157C1ED54D0600543A18 /* Configurator.m */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -236,6 +241,7 @@
 				8CACBF6E1ECC832F0036D106 /* CoreDataController.m in Sources */,
 				8C363B171EB367F0007729F8 /* TasksViewCell.m in Sources */,
 				8CAE97AD1EC4F6C3009369E1 /* TimerViewController.m in Sources */,
+				8CD3157D1ED54D0600543A18 /* Configurator.m in Sources */,
 				8CACBF9B1ECE19EA0036D106 /* CoordinatorController.m in Sources */,
 				8C363B131EB355B9007729F8 /* TasksViewController.m in Sources */,
 				8C363AFC1EB3510F007729F8 /* ViewController.m in Sources */,
