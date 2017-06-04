@@ -19,15 +19,19 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    self.window = [[UIWindow alloc] initWithFrame: UIScreen.mainScreen.bounds];
    
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     
     UINavigationController *rootNavigationController = (UINavigationController *)[mainStoryboard instantiateViewControllerWithIdentifier:@"rootNavigationController"];
     
+// ???  how can assign rootVC to navigationController in code???
+    
     TimerViewController *timerViewController = (TimerViewController *)rootNavigationController.topViewController;
     
     self.window.rootViewController = rootNavigationController;
-    
+    [self.window makeKeyAndVisible];
     
     // Notification
     [self requestAuthorizationForNotification];
