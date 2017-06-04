@@ -8,7 +8,7 @@
 
 @import UserNotifications;
 #import "AppDelegate.h"
-#import "CoreDataController.h"
+#import "TimerViewController.h"
 
 @interface AppDelegate ()
 
@@ -20,6 +20,14 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
    
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    UINavigationController *rootNavigationController = (UINavigationController *)[mainStoryboard instantiateViewControllerWithIdentifier:@"rootNavigationController"];
+    
+    TimerViewController *timerViewController = (TimerViewController *)rootNavigationController.topViewController;
+    
+    self.window.rootViewController = rootNavigationController;
+    
     
     // Notification
     [self requestAuthorizationForNotification];

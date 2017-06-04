@@ -7,8 +7,9 @@
 //
 @import UserNotifications;
 #import "TimerViewController.h"
-
 #import "CoordinatorController.h"
+#import "TasksViewController.h"
+
 
 
 @interface TimerViewController () <CoordinatorControllerDelegate>
@@ -18,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *startTimerButton;
 @property (weak, nonatomic) IBOutlet UIButton *stopTimerButton;
 @property (weak, nonatomic) IBOutlet UILabel *informationLabel;
+@property (weak, nonatomic) IBOutlet UILabel *currentTaskLabel;
 
 @property (assign, nonatomic) NSInteger currentTimerValue;
 @property (nonatomic, strong) CoordinatorController *coordinator;
@@ -75,6 +77,15 @@
 }
 
 #pragma mark - other
+
+
+- (IBAction)tapCurrentTaskLabel:(UITapGestureRecognizer *)sender {
+/*
+    TasksViewController *tasksViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"TaskViewController"];
+    
+    [self.navigationController pushViewController:tasksViewController animated:YES];
+ */
+}
 
 
 - (IBAction)tapUILabel:(UITapGestureRecognizer *)sender
@@ -151,6 +162,8 @@
     CDTask *task = [self.coordinator giveCurrentTask];
     NSString *inf = [NSString stringWithFormat:@" User: %@ \n Task: %@ \n Pomodors: %lu", user.login, task.name, task.pomodors.count]; // all pomodors - choose complit pomodors
    self.informationLabel.text = inf;
+    
+    self.currentTaskLabel.text = task.name;
     
     [self repaintTimerLableWithTime:self.currentTimerValue];
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16E195" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16F73" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="CDBreak" representedClassName="CDBreak" syncable="YES" codeGenerationType="class">
         <attribute name="complit" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="createTime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -13,6 +13,7 @@
         <relationship name="whoseTask" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDTask" inverseName="pomodors" inverseEntity="CDTask" syncable="YES"/>
     </entity>
     <entity name="CDTask" representedClassName="CDTask" syncable="YES" codeGenerationType="class">
+        <attribute name="complit" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="createTime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="breaks" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDBreak" inverseName="whoseTask" inverseEntity="CDBreak" syncable="YES"/>
@@ -27,7 +28,7 @@
     <elements>
         <element name="CDBreak" positionX="-19061" positionY="-737" width="128" height="103"/>
         <element name="CDPomodor" positionX="-19062" positionY="-585" width="128" height="103"/>
-        <element name="CDTask" positionX="-18812" positionY="-707" width="128" height="118"/>
+        <element name="CDTask" positionX="-18812" positionY="-707" width="128" height="133"/>
         <element name="CDUser" positionX="-18567" positionY="-662" width="128" height="88"/>
     </elements>
 </model>

@@ -125,10 +125,12 @@
 		8C363B181EB64958007729F8 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				8C363B151EB367F0007729F8 /* TasksViewCell.h */,
-				8C363B161EB367F0007729F8 /* TasksViewCell.m */,
+				8CAE97AB1EC4F6C3009369E1 /* TimerViewController.h */,
+				8CAE97AC1EC4F6C3009369E1 /* TimerViewController.m */,
 				8C363B111EB355B9007729F8 /* TasksViewController.h */,
 				8C363B121EB355B9007729F8 /* TasksViewController.m */,
+				8C363B151EB367F0007729F8 /* TasksViewCell.h */,
+				8C363B161EB367F0007729F8 /* TasksViewCell.m */,
 				8C363AFA1EB3510F007729F8 /* ViewController.h */,
 				8C363AFB1EB3510F007729F8 /* ViewController.m */,
 			);
@@ -159,8 +161,6 @@
 				8CACBF9A1ECE19EA0036D106 /* CoordinatorController.m */,
 				8CACBF6C1ECC832F0036D106 /* CoreDataController.h */,
 				8CACBF6D1ECC832F0036D106 /* CoreDataController.m */,
-				8CAE97AB1EC4F6C3009369E1 /* TimerViewController.h */,
-				8CAE97AC1EC4F6C3009369E1 /* TimerViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";

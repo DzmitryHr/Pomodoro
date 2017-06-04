@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CoreDataController.h"
 
-@interface TasksViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface TasksViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate>
+
+
+@property (weak, nonatomic) IBOutlet UITableView *tableViewTasks;
+
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 @end
