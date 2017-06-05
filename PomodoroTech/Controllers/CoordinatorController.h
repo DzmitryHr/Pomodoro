@@ -8,8 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import "CoreDataController.h"
+#import "Configurator.h"
 
 @class CoordinatorController;
+
 
 @protocol CoordinatorControllerDelegate<NSObject>
 @required
@@ -19,16 +21,20 @@
 
 @interface CoordinatorController : NSObject
 
-
 @property (nonatomic, weak) id <CoordinatorControllerDelegate> delegate;
 
 @property (nonatomic, readonly, assign) NSTimeInterval uiTimer;
+
+// designated initializer
+- (instancetype)initWithConfigurator:(Configurator *)configurator coreData:(CoreDataController *)coreData;
 
 - (NSInteger)giveCurentDurationPomodor;
 - (void)changeCurrentDurationPomodor:(NSInteger)newCurrentDurationPomodor;
 
 - (CDUser *)giveCurrentUser;
 - (CDTask *)giveCurrentTask;
+
+- (NSString *)giveCurrentStage;
 
 
 // run count duration pomodor (WORK) and run count Long or Short BREAK (Break)

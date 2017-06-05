@@ -18,9 +18,9 @@
 @implementation Configurator
 
 static const NSTimeInterval MIN = 60;
-static const NSTimeInterval DEFAUL_DURATION_POMODOR = 25 * MIN;
-static const NSTimeInterval DEFAUL_DURATION_SHORT_BREAK = 5 * MIN;
-static const NSTimeInterval DEFAUL_DURATION_LONG_BREAK = 15 * MIN;
+static const NSTimeInterval DEFAULT_DURATION_POMODOR = 25 * MIN;
+static const NSTimeInterval DEFAULT_DURATION_SHORT_BREAK = 5 * MIN;
+static const NSTimeInterval DEFAULT_DURATION_LONG_BREAK = 15 * MIN;
 static const NSTimeInterval AMOUNT_POMODOR_FOR_LONG_BREAK = 4;
 
 NSString * const titleDurationPomodor = @"durationPomodor";
@@ -36,13 +36,12 @@ NSString * const titleAmountPomodorsForLongBreak = @"amountPomodorsForLongBreak"
     
         NSUserDefaults *defaultTimeSetting = [NSUserDefaults standardUserDefaults];
         
-        [defaultTimeSetting doubleForKey:titleDurationPomodor] ? nil : [defaultTimeSetting setDouble:DEFAUL_DURATION_POMODOR forKey:titleDurationPomodor];
-        
-        [defaultTimeSetting doubleForKey:titleDurationShortBreak] ? nil : [defaultTimeSetting setDouble:DEFAUL_DURATION_SHORT_BREAK forKey:titleDurationShortBreak];
-        
-        [defaultTimeSetting doubleForKey:titleDurationLongBreak] ? nil : [defaultTimeSetting setDouble:DEFAUL_DURATION_LONG_BREAK forKey:titleDurationShortBreak];
-        
-        [defaultTimeSetting doubleForKey:titleAmountPomodorsForLongBreak] ? nil : [defaultTimeSetting setDouble:AMOUNT_POMODOR_FOR_LONG_BREAK forKey:titleAmountPomodorsForLongBreak];
+        [defaultTimeSetting registerDefaults:@{
+                                             titleDurationPomodor : @(DEFAULT_DURATION_POMODOR),
+                                             titleDurationShortBreak : @(DEFAULT_DURATION_SHORT_BREAK),
+                                             titleDurationLongBreak : @(DEFAULT_DURATION_LONG_BREAK),
+                                             titleAmountPomodorsForLongBreak : @(AMOUNT_POMODOR_FOR_LONG_BREAK)
+                                             }];
         
         self.durationPomodor = [defaultTimeSetting doubleForKey:titleDurationPomodor];
         self.durationShortBreak = [defaultTimeSetting doubleForKey:titleDurationShortBreak];
@@ -50,9 +49,6 @@ NSString * const titleAmountPomodorsForLongBreak = @"amountPomodorsForLongBreak"
         self.amountPomodorsForLongBreak = [defaultTimeSetting doubleForKey:titleAmountPomodorsForLongBreak];
         
         self.defaultTimeSetting = defaultTimeSetting;
-        
-        [self.defaultTimeSetting synchronize];
-        
     }
     
     return self;

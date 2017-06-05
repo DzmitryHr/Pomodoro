@@ -7,7 +7,6 @@
 //
 @import UserNotifications;
 #import "TimerViewController.h"
-#import "CoordinatorController.h"
 #import "TasksViewController.h"
 
 
@@ -20,9 +19,10 @@
 @property (weak, nonatomic) IBOutlet UIButton *stopTimerButton;
 @property (weak, nonatomic) IBOutlet UILabel *informationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *currentTaskLabel;
+@property (weak, nonatomic) IBOutlet UILabel *currentStageLabel;
+
 
 @property (assign, nonatomic) NSInteger currentTimerValue;
-@property (nonatomic, strong) CoordinatorController *coordinator;
 
 @property (nonatomic, strong) UNMutableNotificationContent *localNotification;
 
@@ -34,7 +34,7 @@
 
 
 #pragma mark - init
-
+/*
 - (CoordinatorController *)coordinator
 {
     if (!_coordinator){
@@ -43,7 +43,7 @@
     
     return _coordinator;
 }
-
+*/
 
 @synthesize currentTimerValue = _currentTimerValue;
 
@@ -110,7 +110,7 @@
     
     self.currentTimerValue = (NSInteger)durationSec;
     
-    [self.coordinator changeCurrentDurationPomodor:_currentTimerValue];
+    [self.coordinator changeCurrentDurationPomodor:self.currentTimerValue];
 
     [self repaintTimerLableWithTime:self.currentTimerValue];
 }
@@ -164,6 +164,8 @@
    self.informationLabel.text = inf;
     
     self.currentTaskLabel.text = task.name;
+    
+    self.currentStageLabel.text = [NSString stringWithFormat:@"stage: %@", [self.coordinator giveCurrentStage]];
     
     [self repaintTimerLableWithTime:self.currentTimerValue];
 }

@@ -239,6 +239,7 @@
     return self.task;
 }
 
+
 #pragma mark - Core Data stack
 
 @synthesize persistentContainer = _persistentContainer;
@@ -270,6 +271,7 @@
     
     return _persistentContainer;
 }
+
 
 #pragma mark - Core Data Saving support
 

@@ -9,6 +9,9 @@
 @import UserNotifications;
 #import "AppDelegate.h"
 #import "TimerViewController.h"
+#import "CoordinatorController.h"
+#import "CoreDataController.h"
+#import "Configurator.h"
 
 @interface AppDelegate ()
 
@@ -26,9 +29,16 @@
     
     UINavigationController *rootNavigationController = (UINavigationController *)[mainStoryboard instantiateViewControllerWithIdentifier:@"rootNavigationController"];
     
-// ???  how can assign rootVC to navigationController in code???
+// ???  how can assign rootVC to navigationController in code ???
     
+    Configurator *configurator = [[Configurator alloc] init];
+    
+    CoreDataController *coreData = [[CoreDataController alloc] init];
+    
+    CoordinatorController *coordinator = [[CoordinatorController alloc] initWithConfigurator:configurator coreData:coreData];
+
     TimerViewController *timerViewController = (TimerViewController *)rootNavigationController.topViewController;
+    timerViewController.coordinator = coordinator;
     
     self.window.rootViewController = rootNavigationController;
     [self.window makeKeyAndVisible];

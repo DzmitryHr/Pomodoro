@@ -40,10 +40,9 @@
 
 # pragma mark - action
 
-- (IBAction)tapBackButton:(UIBarButtonItem *)sender {
-//???    [self.navigationController popViewControllerAnimated:YES];
-
-    [self dismissViewControllerAnimated:YES completion:nil];
+- (IBAction)tapBackButton:(UIBarButtonItem *)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 

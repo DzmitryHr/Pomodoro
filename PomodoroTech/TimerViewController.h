@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CoordinatorController.h"
 
 
 @interface TimerViewController : UIViewController
+
+@property (nonatomic, strong) CoordinatorController *coordinator;
 
 @end

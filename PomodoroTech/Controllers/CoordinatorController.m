@@ -6,12 +6,14 @@
 //  Copyright © 2017 Kronan. All rights reserved.
 //
 
+
+
 #import "CoordinatorController.h"
 #import "CoreDataController.h"
-#import "Configurator.h"
 
 
-typedef NS_ENUM(NSInteger, CoordinatorControllerState)
+
+typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
 {
     // stateInit = 0,
     
@@ -31,22 +33,23 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerState)
 };
 
 
+
 @interface CoordinatorController()
 
 
-@property (nonatomic, readwrite, assign) CoordinatorControllerState currentState;
+@property (nonatomic, readwrite, assign) CoordinatorControllerStage currentStage;
 
 @property (nonatomic, strong) CDUser *user;
 @property (nonatomic, strong) CDTask *task;
 @property (nonatomic, strong) CDPomodor *pomodor;
 @property (nonatomic, strong) CDBreak *breaK;
 
-@property (nonatomic, assign) NSTimeInterval durationPomodor;
-@property (nonatomic, assign) NSTimeInterval durationShortBreak;
-@property (nonatomic, assign) NSTimeInterval durationLongBreak;
-@property (nonatomic, assign) NSInteger amountPomodorsForLongBreak;
-
 @property (nonatomic, strong) Configurator *configurator;
+
+#define     durationPomodor             self.configurator.durationPomodor
+#define     durationShortBreak          self.configurator.durationShortBreak
+#define     durationLongBreak           self.configurator.durationLongBreak
+#define     amountPomodorsForLongBreak  self.configurator.amountPomodorsForLongBreak
 
 @property (nonatomic, strong) CoreDataController *coreData;
 
@@ -58,25 +61,20 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerState)
 @end
 
 
+
 @implementation CoordinatorController
 
 #pragma mark - init
 
 // initialization
-- (instancetype)init
+
+- (instancetype)initWithConfigurator:(Configurator *)configurator coreData:(CoreDataController *)coreData
 {
     self = [super init];
-    
-    if (self){
-        
-        self.configurator = [[Configurator alloc] init];
-        
-        self.durationPomodor = self.configurator.durationPomodor;
-        self.durationShortBreak = self.configurator.durationShortBreak;
-        self.durationLongBreak = self.configurator.durationLongBreak;
-        self.amountPomodorsForLongBreak = self.configurator.amountPomodorsForLongBreak;
-        
-        self.coreData = [[CoreDataController alloc] init];
+    if (self) {
+        self.configurator = configurator;
+ 
+        self.coreData = coreData;
         
         if (!self.user){
             CDUser *user = [self.coreData getCurrentUser];
@@ -97,38 +95,13 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerState)
         }
         
         // init current state
-        self.currentState = stateReadyForWork;
+        self.currentStage = stateReadyForWork;
         
-        self.uiTimer = self.durationPomodor;
-        
+        self.uiTimer = durationPomodor;
     }
-    
     return self;
 }
 
-- (void)setDurationPomodor:(NSTimeInterval)durationPomodor
-{
-    _durationPomodor = durationPomodor;
-    self.configurator.durationPomodor = durationPomodor;
-}
-
-- (void)setDurationShortBreak:(NSTimeInterval)durationShortBreak
-{
-    _durationShortBreak = durationShortBreak;
-    self.configurator.durationShortBreak = durationShortBreak;
-}
-
-- (void)setDurationLongBreak:(NSTimeInterval)durationLongBreak
-{
-    _durationLongBreak = durationLongBreak;
-    self.configurator.durationLongBreak = durationLongBreak;
-}
-
-- (void)setAmountPomodorsForLongBreak:(NSInteger)amountPomodorsForLongBreak
-{
-    _amountPomodorsForLongBreak = amountPomodorsForLongBreak;
-    self.configurator.amountPomodorsForLongBreak = amountPomodorsForLongBreak;
-}
 
 - (void)setUiTimer:(NSTimeInterval)uiTimer
 {
@@ -147,7 +120,7 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerState)
 
 - (void)changeCurrentDurationPomodor:(NSInteger)newCurrentDurationPomodor
 {
-    self.durationPomodor = newCurrentDurationPomodor;
+    durationPomodor = newCurrentDurationPomodor;
 }
 
 
@@ -168,10 +141,11 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerState)
     [entity.managedObjectContext save:nil];
 }
 
-
-- (CoordinatorControllerState)giveCureentState
+#warning name of stage
+// ??? name of stage ???
+- (NSString *)giveCurrentStage
 {
-    return self.currentState;
+    return [NSString stringWithFormat:@"%li", (long)self.currentStage];
 }
 
 
@@ -179,7 +153,7 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerState)
 
 - (void)runWorkCycle
 {
-    self.currentState = statePrepareToCountPomodor;
+    self.currentStage = statePrepareToCountPomodor;
     
     [self processState];
 }
@@ -187,7 +161,7 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerState)
 
 - (void)stopWorkCycle
 {
-    self.currentState = stateStopCount;
+    self.currentStage = stateStopCount;
     
     [self processState];
 }
@@ -195,18 +169,17 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerState)
 
 - (void)processState
 {
-    switch (self.currentState) {
+    switch (self.currentStage) {
         
         case statePrepareToCountPomodor:{
             
             self.pomodor = [self createNewPomodor];
-            //self.pomodor.duration = @(self.durationPomodor);
             
             self.uiTimer = [self.pomodor.duration integerValue];
             
             [self startTimer];
             
-            self.currentState = stateCountingPomodor;
+            self.currentStage = stateCountingPomodor;
             
             break;
         }
@@ -219,7 +192,7 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerState)
             
             if (timeIntervalLost >= durationCurrentPomodor){
             
-                self.currentState = statePrepareToCountBreak;
+                self.currentStage = statePrepareToCountBreak;
                 
                 
             } else {
@@ -234,17 +207,17 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerState)
 
             [self stopTimer];
             
-            if ((self.task.pomodors.count % self.amountPomodorsForLongBreak) == 0){
-                self.breaK = [self createNewBreakWithDuration:self.durationLongBreak];
+            if ((self.task.pomodors.count % amountPomodorsForLongBreak) == 0){
+                self.breaK = [self createNewBreakWithDuration:durationLongBreak];
             } else {
-                self.breaK = [self createNewBreakWithDuration:self.durationShortBreak];
+                self.breaK = [self createNewBreakWithDuration:durationShortBreak];
             }
             
             self.uiTimer = [self.breaK.duration integerValue];
             
             [self startTimer];
             
-            self.currentState = stateCountingBreak;
+            self.currentStage = stateCountingBreak;
             
             break;
         }
@@ -259,7 +232,7 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerState)
                 
                 self.pomodor.complit = @(YES);
                 
-                self.currentState = stateStopCount;
+                self.currentStage = stateStopCount;
                 
             } else {
                 
@@ -273,9 +246,9 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerState)
             
             [self stopTimer];
             
-            self.uiTimer = self.durationPomodor;
+            self.uiTimer = durationPomodor;
             
-            self.currentState = stateReadyForWork;
+            self.currentStage = stateReadyForWork;
             
             
             break;
@@ -283,7 +256,7 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerState)
             
         case stateReadyForWork:{
             
-            self.uiTimer = self.durationPomodor;
+            self.uiTimer = durationPomodor;
             
             break;
         }
