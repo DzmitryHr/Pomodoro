@@ -26,8 +26,6 @@
 }
 
 
-# warning missing DI
-
 - (NSManagedObjectContext *)managedObjectContext
 {
     if (!_managedObjectContext){
@@ -53,6 +51,7 @@
     NSArray *sections = [self.fetchedResultsController sections];
     id<NSFetchedResultsSectionInfo> sectionInfo = [sections objectAtIndex:section];
     
+    //return [self.dataSource numberOfRowsForTasksViewController:self]
     return  [sectionInfo numberOfObjects];
 }
 
@@ -65,6 +64,7 @@
 
     [self configureCell:cell atIndexPath:indexPath];
     
+    //return [self.dataSource tasksViewController:self configureCell:cell atIndexPath:indexPath]
     return cell;
 }
 

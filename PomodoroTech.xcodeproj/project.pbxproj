@@ -21,6 +21,8 @@
 		8CACBF6E1ECC832F0036D106 /* CoreDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CACBF6D1ECC832F0036D106 /* CoreDataController.m */; };
 		8CACBF9B1ECE19EA0036D106 /* CoordinatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CACBF9A1ECE19EA0036D106 /* CoordinatorController.m */; };
 		8CAE97AD1EC4F6C3009369E1 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CAE97AC1EC4F6C3009369E1 /* TimerViewController.m */; };
+		8CC1B57A1EE6BD8900FB4175 /* TaskViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC1B5791EE6BD8900FB4175 /* TaskViewManager.m */; };
+		8CC1B5801EE6E71F00FB4175 /* AddTaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC1B57F1EE6E71F00FB4175 /* AddTaskViewController.m */; };
 		8CCB573B1ECB17CE00B06FA9 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CCB573A1ECB17CE00B06FA9 /* UserNotifications.framework */; };
 		8CD3157D1ED54D0600543A18 /* Configurator.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD3157C1ED54D0600543A18 /* Configurator.m */; };
 /* End PBXBuildFile section */
@@ -50,6 +52,10 @@
 		8CACBF9A1ECE19EA0036D106 /* CoordinatorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoordinatorController.m; path = Controllers/CoordinatorController.m; sourceTree = "<group>"; };
 		8CAE97AB1EC4F6C3009369E1 /* TimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerViewController.h; sourceTree = "<group>"; };
 		8CAE97AC1EC4F6C3009369E1 /* TimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerViewController.m; sourceTree = "<group>"; };
+		8CC1B5781EE6BD8900FB4175 /* TaskViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TaskViewManager.h; path = Controllers/TaskViewManager.h; sourceTree = "<group>"; };
+		8CC1B5791EE6BD8900FB4175 /* TaskViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TaskViewManager.m; path = Controllers/TaskViewManager.m; sourceTree = "<group>"; };
+		8CC1B57E1EE6E71F00FB4175 /* AddTaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddTaskViewController.h; path = UI/AddTaskViewController.h; sourceTree = "<group>"; };
+		8CC1B57F1EE6E71F00FB4175 /* AddTaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AddTaskViewController.m; path = UI/AddTaskViewController.m; sourceTree = "<group>"; };
 		8CCB573A1ECB17CE00B06FA9 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		8CD3157B1ED54D0600543A18 /* Configurator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Configurator.h; path = Data/Configurator.h; sourceTree = "<group>"; };
 		8CD3157C1ED54D0600543A18 /* Configurator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Configurator.m; path = Data/Configurator.m; sourceTree = "<group>"; };
@@ -125,6 +131,8 @@
 		8C363B181EB64958007729F8 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				8CC1B57E1EE6E71F00FB4175 /* AddTaskViewController.h */,
+				8CC1B57F1EE6E71F00FB4175 /* AddTaskViewController.m */,
 				8CAE97AB1EC4F6C3009369E1 /* TimerViewController.h */,
 				8CAE97AC1EC4F6C3009369E1 /* TimerViewController.m */,
 				8C363B111EB355B9007729F8 /* TasksViewController.h */,
@@ -157,6 +165,8 @@
 		8CAE97AE1EC791A2009369E1 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				8CC1B5781EE6BD8900FB4175 /* TaskViewManager.h */,
+				8CC1B5791EE6BD8900FB4175 /* TaskViewManager.m */,
 				8CACBF991ECE19EA0036D106 /* CoordinatorController.h */,
 				8CACBF9A1ECE19EA0036D106 /* CoordinatorController.m */,
 				8CACBF6C1ECC832F0036D106 /* CoreDataController.h */,
@@ -237,7 +247,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C363B021EB3510F007729F8 /* PomodoroTech.xcdatamodeld in Sources */,
+				8CC1B57A1EE6BD8900FB4175 /* TaskViewManager.m in Sources */,
 				8C9C85081EC054EC0002746A /* HTTPCommunication.m in Sources */,
+				8CC1B5801EE6E71F00FB4175 /* AddTaskViewController.m in Sources */,
 				8CACBF6E1ECC832F0036D106 /* CoreDataController.m in Sources */,
 				8C363B171EB367F0007729F8 /* TasksViewCell.m in Sources */,
 				8CAE97AD1EC4F6C3009369E1 /* TimerViewController.m in Sources */,
