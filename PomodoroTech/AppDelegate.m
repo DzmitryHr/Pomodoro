@@ -13,6 +13,8 @@
 #import "CoreDataController.h"
 #import "Configurator.h"
 
+#import "TasksDataManager.h"
+
 @interface AppDelegate ()
 
 @end
@@ -29,6 +31,7 @@
     
     UINavigationController *rootNavigationController = (UINavigationController *)[mainStoryboard instantiateViewControllerWithIdentifier:@"rootNavigationController"];
     
+    
 // ???  how can assign rootVC to navigationController in code ???
     
     Configurator *configurator = [[Configurator alloc] init];
@@ -40,8 +43,16 @@
     TimerViewController *timerViewController = (TimerViewController *)rootNavigationController.topViewController;
     timerViewController.coordinator = coordinator;
     
+    // ???
+    TasksDataManager *tasksDataManager = [[TasksDataManager alloc] initWithManagedObjectContext:coreData.contextPomodoro];
+    
     self.window.rootViewController = rootNavigationController;
     [self.window makeKeyAndVisible];
+    
+    
+    
+    
+    
     
     // Notification
     [self requestAuthorizationForNotification];

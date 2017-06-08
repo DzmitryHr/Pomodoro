@@ -76,7 +76,8 @@
     [self updateUI];
 }
 
-#pragma mark - other
+
+#pragma mark - IBAction
 
 
 - (IBAction)tapCurrentTaskLabel:(UITapGestureRecognizer *)sender {

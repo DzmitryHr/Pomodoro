@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "CoreDataController.h"
+#import "TasksViewCell.h"
 /*
 @protocol TaskViewControllerDelegate <NSObject>
 @optional
@@ -19,11 +20,12 @@
 @class TasksViewController;
 
 @protocol TaskViewControllerDataSource <NSObject>
-@optional
-- (NSInteger)numberOfRowsForTasksViewController:(TasksViewController *)taskViewController;
-- (UITableViewCell *)tasksViewController:(TasksViewController *)taskViewController
-                           configureCell:(UITableViewCell *)cell
-                             atIndexPath:(NSIndexPath *)indexPath;
+@required
+- (NSInteger)numberOfDataForTasksViewController:(TasksViewController *)taskViewController;
+
+// ??? what to return? ???
+- (NSManagedObject *)tasksViewController:(TasksViewController *)taskViewController
+                                forIndexPath:(NSIndexPath *)indexPath;
 @end
 
 

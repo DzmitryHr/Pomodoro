@@ -22,7 +22,7 @@
     [super viewDidLoad];
     
     self.numberOfPomodorPicker.delegate = self;
-    self.numberOfPomodorPicker.dataSource = self;
+//    self.numberOfPomodorPicker.dataSource = self;
     
 }
 

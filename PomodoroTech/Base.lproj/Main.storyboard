@@ -296,7 +296,7 @@
             </objects>
             <point key="canvasLocation" x="215.625" y="36.971830985915496"/>
         </scene>
-        <!--Tasks View Controller-->
+        <!--Tasks-->
         <scene sceneID="ddy-RZ-bZk">
             <objects>
                 <viewController storyboardIdentifier="TaskViewController" id="TFv-uY-dRA" customClass="TasksViewController" sceneMemberID="viewController">
@@ -350,30 +350,20 @@
                                     <outlet property="delegate" destination="TFv-uY-dRA" id="YVO-gr-XI2"/>
                                 </connections>
                             </tableView>
-                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="drK-NL-9iB">
-                                <rect key="frame" x="0.0" y="20" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <items>
-                                    <navigationItem title="tasks" id="5Q8-px-K9P">
-                                        <barButtonItem key="leftBarButtonItem" title="back" id="l08-R4-xFw">
-                                            <connections>
-                                                <action selector="tapBackButton:" destination="TFv-uY-dRA" id="OQR-GV-Toc"/>
-                                            </connections>
-                                        </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="DSM-oQ-8Qh">
-                                            <connections>
-                                                <segue destination="Iqr-0S-z9J" kind="show" id="Erx-h9-XUC"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Tasks" id="ke3-dn-rhu">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="DSM-oQ-8Qh">
+                            <connections>
+                                <segue destination="Iqr-0S-z9J" kind="show" id="Erx-h9-XUC"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="tableViewTasks" destination="Qja-2o-JK2" id="VKC-Rw-vxq"/>
+                        <outlet property="tasksNavigationItem" destination="ke3-dn-rhu" id="9wk-G5-MD3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wMc-nd-Fba" userLabel="First Responder" sceneMemberID="firstResponder"/>

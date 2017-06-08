@@ -7,11 +7,13 @@
 //
 
 #import "TasksViewController.h"
-#import "TasksViewCell.h"
+
 
 @interface TasksViewController () <NSFetchedResultsControllerDelegate>
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+
+@property (weak, nonatomic) IBOutlet UINavigationItem *tasksNavigationItem;
 
 @end
 
@@ -23,16 +25,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
-}
-
-
-- (NSManagedObjectContext *)managedObjectContext
-{
-    if (!_managedObjectContext){
-        CoreDataController *coreDataController = [[CoreDataController alloc] init];
-        _managedObjectContext = coreDataController.contextPomodoro;
-    }
-    return _managedObjectContext;
 }
 
 
@@ -48,11 +40,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSArray *sections = [self.fetchedResultsController sections];
-    id<NSFetchedResultsSectionInfo> sectionInfo = [sections objectAtIndex:section];
-    
-    //return [self.dataSource numberOfRowsForTasksViewController:self]
-    return  [sectionInfo numberOfObjects];
+    return [self.dataSource numberOfDataForTasksViewController:self];
 }
 
 
@@ -71,10 +59,10 @@
 
 - (void)configureCell:(TasksViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    NSManagedObject *record = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    NSManagedObject *dataObject = [self.dataSource tasksViewController:self forIndexPath:indexPath];
     
-    cell.taskLabel.text = [record valueForKey:@"name"];
-    cell.amtPomodorLabel.text = [NSString stringWithFormat:@"%@",[record valueForKey:@"createTime"]];
+    cell.taskLabel.text = [dataObject valueForKey:@"name"];
+    cell.amtPomodorLabel.text = [NSString stringWithFormat:@"%@",[dataObject valueForKey:@"createTime"]];
 }
 
 
@@ -84,78 +72,9 @@
     
 }
 
-
-#pragma mark - Fetched results controller
-
-- (NSFetchedResultsController *) fetchedResultsController
+- (void)viewWillAppear:(BOOL)animated
 {
-
-    if (_fetchedResultsController){
-        return _fetchedResultsController;
-    }
-    
-    NSString *entityName = @"CDTask";
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:entityName];
-    
-    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"createTime" ascending:YES]]];
-    
-    _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                                        managedObjectContext:self.managedObjectContext
-                                                                          sectionNameKeyPath:nil
-                                                                                   cacheName:nil];
-    _fetchedResultsController.delegate = self;
-    
-    NSError *error = nil;
-    [_fetchedResultsController performFetch:&error];
-    
-    if (error){
-        NSLog(@"Unable to performFetch");
-        NSLog(@"%@, %@", error, error.localizedDescription);
-    }
-
-    
-    return _fetchedResultsController;
-}
-
-
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
-{
-    [self.tableViewTasks beginUpdates];
-}
-
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
-{
-    [self.tableViewTasks endUpdates];
-}
-
-
-- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
-{
-    switch (type) {
-        case NSFetchedResultsChangeInsert: {
-            [self.tableViewTasks insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
-                                       withRowAnimation:UITableViewRowAnimationFade];
-            break;
-        }
-        case NSFetchedResultsChangeDelete: {
-            [self.tableViewTasks deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
-                                       withRowAnimation:UITableViewRowAnimationFade];
-            break;
-        }
-        case NSFetchedResultsChangeUpdate: {
-            [self configureCell:(TasksViewCell *)[self.tableViewTasks cellForRowAtIndexPath:indexPath]
-                    atIndexPath:indexPath];
-            break;
-        }
-        case NSFetchedResultsChangeMove: {
-            [self.tableViewTasks deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
-                                       withRowAnimation:UITableViewRowAnimationFade];
-            [self.tableViewTasks insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
-                                       withRowAnimation:UITableViewRowAnimationFade];
-            break;
-        }
-    }
+//    [self.tasksNavigationItem setHidesBackButton:NO];
 }
 
 @end
