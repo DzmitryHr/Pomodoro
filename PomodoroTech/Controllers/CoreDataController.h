@@ -15,9 +15,7 @@
 
 @interface CoreDataController : NSObject
 
-@property (readonly, strong) NSPersistentContainer *persistentContainer;
-@property (nonatomic, strong) NSManagedObjectContext *contextPomodoro;
-
+@property (nonatomic, strong) NSManagedObjectContext *mainContext;
 
 - (void)saveContext;
 
@@ -27,7 +25,7 @@
 - (CDUser *)createUserWithLogin:(NSString *)login;
 - (CDTask *)createTaskWithName:(NSString *)name;
 
-- (CDPomodor *)createPomodorWithDuration:(NSInteger)pomodorDuration;
+- (void)createPomodorWithDuration:(NSInteger)pomodorDuration withBlock:(void(^)(CDPomodor *pomodor))block;
 - (CDBreak *)createBreakWithDuration:(NSInteger)breakDuration;
 
 @end

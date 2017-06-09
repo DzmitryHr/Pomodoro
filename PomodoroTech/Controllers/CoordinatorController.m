@@ -299,13 +299,18 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
 
 - (CDPomodor *)createNewPomodor
 {
-    CDPomodor *pomodor = [self.coreData createPomodorWithDuration:self.durationPomodor];
+    CDPomodor *pomodor = nil;
     
-    if (!pomodor.whoseTask && !self.task){
-       pomodor.whoseTask = self.task;
-    }
-   
-    [self saveCoreDataForEntity:pomodor];
+    [self.coreData createPomodorWithDuration:self.durationPomodor withBlock:^(CDPomodor *pomodor) {
+        if (!pomodor.whoseTask && !self.task){
+            pomodor.whoseTask = self.task;
+        }
+        
+// ??? how to return pomodor???
+        self.pomodor = pomodor;
+
+    }];
+    
     
     return pomodor;
 }

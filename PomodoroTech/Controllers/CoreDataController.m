@@ -10,6 +10,8 @@
 
 @interface CoreDataController()
 
+@property (nonatomic, strong, readwrite) NSPersistentContainer *persistentContainer;
+
 @property (nonatomic, strong) CDUser *user;
 @property (nonatomic, strong) CDTask *task;
 @property (nonatomic, strong) CDPomodor *pomodor;
@@ -28,10 +30,8 @@
     if (!_user){
         
         NSString *entityName = @"CDUser";
-        _user = (CDUser*)[self getLastObject:self.contextPomodoro withEntityName:entityName];
+        _user = (CDUser*)[self getLastObject:self.mainContext withEntityName:entityName];
     }
-    
-    [_user.managedObjectContext save:nil];
     
     return _user;
 }
@@ -42,10 +42,8 @@
     if (!_task){
         
         NSString *entityName = @"CDTask";
-        _task = (CDTask*)[self getLastObject:self.contextPomodoro withEntityName:entityName];;
+        _task = (CDTask*)[self getLastObject:self.mainContext withEntityName:entityName];;
     }
-
-    [_task.managedObjectContext save:nil];
     
     return _task;
 }
@@ -55,20 +53,20 @@
 {
     if (!_pomodor){
         NSString *entityName = @"CDPomodor";
-        _pomodor = (CDPomodor*)[self createObject:self.contextPomodoro withEntityName:entityName];
+        _pomodor = (CDPomodor*)[self createObject:self.mainContext withEntityName:entityName];
     }
 
     return _pomodor;
 }
 
-
-- (NSManagedObjectContext *)contextPomodoro
+// ??? mainContext - nil
+- (NSManagedObjectContext *)mainContext
 {
-    if (!_contextPomodoro){
-        _contextPomodoro = [[self persistentContainer] newBackgroundContext];
+    if (!_mainContext){
+        _mainContext = self.persistentContainer.viewContext;
     }
     
-    return _contextPomodoro;
+    return _mainContext;
 }
 
 
@@ -78,7 +76,7 @@
 - (CDUser *)createUserWithLogin:(NSString *)login
 {
     NSString *entityName = @"CDUser";
-    CDUser *user = (CDUser *)[self createObject:self.contextPomodoro withEntityName:entityName];
+    CDUser *user = (CDUser *)[self createObject:self.mainContext withEntityName:entityName];
     
     self.user = user;
     
@@ -92,7 +90,7 @@
 - (CDTask *)createTaskWithName:(NSString *)name
 {
     NSString *entityName = @"CDTask";
-    CDTask *task = (CDTask *)[self createObject:self.contextPomodoro withEntityName:entityName];
+    CDTask *task = (CDTask *)[self createObject:self.mainContext withEntityName:entityName];
     
     self.task = task;
     
@@ -107,31 +105,41 @@
 }
 
 
-- (CDPomodor *)createPomodorWithDuration:(NSInteger)pomodorDuration
+- (void)createPomodorWithDuration:(NSInteger)pomodorDuration withBlock:(void(^)(CDPomodor *pomodor))block
 {
-    NSString *entityName = @"CDPomodor";
-    CDPomodor *pomodor = (CDPomodor *)[self createObject:self.contextPomodoro withEntityName:entityName];
+    [self.persistentContainer performBackgroundTask:^(NSManagedObjectContext *context) {
+      
+        NSString *entityName = @"CDPomodor";
+        CDPomodor *pomodor = (CDPomodor *)[self createObject:self.mainContext withEntityName:entityName];
+        
+        self.pomodor = pomodor;
+        
+        pomodor.createTime = [NSDate date];
+        pomodor.duration = @(pomodorDuration);
+        pomodor.complit = @(NO);
+        
+        NSManagedObjectID *pomodorID = pomodor.objectID;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            CDPomodor *pomodor = [self.persistentContainer.viewContext objectWithID:pomodorID];
+            
+            if (self.task){
+                pomodor.whoseTask = self.task;
+            }
+            
+            block(pomodor);
+            
+        });
+        
+    }];
     
-    self.pomodor = pomodor;
-    
-    pomodor.createTime = [NSDate date];
-    pomodor.duration = @(pomodorDuration);
-    pomodor.complit = @(NO);
-    
-    if (self.task){
-        pomodor.whoseTask = self.task;
-    }
-    
-    [pomodor.managedObjectContext save:nil];
-    
-    return pomodor;
 }
 
 
 - (CDBreak *)createBreakWithDuration:(NSInteger)breakDuration
 {
     NSString *entityName = @"CDBreak";
-    CDBreak *breaK = (CDBreak *)[self createObject:self.contextPomodoro withEntityName:entityName];
+    CDBreak *breaK = (CDBreak *)[self createObject:self.mainContext withEntityName:entityName];
     
     breaK.createTime = [NSDate date];
     breaK.duration = @(breakDuration);
@@ -241,8 +249,6 @@
 
 
 #pragma mark - Core Data stack
-
-@synthesize persistentContainer = _persistentContainer;
 
 - (NSPersistentContainer *)persistentContainer {
     // The persistent container for the application. This implementation creates and returns a container, having loaded the store for the application to it.

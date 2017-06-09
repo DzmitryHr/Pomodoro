@@ -44,7 +44,7 @@
     timerViewController.coordinator = coordinator;
     
     // ???
-    TasksDataManager *tasksDataManager = [[TasksDataManager alloc] initWithManagedObjectContext:coreData.contextPomodoro];
+    TasksDataManager *tasksDataManager = [[TasksDataManager alloc] initWithManagedObjectContext:coreData.mainContext];
     
     self.window.rootViewController = rootNavigationController;
     [self.window makeKeyAndVisible];
