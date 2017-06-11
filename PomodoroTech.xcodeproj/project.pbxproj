@@ -20,10 +20,10 @@
 		8C363B021EB3510F007729F8 /* PomodoroTech.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8C363B001EB3510F007729F8 /* PomodoroTech.xcdatamodeld */; };
 		8C363B041EB3510F007729F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C363B031EB3510F007729F8 /* Assets.xcassets */; };
 		8C363B071EB3510F007729F8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C363B051EB3510F007729F8 /* LaunchScreen.storyboard */; };
-		8C363B171EB367F0007729F8 /* TasksViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C363B161EB367F0007729F8 /* TasksViewCell.m */; };
 		8C363B871EB7AE8B007729F8 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C363B1A1EB68640007729F8 /* CoreData.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		8C448D531EEDCBC70034E2B5 /* Loader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C448D521EEDCBC70034E2B5 /* Loader.m */; };
-		8C9C85081EC054EC0002746A /* HTTPCommunication.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C9C85071EC054EC0002746A /* HTTPCommunication.m */; };
+		8CA751851EEDCFE4002D6EFD /* TasksViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CA751841EEDCFE4002D6EFD /* TasksViewCell.m */; };
+		8CA751881EEDCFF7002D6EFD /* HTTPCommunication.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CA751871EEDCFF7002D6EFD /* HTTPCommunication.m */; };
 		8CCB573B1ECB17CE00B06FA9 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CCB573A1ECB17CE00B06FA9 /* UserNotifications.framework */; };
 /* End PBXBuildFile section */
 
@@ -51,13 +51,13 @@
 		8C363B031EB3510F007729F8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8C363B061EB3510F007729F8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8C363B081EB3510F007729F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8C363B151EB367F0007729F8 /* TasksViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TasksViewCell.h; sourceTree = "<group>"; };
-		8C363B161EB367F0007729F8 /* TasksViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TasksViewCell.m; sourceTree = "<group>"; };
 		8C363B1A1EB68640007729F8 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8C448D511EEDCBC70034E2B5 /* Loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Loader.h; path = Model/Loader.h; sourceTree = "<group>"; };
 		8C448D521EEDCBC70034E2B5 /* Loader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Loader.m; path = Model/Loader.m; sourceTree = "<group>"; };
-		8C9C85061EC054EC0002746A /* HTTPCommunication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTTPCommunication.h; path = Data/HTTPCommunication.h; sourceTree = SOURCE_ROOT; };
-		8C9C85071EC054EC0002746A /* HTTPCommunication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTTPCommunication.m; path = Data/HTTPCommunication.m; sourceTree = SOURCE_ROOT; };
+		8CA751831EEDCFE4002D6EFD /* TasksViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TasksViewCell.h; path = View/TasksViewCell.h; sourceTree = "<group>"; };
+		8CA751841EEDCFE4002D6EFD /* TasksViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TasksViewCell.m; path = View/TasksViewCell.m; sourceTree = "<group>"; };
+		8CA751861EEDCFF7002D6EFD /* HTTPCommunication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTTPCommunication.h; path = Model/HTTPCommunication.h; sourceTree = "<group>"; };
+		8CA751871EEDCFF7002D6EFD /* HTTPCommunication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTTPCommunication.m; path = Model/HTTPCommunication.m; sourceTree = "<group>"; };
 		8CCB573A1ECB17CE00B06FA9 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -107,8 +107,8 @@
 		8C363B141EB367A0007729F8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				8C9C85061EC054EC0002746A /* HTTPCommunication.h */,
-				8C9C85071EC054EC0002746A /* HTTPCommunication.m */,
+				8CA751861EEDCFF7002D6EFD /* HTTPCommunication.h */,
+				8CA751871EEDCFF7002D6EFD /* HTTPCommunication.m */,
 				8C1556941EEDB399000A12B3 /* CoordinatorController.h */,
 				8C1556951EEDB399000A12B3 /* CoordinatorController.m */,
 				8C1556911EEDB21E000A12B3 /* CoreData.h */,
@@ -124,8 +124,8 @@
 		8C363B181EB64958007729F8 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				8C363B151EB367F0007729F8 /* TasksViewCell.h */,
-				8C363B161EB367F0007729F8 /* TasksViewCell.m */,
+				8CA751831EEDCFE4002D6EFD /* TasksViewCell.h */,
+				8CA751841EEDCFE4002D6EFD /* TasksViewCell.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -258,13 +258,13 @@
 				8C448D531EEDCBC70034E2B5 /* Loader.m in Sources */,
 				8C363B021EB3510F007729F8 /* PomodoroTech.xcdatamodeld in Sources */,
 				8C1556A61EEDB495000A12B3 /* TasksViewController.m in Sources */,
-				8C9C85081EC054EC0002746A /* HTTPCommunication.m in Sources */,
 				8C1556931EEDB21E000A12B3 /* CoreData.m in Sources */,
 				8C1556A81EEDB495000A12B3 /* ViewController.m in Sources */,
-				8C363B171EB367F0007729F8 /* TasksViewCell.m in Sources */,
 				8C1556A51EEDB495000A12B3 /* AddTaskViewController.m in Sources */,
+				8CA751851EEDCFE4002D6EFD /* TasksViewCell.m in Sources */,
 				8C1556991EEDB399000A12B3 /* TasksDataManager.m in Sources */,
 				8C1556981EEDB399000A12B3 /* CoordinatorController.m in Sources */,
+				8CA751881EEDCFF7002D6EFD /* HTTPCommunication.m in Sources */,
 				8C363AF91EB3510F007729F8 /* AppDelegate.m in Sources */,
 				8C363AF61EB3510F007729F8 /* main.m in Sources */,
 			);
