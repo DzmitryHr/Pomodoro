@@ -24,7 +24,7 @@
 		8CC1B5801EE6E71F00FB4175 /* AddTaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC1B57F1EE6E71F00FB4175 /* AddTaskViewController.m */; };
 		8CC1B5831EE6FEEE00FB4175 /* TasksDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC1B5821EE6FEEE00FB4175 /* TasksDataManager.m */; };
 		8CCB573B1ECB17CE00B06FA9 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CCB573A1ECB17CE00B06FA9 /* UserNotifications.framework */; };
-		8CD3157D1ED54D0600543A18 /* Configurator.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD3157C1ED54D0600543A18 /* Configurator.m */; };
+		8CD3157D1ED54D0600543A18 /* Loader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD3157C1ED54D0600543A18 /* Loader.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,8 +57,8 @@
 		8CC1B5811EE6FEEE00FB4175 /* TasksDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TasksDataManager.h; path = Controllers/TasksDataManager.h; sourceTree = "<group>"; };
 		8CC1B5821EE6FEEE00FB4175 /* TasksDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TasksDataManager.m; path = Controllers/TasksDataManager.m; sourceTree = "<group>"; };
 		8CCB573A1ECB17CE00B06FA9 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
-		8CD3157B1ED54D0600543A18 /* Configurator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Configurator.h; path = Data/Configurator.h; sourceTree = "<group>"; };
-		8CD3157C1ED54D0600543A18 /* Configurator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Configurator.m; path = Data/Configurator.m; sourceTree = "<group>"; };
+		8CD3157B1ED54D0600543A18 /* Loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Loader.h; path = Data/Loader.h; sourceTree = "<group>"; };
+		8CD3157C1ED54D0600543A18 /* Loader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Loader.m; path = Data/Loader.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,8 +109,8 @@
 			children = (
 				8C9C85061EC054EC0002746A /* HTTPCommunication.h */,
 				8C9C85071EC054EC0002746A /* HTTPCommunication.m */,
-				8CD3157B1ED54D0600543A18 /* Configurator.h */,
-				8CD3157C1ED54D0600543A18 /* Configurator.m */,
+				8CD3157B1ED54D0600543A18 /* Loader.h */,
+				8CD3157C1ED54D0600543A18 /* Loader.m */,
 				8CACBF6C1ECC832F0036D106 /* CoreDataController.h */,
 				8CACBF6D1ECC832F0036D106 /* CoreDataController.m */,
 				8CACBF991ECE19EA0036D106 /* CoordinatorController.h */,
@@ -260,7 +260,7 @@
 				8CACBF6E1ECC832F0036D106 /* CoreDataController.m in Sources */,
 				8C363B171EB367F0007729F8 /* TasksViewCell.m in Sources */,
 				8CAE97AD1EC4F6C3009369E1 /* TimerViewController.m in Sources */,
-				8CD3157D1ED54D0600543A18 /* Configurator.m in Sources */,
+				8CD3157D1ED54D0600543A18 /* Loader.m in Sources */,
 				8CACBF9B1ECE19EA0036D106 /* CoordinatorController.m in Sources */,
 				8CC1B5831EE6FEEE00FB4175 /* TasksDataManager.m in Sources */,
 				8C363B131EB355B9007729F8 /* TasksViewController.m in Sources */,

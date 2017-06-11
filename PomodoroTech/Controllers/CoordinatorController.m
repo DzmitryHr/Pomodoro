@@ -44,12 +44,12 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
 @property (nonatomic, strong) CDPomodor *pomodor;
 @property (nonatomic, strong) CDBreak *breaK;
 
-@property (nonatomic, strong) Configurator *configurator;
+@property (nonatomic, strong) Loader *loader;
 
-#define     durationPomodor             self.configurator.durationPomodor
-#define     durationShortBreak          self.configurator.durationShortBreak
-#define     durationLongBreak           self.configurator.durationLongBreak
-#define     amountPomodorsForLongBreak  self.configurator.amountPomodorsForLongBreak
+#define     durationPomodor             self.loader.lastDurationPomodor
+#define     durationShortBreak          self.loader.lastDurationShortBreak
+#define     durationLongBreak           self.loader.lastDurationLongBreak
+#define     amountPomodorsForLongBreak  self.loader.lastAmountPomodorsForLongBreak
 
 @property (nonatomic, strong) CoreDataController *coreData;
 
@@ -68,11 +68,11 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
 
 // initialization
 
-- (instancetype)initWithConfigurator:(Configurator *)configurator coreData:(CoreDataController *)coreData
+- (instancetype)initWithLoader:(Loader *)loader coreData:(CoreDataController *)coreData
 {
     self = [super init];
     if (self) {
-        self.configurator = configurator;
+        self.loader = loader;
  
         self.coreData = coreData;
         
@@ -173,13 +173,16 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
         
         case statePrepareToCountPomodor:{
             
-            self.pomodor = [self createNewPomodor];
-            
-            self.uiTimer = [self.pomodor.duration integerValue];
-            
-            [self startTimer];
-            
-            self.currentStage = stateCountingPomodor;
+            [self createNewPomodorWithBlock:^(CDPomodor *pomodor) {
+                
+                self.pomodor = pomodor;
+                
+                self.uiTimer = [self.pomodor.duration integerValue];
+                
+                [self startTimer];
+                
+                self.currentStage = stateCountingPomodor;
+            }];
             
             break;
         }
@@ -270,8 +273,6 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
         default:
             break;
     }
-    
-    
 }
 
 
@@ -297,22 +298,17 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
 
 #pragma mark - methods for State
 
-- (CDPomodor *)createNewPomodor
+- (void)createNewPomodorWithBlock:(void(^)(CDPomodor *pomodor))block
 {
-    CDPomodor *pomodor = nil;
     
     [self.coreData createPomodorWithDuration:self.durationPomodor withBlock:^(CDPomodor *pomodor) {
         if (!pomodor.whoseTask && !self.task){
             pomodor.whoseTask = self.task;
         }
         
-// ??? how to return pomodor???
-        self.pomodor = pomodor;
-
+        block(pomodor);
     }];
     
-    
-    return pomodor;
 }
 
 

@@ -59,7 +59,7 @@
     return _pomodor;
 }
 
-// ??? mainContext - nil
+
 - (NSManagedObjectContext *)mainContext
 {
     if (!_mainContext){

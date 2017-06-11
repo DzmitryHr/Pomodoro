@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "CoreDataController.h"
-#import "Configurator.h"
+#import "Loader.h"
 
 @class CoordinatorController;
 
@@ -26,7 +26,7 @@
 @property (nonatomic, readonly, assign) NSTimeInterval uiTimer;
 
 // designated initializer
-- (instancetype)initWithConfigurator:(Configurator *)configurator coreData:(CoreDataController *)coreData;
+- (instancetype)initWithLoader:(Loader *)configurator coreData:(CoreDataController *)coreData;
 
 - (NSInteger)giveCurentDurationPomodor;
 - (void)changeCurrentDurationPomodor:(NSInteger)newCurrentDurationPomodor;

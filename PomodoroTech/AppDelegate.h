@@ -8,9 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+#import "Loader.h"
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+
+@property (strong, nonatomic) Loader *loader;
 
 
 @end
