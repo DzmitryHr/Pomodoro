@@ -1,5 +1,5 @@
 //
-//  Configurator.m
+//  Loader.m
 //  PomodoroTech
 //
 //  Created by Kronan on 5/24/17.
