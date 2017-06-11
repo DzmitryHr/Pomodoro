@@ -7,58 +7,58 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C1556931EEDB21E000A12B3 /* CoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1556921EEDB21E000A12B3 /* CoreData.m */; };
+		8C1556981EEDB399000A12B3 /* CoordinatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1556951EEDB399000A12B3 /* CoordinatorController.m */; };
+		8C1556991EEDB399000A12B3 /* TasksDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1556971EEDB399000A12B3 /* TasksDataManager.m */; };
+		8C15569C1EEDB3DB000A12B3 /* Loader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C15569B1EEDB3DB000A12B3 /* Loader.m */; };
+		8C1556A51EEDB495000A12B3 /* AddTaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C15569E1EEDB495000A12B3 /* AddTaskViewController.m */; };
+		8C1556A61EEDB495000A12B3 /* TasksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1556A01EEDB495000A12B3 /* TasksViewController.m */; };
+		8C1556A71EEDB495000A12B3 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1556A21EEDB495000A12B3 /* TimerViewController.m */; };
+		8C1556A81EEDB495000A12B3 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1556A41EEDB495000A12B3 /* ViewController.m */; };
 		8C363AF61EB3510F007729F8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C363AF51EB3510F007729F8 /* main.m */; };
 		8C363AF91EB3510F007729F8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C363AF81EB3510F007729F8 /* AppDelegate.m */; };
-		8C363AFC1EB3510F007729F8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C363AFB1EB3510F007729F8 /* ViewController.m */; };
 		8C363AFF1EB3510F007729F8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C363AFD1EB3510F007729F8 /* Main.storyboard */; };
 		8C363B021EB3510F007729F8 /* PomodoroTech.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8C363B001EB3510F007729F8 /* PomodoroTech.xcdatamodeld */; };
 		8C363B041EB3510F007729F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C363B031EB3510F007729F8 /* Assets.xcassets */; };
 		8C363B071EB3510F007729F8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C363B051EB3510F007729F8 /* LaunchScreen.storyboard */; };
-		8C363B131EB355B9007729F8 /* TasksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C363B121EB355B9007729F8 /* TasksViewController.m */; };
 		8C363B171EB367F0007729F8 /* TasksViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C363B161EB367F0007729F8 /* TasksViewCell.m */; };
 		8C363B871EB7AE8B007729F8 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C363B1A1EB68640007729F8 /* CoreData.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		8C9C85081EC054EC0002746A /* HTTPCommunication.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C9C85071EC054EC0002746A /* HTTPCommunication.m */; };
-		8CACBF6E1ECC832F0036D106 /* CoreDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CACBF6D1ECC832F0036D106 /* CoreDataController.m */; };
-		8CACBF9B1ECE19EA0036D106 /* CoordinatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CACBF9A1ECE19EA0036D106 /* CoordinatorController.m */; };
-		8CAE97AD1EC4F6C3009369E1 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CAE97AC1EC4F6C3009369E1 /* TimerViewController.m */; };
-		8CC1B5801EE6E71F00FB4175 /* AddTaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC1B57F1EE6E71F00FB4175 /* AddTaskViewController.m */; };
-		8CC1B5831EE6FEEE00FB4175 /* TasksDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC1B5821EE6FEEE00FB4175 /* TasksDataManager.m */; };
 		8CCB573B1ECB17CE00B06FA9 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CCB573A1ECB17CE00B06FA9 /* UserNotifications.framework */; };
-		8CD3157D1ED54D0600543A18 /* Loader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD3157C1ED54D0600543A18 /* Loader.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8C1556911EEDB21E000A12B3 /* CoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreData.h; path = Model/CoreData.h; sourceTree = "<group>"; };
+		8C1556921EEDB21E000A12B3 /* CoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreData.m; path = Model/CoreData.m; sourceTree = "<group>"; };
+		8C1556941EEDB399000A12B3 /* CoordinatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoordinatorController.h; path = Model/CoordinatorController.h; sourceTree = "<group>"; };
+		8C1556951EEDB399000A12B3 /* CoordinatorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoordinatorController.m; path = Model/CoordinatorController.m; sourceTree = "<group>"; };
+		8C1556961EEDB399000A12B3 /* TasksDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TasksDataManager.h; path = Model/TasksDataManager.h; sourceTree = "<group>"; };
+		8C1556971EEDB399000A12B3 /* TasksDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TasksDataManager.m; path = Model/TasksDataManager.m; sourceTree = "<group>"; };
+		8C15569A1EEDB3DB000A12B3 /* Loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Loader.h; path = Model/Loader.h; sourceTree = "<group>"; };
+		8C15569B1EEDB3DB000A12B3 /* Loader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Loader.m; path = Model/Loader.m; sourceTree = "<group>"; };
+		8C15569D1EEDB495000A12B3 /* AddTaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddTaskViewController.h; path = Controller/AddTaskViewController.h; sourceTree = "<group>"; };
+		8C15569E1EEDB495000A12B3 /* AddTaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AddTaskViewController.m; path = Controller/AddTaskViewController.m; sourceTree = "<group>"; };
+		8C15569F1EEDB495000A12B3 /* TasksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TasksViewController.h; path = Controller/TasksViewController.h; sourceTree = "<group>"; };
+		8C1556A01EEDB495000A12B3 /* TasksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TasksViewController.m; path = Controller/TasksViewController.m; sourceTree = "<group>"; };
+		8C1556A11EEDB495000A12B3 /* TimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimerViewController.h; path = Controller/TimerViewController.h; sourceTree = "<group>"; };
+		8C1556A21EEDB495000A12B3 /* TimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TimerViewController.m; path = Controller/TimerViewController.m; sourceTree = "<group>"; };
+		8C1556A31EEDB495000A12B3 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewController.h; path = Controller/ViewController.h; sourceTree = "<group>"; };
+		8C1556A41EEDB495000A12B3 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewController.m; path = Controller/ViewController.m; sourceTree = "<group>"; };
 		8C363AF11EB3510F007729F8 /* PomodoroTech.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PomodoroTech.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C363AF51EB3510F007729F8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8C363AF71EB3510F007729F8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		8C363AF81EB3510F007729F8 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		8C363AFA1EB3510F007729F8 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		8C363AFB1EB3510F007729F8 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		8C363AFE1EB3510F007729F8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8C363B011EB3510F007729F8 /* PomodoroTech.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PomodoroTech.xcdatamodel; sourceTree = "<group>"; };
 		8C363B031EB3510F007729F8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8C363B061EB3510F007729F8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8C363B081EB3510F007729F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8C363B111EB355B9007729F8 /* TasksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TasksViewController.h; sourceTree = "<group>"; };
-		8C363B121EB355B9007729F8 /* TasksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TasksViewController.m; sourceTree = "<group>"; };
 		8C363B151EB367F0007729F8 /* TasksViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TasksViewCell.h; sourceTree = "<group>"; };
 		8C363B161EB367F0007729F8 /* TasksViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TasksViewCell.m; sourceTree = "<group>"; };
 		8C363B1A1EB68640007729F8 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8C9C85061EC054EC0002746A /* HTTPCommunication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTTPCommunication.h; path = Data/HTTPCommunication.h; sourceTree = SOURCE_ROOT; };
 		8C9C85071EC054EC0002746A /* HTTPCommunication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTTPCommunication.m; path = Data/HTTPCommunication.m; sourceTree = SOURCE_ROOT; };
-		8CACBF6C1ECC832F0036D106 /* CoreDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreDataController.h; path = Controllers/CoreDataController.h; sourceTree = "<group>"; };
-		8CACBF6D1ECC832F0036D106 /* CoreDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreDataController.m; path = Controllers/CoreDataController.m; sourceTree = "<group>"; };
-		8CACBF991ECE19EA0036D106 /* CoordinatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoordinatorController.h; path = Controllers/CoordinatorController.h; sourceTree = "<group>"; };
-		8CACBF9A1ECE19EA0036D106 /* CoordinatorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoordinatorController.m; path = Controllers/CoordinatorController.m; sourceTree = "<group>"; };
-		8CAE97AB1EC4F6C3009369E1 /* TimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerViewController.h; sourceTree = "<group>"; };
-		8CAE97AC1EC4F6C3009369E1 /* TimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerViewController.m; sourceTree = "<group>"; };
-		8CC1B57E1EE6E71F00FB4175 /* AddTaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddTaskViewController.h; path = UI/AddTaskViewController.h; sourceTree = "<group>"; };
-		8CC1B57F1EE6E71F00FB4175 /* AddTaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AddTaskViewController.m; path = UI/AddTaskViewController.m; sourceTree = "<group>"; };
-		8CC1B5811EE6FEEE00FB4175 /* TasksDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TasksDataManager.h; path = Controllers/TasksDataManager.h; sourceTree = "<group>"; };
-		8CC1B5821EE6FEEE00FB4175 /* TasksDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TasksDataManager.m; path = Controllers/TasksDataManager.m; sourceTree = "<group>"; };
 		8CCB573A1ECB17CE00B06FA9 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
-		8CD3157B1ED54D0600543A18 /* Loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Loader.h; path = Data/Loader.h; sourceTree = "<group>"; };
-		8CD3157C1ED54D0600543A18 /* Loader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Loader.m; path = Data/Loader.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,14 +109,14 @@
 			children = (
 				8C9C85061EC054EC0002746A /* HTTPCommunication.h */,
 				8C9C85071EC054EC0002746A /* HTTPCommunication.m */,
-				8CD3157B1ED54D0600543A18 /* Loader.h */,
-				8CD3157C1ED54D0600543A18 /* Loader.m */,
-				8CACBF6C1ECC832F0036D106 /* CoreDataController.h */,
-				8CACBF6D1ECC832F0036D106 /* CoreDataController.m */,
-				8CACBF991ECE19EA0036D106 /* CoordinatorController.h */,
-				8CACBF9A1ECE19EA0036D106 /* CoordinatorController.m */,
-				8CC1B5811EE6FEEE00FB4175 /* TasksDataManager.h */,
-				8CC1B5821EE6FEEE00FB4175 /* TasksDataManager.m */,
+				8C1556941EEDB399000A12B3 /* CoordinatorController.h */,
+				8C1556951EEDB399000A12B3 /* CoordinatorController.m */,
+				8C1556911EEDB21E000A12B3 /* CoreData.h */,
+				8C1556921EEDB21E000A12B3 /* CoreData.m */,
+				8C15569A1EEDB3DB000A12B3 /* Loader.h */,
+				8C15569B1EEDB3DB000A12B3 /* Loader.m */,
+				8C1556961EEDB399000A12B3 /* TasksDataManager.h */,
+				8C1556971EEDB399000A12B3 /* TasksDataManager.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -150,14 +150,14 @@
 		8CAE97AE1EC791A2009369E1 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				8C363AFA1EB3510F007729F8 /* ViewController.h */,
-				8C363AFB1EB3510F007729F8 /* ViewController.m */,
-				8CAE97AB1EC4F6C3009369E1 /* TimerViewController.h */,
-				8CAE97AC1EC4F6C3009369E1 /* TimerViewController.m */,
-				8C363B111EB355B9007729F8 /* TasksViewController.h */,
-				8C363B121EB355B9007729F8 /* TasksViewController.m */,
-				8CC1B57E1EE6E71F00FB4175 /* AddTaskViewController.h */,
-				8CC1B57F1EE6E71F00FB4175 /* AddTaskViewController.m */,
+				8C15569D1EEDB495000A12B3 /* AddTaskViewController.h */,
+				8C15569E1EEDB495000A12B3 /* AddTaskViewController.m */,
+				8C15569F1EEDB495000A12B3 /* TasksViewController.h */,
+				8C1556A01EEDB495000A12B3 /* TasksViewController.m */,
+				8C1556A11EEDB495000A12B3 /* TimerViewController.h */,
+				8C1556A21EEDB495000A12B3 /* TimerViewController.m */,
+				8C1556A31EEDB495000A12B3 /* ViewController.h */,
+				8C1556A41EEDB495000A12B3 /* ViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -254,17 +254,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C1556A71EEDB495000A12B3 /* TimerViewController.m in Sources */,
 				8C363B021EB3510F007729F8 /* PomodoroTech.xcdatamodeld in Sources */,
+				8C1556A61EEDB495000A12B3 /* TasksViewController.m in Sources */,
+				8C15569C1EEDB3DB000A12B3 /* Loader.m in Sources */,
 				8C9C85081EC054EC0002746A /* HTTPCommunication.m in Sources */,
-				8CC1B5801EE6E71F00FB4175 /* AddTaskViewController.m in Sources */,
-				8CACBF6E1ECC832F0036D106 /* CoreDataController.m in Sources */,
+				8C1556931EEDB21E000A12B3 /* CoreData.m in Sources */,
+				8C1556A81EEDB495000A12B3 /* ViewController.m in Sources */,
 				8C363B171EB367F0007729F8 /* TasksViewCell.m in Sources */,
-				8CAE97AD1EC4F6C3009369E1 /* TimerViewController.m in Sources */,
-				8CD3157D1ED54D0600543A18 /* Loader.m in Sources */,
-				8CACBF9B1ECE19EA0036D106 /* CoordinatorController.m in Sources */,
-				8CC1B5831EE6FEEE00FB4175 /* TasksDataManager.m in Sources */,
-				8C363B131EB355B9007729F8 /* TasksViewController.m in Sources */,
-				8C363AFC1EB3510F007729F8 /* ViewController.m in Sources */,
+				8C1556A51EEDB495000A12B3 /* AddTaskViewController.m in Sources */,
+				8C1556991EEDB399000A12B3 /* TasksDataManager.m in Sources */,
+				8C1556981EEDB399000A12B3 /* CoordinatorController.m in Sources */,
 				8C363AF91EB3510F007729F8 /* AppDelegate.m in Sources */,
 				8C363AF61EB3510F007729F8 /* main.m in Sources */,
 			);

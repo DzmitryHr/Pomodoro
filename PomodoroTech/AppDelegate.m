@@ -10,7 +10,7 @@
 #import "AppDelegate.h"
 #import "TimerViewController.h"
 #import "CoordinatorController.h"
-#import "CoreDataController.h"
+#import "CoreData.h"
 #import "Loader.h"
 
 #import "TasksDataManager.h"
@@ -36,7 +36,7 @@
     
     self.loader = [[Loader alloc] init];
     
-    CoreDataController *coreData = [[CoreDataController alloc] init];
+    CoreData *coreData = [[CoreData alloc] init];
     
     CoordinatorController *coordinator = [[CoordinatorController alloc] initWithLoader:self.loader
                                                                               coreData:coreData];
@@ -109,7 +109,7 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     // Saves changes in the application's managed object context before the application terminates.
     
- //   [[CoreDataController sharedInstance] saveContext];
+ //   [[CoreData sharedInstance] saveContext];
 }
 
 
