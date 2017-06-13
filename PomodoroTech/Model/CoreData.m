@@ -11,147 +11,229 @@
 @interface CoreData()
 
 @property (nonatomic, strong, readwrite) NSPersistentContainer *persistentContainer;
+@property (nonatomic, strong) NSManagedObjectContext *localMainContext;
 
-@property (nonatomic, strong) CDUser *user;
-@property (nonatomic, strong) CDTask *task;
-@property (nonatomic, strong) CDPomodor *pomodor;
-@property (nonatomic, strong) CDBreak   *breakP;
 
 @end
 
 
 @implementation CoreData
 
+
 #pragma mark - init
 
 
-- (CDUser *)user
+- (instancetype)init
 {
-    if (!_user){
+    self = [super init];
+    if (self) {
+        self.localMainContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
         
-        NSString *entityName = @"CDUser";
-        _user = (CDUser*)[self getLastObject:self.mainContext withEntityName:entityName];
+# warning - coordinator???
+        self.localMainContext.persistentStoreCoordinator = self.persistentContainer.persistentStoreCoordinator;
     }
     
-    return _user;
+    return self;
 }
 
 
-- (CDTask *)task
-{
-    if (!_task){
-        
-        NSString *entityName = @"CDTask";
-        _task = (CDTask*)[self getLastObject:self.mainContext withEntityName:entityName];;
-    }
-    
-    return _task;
-}
-
-
-- (CDPomodor *)pomodor
-{
-    if (!_pomodor){
-        NSString *entityName = @"CDPomodor";
-        _pomodor = (CDPomodor*)[self createObject:self.mainContext withEntityName:entityName];
-    }
-
-    return _pomodor;
-}
-
-
+@dynamic mainContext;
 - (NSManagedObjectContext *)mainContext
 {
-    if (!_mainContext){
-        _mainContext = self.persistentContainer.viewContext;
-    }
-    
-    return _mainContext;
+    return self.persistentContainer.viewContext;
 }
 
 
 #pragma mark - CoreData
 
-
-- (CDUser *)createUserWithLogin:(NSString *)login
+- (CDUser *)createUserInMainContextWithLogin:(NSString *)login
 {
     NSString *entityName = @"CDUser";
-    CDUser *user = (CDUser *)[self createObject:self.mainContext withEntityName:entityName];
-    
-    self.user = user;
+    CDUser *user = (CDUser *)[self createObject:self.localMainContext withEntityName:entityName];
     
     user.createTime = [NSDate date];
     user.login = login;
+    
+    [user.managedObjectContext save:nil];
     
     return user;
 }
 
 
-- (CDTask *)createTaskWithName:(NSString *)name
+- (void)createUserWithLogin:(NSString *)login withBlock:(void(^)(CDUser *))block
+{
+    [self.persistentContainer performBackgroundTask:^(NSManagedObjectContext *context) {
+        NSString *entityName = @"CDUser";
+        CDUser *user = (CDUser *)[self createObject:context withEntityName:entityName];
+        
+        user.createTime = [NSDate date];
+        user.login = login;
+        
+        [user.managedObjectContext save:nil];
+        
+        NSManagedObjectID *userID = user.objectID;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            CDUser *user = [self.mainContext objectWithID:userID];
+           
+            if (block){
+                block(user);
+            };
+        });
+        
+        
+    }];
+}
+
+
+- (CDTask *)createTaskInMainContextWithName:(NSString *)name forUser:(CDUser *)user
 {
     NSString *entityName = @"CDTask";
-    CDTask *task = (CDTask *)[self createObject:self.mainContext withEntityName:entityName];
-    
-    self.task = task;
+    CDTask *task = (CDTask *)[self createObject:self.localMainContext withEntityName:entityName];
     
     task.createTime = [NSDate date];
     task.name = name;
+    task.whoseUser = user;
     
-    if (self.user){
-        task.whoseUser = self.user;
-    }
+    [user.managedObjectContext save:nil];
     
     return task;
 }
 
 
-- (void)createPomodorWithDuration:(NSInteger)pomodorDuration withBlock:(void(^)(CDPomodor *pomodor))block
+- (void)createTaskWithName:(NSString *)name forUser:(CDUser *)user withBlock:(void(^)(CDTask *))block
 {
+    NSManagedObjectID *userID = user.objectID;
+    
     [self.persistentContainer performBackgroundTask:^(NSManagedObjectContext *context) {
-      
-        NSString *entityName = @"CDPomodor";
-        CDPomodor *pomodor = (CDPomodor *)[self createObject:self.mainContext withEntityName:entityName];
+        NSString *entityName = @"CDTask";
+        CDTask *task = (CDTask *)[self createObject:context withEntityName:entityName];
         
-        self.pomodor = pomodor;
+        task.createTime = [NSDate date];
+        task.lastUseTime = nil;
+        task.name = name;
+        task.whoseUser = [context objectWithID:userID];
         
-        pomodor.createTime = [NSDate date];
-        pomodor.duration = @(pomodorDuration);
-        pomodor.complit = @(NO);
-        
-        NSManagedObjectID *pomodorID = pomodor.objectID;
-        
+        NSManagedObjectID *taskID = task.objectID;
+    
         dispatch_async(dispatch_get_main_queue(), ^{
-            CDPomodor *pomodor = [self.persistentContainer.viewContext objectWithID:pomodorID];
             
-            if (self.task){
-                pomodor.whoseTask = self.task;
-            }
+            CDTask *task = [self.mainContext objectWithID:taskID];
             
-            block(pomodor);
-            
+            if (block){
+                block(task);
+            };
         });
-        
     }];
     
 }
 
 
-- (CDBreak *)createBreakWithDuration:(NSInteger)breakDuration
+- (CDPomodor *)createPomodorInMainContextWithDuration:(NSInteger)pomodorDuration
+                                              forTask:(CDTask *)task
+{
+    NSString *entityName  = @"CDPomodor";
+    
+    CDPomodor *pomodor = (CDPomodor *)[self createObject:self.localMainContext withEntityName:entityName];
+    
+    pomodor.createTime = [NSDate date];
+    pomodor.duration = @(pomodorDuration);
+    
+# warning - other context???
+    NSManagedObjectID *taskID = [task objectID];
+    CDTask *taskInThisContext = (CDTask *)[self.localMainContext objectWithID:taskID];
+    
+    pomodor.whoseTask = taskInThisContext;
+    
+    [pomodor.managedObjectContext save:nil];
+    [task.managedObjectContext save:nil];
+    
+    return pomodor;
+};
+
+
+- (CDPomodor *)createPomodorWithDuration:(NSInteger)pomodorDuration
+                                 forTask:(CDTask *)task
+{
+    __block CDPomodor *pomodor = nil;
+    
+    [self.persistentContainer performBackgroundTask:^(NSManagedObjectContext *context) {
+        NSString *entityName = @"CDPomodor";
+        pomodor = (CDPomodor *)[self createObject:context withEntityName:entityName];
+        
+        pomodor.createTime = [NSDate date];
+        pomodor.duration = @(pomodorDuration);
+        pomodor.complit = @(NO);
+        pomodor.whoseTask = task;
+    }];
+    
+    return pomodor;
+}
+
+
+// ??? maybe not use ???
+- (void)createPomodorWithDuration:(NSInteger)pomodorDuration
+                          forTask:(CDTask *)task
+                        withBlock:(void (^)(CDPomodor *))block
+{
+    [self.persistentContainer performBackgroundTask:^(NSManagedObjectContext *context) {
+        NSString *entityName = @"CDPomodor";
+        CDPomodor *pomodor = (CDPomodor *)[self createObject:context withEntityName:entityName];
+        
+        pomodor.createTime = [NSDate date];
+        pomodor.duration = @(pomodorDuration);
+        pomodor.complit = @(NO);
+        pomodor.whoseTask = task;
+        
+        NSManagedObjectID *pomodorID = pomodor.objectID;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            CDPomodor *pomodor = [self.mainContext objectWithID:pomodorID];
+            
+            block(pomodor);
+        });
+        
+    }];
+}
+
+
+- (CDBreak *)createBreakInMainContextWithDuration:(NSInteger)breakDuration
+                                          forTask:(CDTask *)task
 {
     NSString *entityName = @"CDBreak";
-    CDBreak *breaK = (CDBreak *)[self createObject:self.mainContext withEntityName:entityName];
+    CDBreak *breaK = (CDBreak *)[self createObject:self.localMainContext withEntityName:entityName];
     
     breaK.createTime = [NSDate date];
-    breaK.duration = @(breakDuration);
-    breaK.complit = @(NO);
-    
-    if (self.task){
-        breaK.whoseTask = self.task;
-    }
+    breaK.whoseTask = task;
     
     [breaK.managedObjectContext save:nil];
     
     return breaK;
+}
+
+
+- (void)createBreakWithDuration:(NSInteger)breakDuration
+                        forTask:(CDTask *)task
+                      withBlock:(void (^)(CDBreak *))block
+{
+    [self.persistentContainer performBackgroundTask:^(NSManagedObjectContext * context) {
+        NSString *entityName = @"CDBreak";
+        CDBreak *breaK = (CDBreak *)[self createObject:context withEntityName:entityName];
+        
+        breaK.createTime = [NSDate date];
+        breaK.duration = @(breakDuration);
+        breaK.complit = @(NO);
+        breaK.whoseTask = task;
+        
+        NSManagedObjectID *breaKID = breaK.objectID;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            CDBreak *breaK = [self.mainContext objectWithID:breaKID];
+            block(breaK);
+        });
+        
+    }];
 }
 
 
@@ -161,57 +243,91 @@
     NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:entityName
                                                             inManagedObjectContext:context];
     
-    [object.managedObjectContext save:nil];
-    
     return object;
 }
 
 
-- (void)deleteAllObjectFromCoreData:(NSManagedObjectContext *)context withEntityName:entityName
+- (CDUser *)getUserWithLogin:(NSString *)login;
 {
-    NSArray *allObjects = [self getObjectsFromCoreData:context withEntityName:entityName];
-    
-    for (id object in allObjects) {
-        [context deleteObject:object];
-        NSLog(@"=== all objects are delete === ");
-    }
-    
+    NSString *entityName = @"CDUser";
+    NSString *predicateName = @"login";
+    return (CDUser *)[self getObjectWithEntityName:entityName andName:login forPredicate:predicateName];
 }
 
 
-- (void)printObjects:(NSManagedObjectContext *)context withEntityName:entityName
+- (CDTask *)getTaskWithName:(NSString *)name;
 {
-    NSArray *allObjects = [self getObjectsFromCoreData:context withEntityName:entityName];
-    
-    int i = 0;
-    for (id object in allObjects) {
-        NSLog(@"===%@", object);
-        i++;
-    }
-    NSLog(@"=== all elements in DB %i", i);
+    NSString *entityName = @"CDTask";
+    NSString *predicateName = @"name";
+    return (CDTask *)[self getObjectWithEntityName:entityName andName:name forPredicate:predicateName];
 }
 
 
-- (NSArray *)getObjectsFromCoreData:(NSManagedObjectContext *)context
-                     withEntityName:(NSString *)entityName
+- (NSManagedObject *)getObjectWithEntityName:(NSString *)entityName
+                                     andName:(NSString *)name
+                                forPredicate:(NSString *)predicateName
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
  
     NSEntityDescription *description = [NSEntityDescription entityForName:entityName
-                                                   inManagedObjectContext:context];
-    
-    [request setEntity:description];
+                                                   inManagedObjectContext:self.mainContext];
+    request.entity = description;
+    //request.predicate = [NSPredicate predicateWithFormat:@"%@ == %@", predicateName, name];
     
     NSError *requestErr = nil;
-    NSArray *resultArray = [context executeFetchRequest:request error: &requestErr];
+    NSArray *objectsCD = [self.mainContext executeFetchRequest:request error: &requestErr];
     if (requestErr){
         NSLog(@"giveObjectsFromCoreData err = %@", [requestErr localizedDescription]);
     }
     
-    return resultArray;
+//    [self printObjects:self.mainContext withEntityName:entityName];
+    
+    return [objectsCD firstObject];
 }
 
+/*
+ - (void)deleteAllObjectFromCoreData:(NSManagedObjectContext *)context withEntityName:entityName
+ {
+ NSArray *allObjects = [self getObjectsFromCoreData:context withEntityName:entityName];
+ 
+ for (id object in allObjects) {
+ [context deleteObject:object];
+ NSLog(@"=== all objects are delete === ");
+ }
+ 
+ }
+ 
+ */
+ - (void)printObjects:(NSManagedObjectContext *)context withEntityName:entityName
+ {
+     
+     NSFetchRequest *request = [[NSFetchRequest alloc] init];
+     
+     NSEntityDescription *description = [NSEntityDescription entityForName:entityName
+                                                    inManagedObjectContext:self.mainContext];
+     request.entity = description;
+   //  request.predicate = [NSPredicate predicateWithFormat:@"%@ == %@", predicateName, name];
+     
+     NSError *requestErr = nil;
+     NSArray *allObjects = [self.mainContext executeFetchRequest:request error: &requestErr];
+     if (requestErr){
+         NSLog(@"giveObjectsFromCoreData err = %@", [requestErr localizedDescription]);
+     }
+    
+     int i = 0;
+     for (id object in allObjects) {
+         NSLog(@"===%@", object);
+         i++;
+     }
+    
+     
+     NSLog(@"=== all elements in DB %i", i);
+ }
 
+
+
+
+/*
 - (NSManagedObjectContext *)getLastObject:(NSManagedObjectContext *)context
                            withEntityName:(NSString *)entityName
 {
@@ -234,19 +350,7 @@
     
     return [resultArray lastObject];
 }
-
-
-- (CDUser *)getCurrentUser
-{
-    return self.user;
-}
-
-
-- (CDTask *)getCurrentTask
-{
-    return self.task;
-}
-
+*/
 
 #pragma mark - Core Data stack
 

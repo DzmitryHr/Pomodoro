@@ -58,7 +58,7 @@ NSString * const keyDefaultTask = @"detaultTask";
         self.lastDurationLongBreak = [defaultSetting doubleForKey:keyDurationLongBreak];
         self.lastAmountPomodorsForLongBreak = [defaultSetting doubleForKey:keyAmountPomodorsForLongBreak];
         
-        self.lastUserName = [defaultSetting objectForKey:keyDefaultUser];
+        self.lastUserLogin = [defaultSetting objectForKey:keyDefaultUser];
         self.lastTaskName = [defaultSetting objectForKey:keyDefaultTask];
         
         self.defaultSetting = defaultSetting;
@@ -75,7 +75,7 @@ NSString * const keyDefaultTask = @"detaultTask";
     [self.defaultSetting setDouble:self.lastDurationLongBreak forKey:keyDurationLongBreak];
     [self.defaultSetting setDouble:self.lastAmountPomodorsForLongBreak forKey:keyAmountPomodorsForLongBreak];
     
-    [self.defaultSetting setObject:self.lastUserName forKey:keyDefaultUser];
+    [self.defaultSetting setObject:self.lastUserLogin forKey:keyDefaultUser];
     [self.defaultSetting setObject:self.lastTaskName forKey:keyDefaultTask];
 }
 @end

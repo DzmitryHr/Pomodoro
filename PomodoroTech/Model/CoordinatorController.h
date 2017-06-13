@@ -12,7 +12,6 @@
 
 @class CoordinatorController;
 
-
 @protocol CoordinatorControllerDelegate<NSObject>
 @required
 - (void)coordinatorController:(CoordinatorController *)coordinator timerDidChanged:(NSTimeInterval)time;
@@ -25,9 +24,12 @@
 
 @property (nonatomic, readonly, assign) NSTimeInterval uiTimer;
 
-// designated initializer
-- (instancetype)initWithLoader:(Loader *)configurator coreData:(CoreData *)coreData;
 
+// designated initializer
+- (instancetype)initWithLoader:(Loader *)loader coreData:(CoreData *)coreData;
+
+
+// current Objects
 - (NSInteger)giveCurentDurationPomodor;
 - (void)changeCurrentDurationPomodor:(NSInteger)newCurrentDurationPomodor;
 
@@ -37,7 +39,8 @@
 - (NSString *)giveCurrentStage;
 
 
-// run count duration pomodor (WORK) and run count Long or Short BREAK (Break)
+// run count Work Cycle:
+// duration pomodor (WORK) and run count Long or Short BREAK (Break)
 - (void)runWorkCycle;
 
 - (void)stopWorkCycle;

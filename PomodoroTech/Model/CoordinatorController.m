@@ -50,6 +50,9 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
 #define     durationShortBreak          self.loader.lastDurationShortBreak
 #define     durationLongBreak           self.loader.lastDurationLongBreak
 #define     amountPomodorsForLongBreak  self.loader.lastAmountPomodorsForLongBreak
+#define     userLogin                   self.loader.lastUserLogin
+#define     taskName                    self.loader.lastTaskName
+
 
 @property (nonatomic, strong) CoreData *coreData;
 
@@ -72,27 +75,21 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
 {
     self = [super init];
     if (self) {
+        
         self.loader = loader;
- 
         self.coreData = coreData;
         
-        if (!self.user){
-            CDUser *user = [self.coreData getCurrentUser];
-            self.user = user;
-            
-            if (!user){
-                self.user = [self.coreData createUserWithLogin:@"defaultUser"];
-            }
+        CDUser *user = [self.coreData getUserWithLogin:userLogin];
+        if (!user){
+            user = [self.coreData createUserInMainContextWithLogin:userLogin];
         }
+        self.user = user;
         
-        if (!self.task){
-            CDTask *task = [self.coreData getCurrentTask];
-            self.task = task;
-            
-            if (!task){
-                self.task = [self.coreData createTaskWithName:@"defaultTask"];
-            }
+        CDTask *task = [self.coreData getTaskWithName:taskName];
+        if (!task){
+            task = [self.coreData createTaskInMainContextWithName:taskName forUser:self.user];
         }
+        self.task = task;
         
         // init current state
         self.currentStage = stateReadyForWork;
@@ -173,6 +170,14 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
         
         case statePrepareToCountPomodor:{
             
+            self.pomodor = [self createNewPomodor];
+            
+            self.uiTimer = [self.pomodor.duration integerValue];
+            
+            [self startTimer];
+            
+            self.currentStage = stateCountingPomodor;
+            /*
             [self createNewPomodorWithBlock:^(CDPomodor *pomodor) {
                 
                 self.pomodor = pomodor;
@@ -183,7 +188,7 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
                 
                 self.currentStage = stateCountingPomodor;
             }];
-            
+            */
             break;
         }
             
@@ -210,11 +215,7 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
 
             [self stopTimer];
             
-            if ((self.task.pomodors.count % amountPomodorsForLongBreak) == 0){
-                self.breaK = [self createNewBreakWithDuration:durationLongBreak];
-            } else {
-                self.breaK = [self createNewBreakWithDuration:durationShortBreak];
-            }
+            self.breaK = [self createNewBreak];
             
             self.uiTimer = [self.breaK.duration integerValue];
             
@@ -298,6 +299,29 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
 
 #pragma mark - methods for State
 
+- (CDPomodor *)createNewPomodor
+{
+    CDPomodor *pomodor = [self.coreData createPomodorInMainContextWithDuration:durationPomodor forTask:self.task];
+    return pomodor;
+};
+
+
+// create LONG break or SHORT
+- (CDBreak *)createNewBreak
+{
+    CDBreak *breaK = nil;
+    
+    if ((self.task.pomodors.count % amountPomodorsForLongBreak) == 0){
+        breaK = [self.coreData createBreakInMainContextWithDuration:durationLongBreak forTask:self.task];
+    } else {
+        breaK = [self.coreData createBreakInMainContextWithDuration:durationShortBreak forTask:self.task];
+    }
+    
+    return breaK;
+};
+
+
+/*
 - (void)createNewPomodorWithBlock:(void(^)(CDPomodor *pomodor))block
 {
     
@@ -324,6 +348,12 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
     
     return breaK;
 }
+*/
 
+- (void)dealloc
+{
+    userLogin = self.user.login;
+    taskName = self.task.name;    
+}
 
 @end

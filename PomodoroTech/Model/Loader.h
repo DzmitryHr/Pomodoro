@@ -15,7 +15,7 @@
 @property (nonatomic, assign) NSTimeInterval lastDurationLongBreak;
 @property (nonatomic, assign) NSInteger lastAmountPomodorsForLongBreak;
 
-@property (nonatomic, strong) NSString *lastUserName;
+@property (nonatomic, strong) NSString *lastUserLogin;
 @property (nonatomic, strong) NSString *lastTaskName;
 
 - (void)saveSettings;
