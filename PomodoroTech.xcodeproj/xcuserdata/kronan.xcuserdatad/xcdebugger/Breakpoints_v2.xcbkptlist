@@ -182,47 +182,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PomodoroTech/Model/CoreData.m"
-            timestampString = "519045732.769075"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "51"
-            endingLineNumber = "51"
-            landmarkName = "-createUserInMainContextWithLogin:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PomodoroTech/Model/CoreData.m"
-            timestampString = "519045732.769075"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
-            landmarkName = "-createUserWithLogin:withBlock:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PomodoroTech/Model/CoordinatorController.m"
-            timestampString = "519051943.681463"
+            timestampString = "519063562.06508"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "171"
-            endingLineNumber = "171"
+            startingLineNumber = "207"
+            endingLineNumber = "207"
             landmarkName = "-processState"
             landmarkType = "7">
          </BreakpointContent>
@@ -234,28 +202,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PomodoroTech/Model/CoreData.m"
-            timestampString = "519053270.495893"
+            timestampString = "519064243.773407"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "93"
-            endingLineNumber = "93"
-            landmarkName = "-createTaskInMainContextWithName:forUser:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PomodoroTech/Model/CoordinatorController.m"
-            timestampString = "519053311.317217"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
-            landmarkName = "-initWithLoader:coreData:"
+            startingLineNumber = "42"
+            endingLineNumber = "42"
+            landmarkName = "-getTaskWithName:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -266,11 +218,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PomodoroTech/Model/CoreData.m"
-            timestampString = "519054385.555389"
+            timestampString = "519064883.974322"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "147"
-            endingLineNumber = "147"
+            startingLineNumber = "86"
+            endingLineNumber = "86"
             landmarkName = "-createPomodorInMainContextWithDuration:forTask:"
             landmarkType = "7">
          </BreakpointContent>
@@ -281,13 +233,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "PomodoroTech/Model/CoordinatorController.m"
-            timestampString = "519055211.889062"
+            filePath = "PomodoroTech/Model/CoreData.m"
+            timestampString = "519064981.19606"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "120"
-            endingLineNumber = "120"
-            landmarkName = "-changeCurrentDurationPomodor:"
+            startingLineNumber = "189"
+            endingLineNumber = "189"
+            landmarkName = "-printObjects:withEntityName:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PomodoroTech/Model/CoreData.m"
+            timestampString = "519065009.748745"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "127"
+            endingLineNumber = "127"
+            landmarkName = "-getObjectWithEntityName:withAttributeName:forPredicate:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

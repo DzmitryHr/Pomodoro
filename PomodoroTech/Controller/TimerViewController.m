@@ -162,7 +162,7 @@
     CDUser *user = [self.coordinator giveCurrentUser];
     CDTask *task = [self.coordinator giveCurrentTask];
     NSString *inf = [NSString stringWithFormat:@" User: %@ \n Task: %@ \n Pomodors: %lu", user.login, task.name, task.pomodors.count]; // all pomodors - choose complit pomodors
-   self.informationLabel.text = inf;
+    self.informationLabel.text = inf;
     
     self.currentTaskLabel.text = task.name;
     

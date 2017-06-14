@@ -67,6 +67,12 @@ NSString * const keyDefaultTask = @"detaultTask";
     return self;
 }
 
+- (void)setLastDurationPomodor:(NSTimeInterval)lastDurationPomodor
+{
+    _lastDurationPomodor = lastDurationPomodor;
+    
+    [self saveSettings];
+}
 
 - (void)saveSettings
 {

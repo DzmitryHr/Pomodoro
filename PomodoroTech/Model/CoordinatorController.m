@@ -138,8 +138,7 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
     [entity.managedObjectContext save:nil];
 }
 
-#warning name of stage
-// ??? name of stage ???
+
 - (NSString *)giveCurrentStage
 {
     return [NSString stringWithFormat:@"%li", (long)self.currentStage];
@@ -177,18 +176,7 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
             [self startTimer];
             
             self.currentStage = stateCountingPomodor;
-            /*
-            [self createNewPomodorWithBlock:^(CDPomodor *pomodor) {
-                
-                self.pomodor = pomodor;
-                
-                self.uiTimer = [self.pomodor.duration integerValue];
-                
-                [self startTimer];
-                
-                self.currentStage = stateCountingPomodor;
-            }];
-            */
+            
             break;
         }
             
@@ -200,8 +188,9 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
             
             if (timeIntervalLost >= durationCurrentPomodor){
             
-                self.currentStage = statePrepareToCountBreak;
+                self.pomodor.complit = @(YES);
                 
+                self.currentStage = statePrepareToCountBreak;
                 
             } else {
                 
@@ -234,7 +223,7 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
             
             if (timeIntervalLost >= durationBreak){
                 
-                self.pomodor.complit = @(YES);
+                self.breaK.complit = @(YES);
                 
                 self.currentStage = stateStopCount;
                 
@@ -246,6 +235,8 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
             break;
         }
             
+            
+# warning - stop this???
         case stateStopCount:{
             
             [self stopTimer];
@@ -353,7 +344,7 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
 - (void)dealloc
 {
     userLogin = self.user.login;
-    taskName = self.task.name;    
+    taskName = self.task.name;
 }
 
 @end
