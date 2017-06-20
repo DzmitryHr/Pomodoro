@@ -9,11 +9,10 @@
 #import "TasksViewController.h"
 
 
-@interface TasksViewController () <NSFetchedResultsControllerDelegate>
+@interface TasksViewController ()
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 
-@property (weak, nonatomic) IBOutlet UINavigationItem *tasksNavigationItem;
 
 @end
 
@@ -30,13 +29,12 @@
 
 # pragma mark - action
 
-- (IBAction)tapBackButton:(UIBarButtonItem *)sender
+- (IBAction)newTaskBarButton:(UIBarButtonItem *)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController pushViewController:self.addTaskViewController animated:NO];
 }
 
-
-# pragma mark - tableView
+# pragma mark - tableView DataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -52,7 +50,6 @@
 
     [self configureCell:cell atIndexPath:indexPath];
     
-    //return [self.dataSource tasksViewController:self configureCell:cell atIndexPath:indexPath]
     return cell;
 }
 
@@ -65,16 +62,83 @@
     cell.amtPomodorLabel.text = [NSString stringWithFormat:@"%@",[dataObject valueForKey:@"createTime"]];
 }
 
-
+// change current task
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    [self.navigationController popViewControllerAnimated:YES];
+    NSManagedObject *task = [self.dataSource tasksViewController:self forIndexPath:indexPath];
     
+    [self.coordinator changeCurrentTask:(CDTask*)task];
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
+
+
+/*
+#pragma mark - TaskDataManager Delegate
+
+- (void)dataWillChangeForTasksDataManager:(TasksDataManager *)tasksDataManager
+{
+    [self.tableViewTasks beginUpdates];
+}
+
+
+- (void)dataDidChangeForTasksDataManager:(TasksDataManager *)tasksDataManager
+{
+    [self.tableViewTasks endUpdates];
+}
+
+
+- (void)tasksDataManager:(TasksDataManager *)tasksDataManager
+             atIndexPath:(NSIndexPath *)indexPath
+              changeType:(ChangeDataType)type
+            newIndexPath:(NSIndexPath *)newIndexPath
+{
+    switch (type) {
+        case insertData: {
+            
+            [self.tableViewTasks insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
+                                       withRowAnimation:UITableViewRowAnimationFade];
+            
+            break;
+        }
+        case deleteData: {
+            
+            [self.tableViewTasks deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+                                       withRowAnimation:UITableViewRowAnimationFade];
+            
+            break;
+        }
+        case updateData: {
+            
+            [self configureCell:(TasksViewCell *)[self.tableViewTasks cellForRowAtIndexPath:indexPath]
+                    atIndexPath:indexPath];
+            
+            break;
+        }
+        case moveData: {
+
+            [self.tableViewTasks deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+                                       withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableViewTasks insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
+                                       withRowAnimation:UITableViewRowAnimationFade];
+            
+            break;
+        }
+    }
+}
+*/
+
+#pragma mark - Lifecycle
 
 - (void)viewWillAppear:(BOOL)animated
 {
-//    [self.tasksNavigationItem setHidesBackButton:NO];
+    [self.tableViewTasks reloadData];
+    self.navigationController.navigationBarHidden = NO;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    self.navigationController.navigationBarHidden = YES;
 }
 
 @end

@@ -7,7 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Coordinator.h"
+#import "CoreData.h"
 
-@interface AddTaskViewController : UIViewController <UIPickerViewDelegate, UIPickerViewDelegate>
+@interface AddTaskViewController : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource>
+
+@property (nonatomic, strong, readonly) NSString *taskName;
+@property (nonatomic, assign, readonly) NSInteger amountOfPomodors;
+
+@property (nonatomic, strong) Coordinator *coordinator;
+@property (nonatomic, strong) CoreData *coreData;
 
 @end

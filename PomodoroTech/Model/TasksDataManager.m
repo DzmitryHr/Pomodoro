@@ -8,7 +8,7 @@
 
 #import "TasksDataManager.h"
 
-@interface TasksDataManager() <TaskViewControllerDataSource, NSFetchedResultsControllerDelegate>
+@interface TasksDataManager() 
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
@@ -33,7 +33,6 @@
 
 - (NSFetchedResultsController *)fetchedResultsController
 {
-    
     if (_fetchedResultsController){
         return _fetchedResultsController;
     }
@@ -41,7 +40,7 @@
     NSString *entityName = @"CDTask";
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:entityName];
     
-    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"createTime" ascending:YES]]];
+    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"createTime" ascending:NO]]];
     
     _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                                     managedObjectContext:self.managedObjectContext
@@ -61,7 +60,7 @@
 }
 
 
-#pragma mark - Fetched results controller
+#pragma mark - <fetchedResultsControllerDelegate> 
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
@@ -146,7 +145,7 @@
 
 
 - (NSManagedObject *)tasksViewController:(TasksViewController *)taskViewController
-                                forIndexPath:(NSIndexPath *)indexPath
+                            forIndexPath:(NSIndexPath *)indexPath
 {
     NSManagedObject *record = [self.fetchedResultsController objectAtIndexPath:indexPath];
     return record;

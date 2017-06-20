@@ -1,5 +1,5 @@
 //
-//  CoordinatorController.h
+//  Coordinator.h
 //  PomodoroTech
 //
 //  Created by Kronan on 5/18/17.
@@ -10,15 +10,15 @@
 #import "CoreData.h"
 #import "Loader.h"
 
-@class CoordinatorController;
+@class Coordinator;
 
 @protocol CoordinatorControllerDelegate<NSObject>
 @required
-- (void)coordinatorController:(CoordinatorController *)coordinator timerDidChanged:(NSTimeInterval)time;
+- (void)coordinatorController:(Coordinator *)coordinator timerDidChanged:(NSTimeInterval)time;
 @end
 
 
-@interface CoordinatorController : NSObject
+@interface Coordinator : NSObject
 
 @property (nonatomic, weak) id <CoordinatorControllerDelegate> delegate;
 
@@ -38,6 +38,7 @@
 
 - (NSString *)giveCurrentStage;
 
+- (void)changeCurrentTask:(CDTask *)task;
 
 // run count Work Cycle:
 // duration pomodor (WORK) and run count Long or Short BREAK (Break)

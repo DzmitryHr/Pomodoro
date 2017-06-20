@@ -1,5 +1,5 @@
 //
-//  CoordinatorController.m
+//  Coordinator.m
 //  PomodoroTech
 //
 //  Created by Kronan on 5/18/17.
@@ -8,7 +8,7 @@
 
 
 
-#import "CoordinatorController.h"
+#import "Coordinator.h"
 #import "CoreData.h"
 
 
@@ -34,7 +34,7 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
 
 
 
-@interface CoordinatorController()
+@interface Coordinator()
 
 
 @property (nonatomic, readwrite, assign) CoordinatorControllerStage currentStage;
@@ -65,9 +65,9 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
 
 
 
-@implementation CoordinatorController
+@implementation Coordinator
 
-#pragma mark - init
+#pragma mark - load
 
 // initialization
 
@@ -144,6 +144,10 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
     return [NSString stringWithFormat:@"%li", (long)self.currentStage];
 }
 
+- (void)changeCurrentTask:(CDTask *)task
+{
+    self.task = task;
+}
 
 #pragma mark - State
 

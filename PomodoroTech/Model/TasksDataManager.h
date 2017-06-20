@@ -32,7 +32,7 @@ typedef NS_ENUM(NSInteger, ChangeDataType)
 @end
 
 
-@interface TasksDataManager : NSObject
+@interface TasksDataManager : NSObject <TasksViewControllerDataSource, NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, weak) id<TasksDataManagerDelegate> delegate;
 

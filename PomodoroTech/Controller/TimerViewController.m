@@ -7,8 +7,6 @@
 //
 @import UserNotifications;
 #import "TimerViewController.h"
-#import "TasksViewController.h"
-
 
 
 @interface TimerViewController () <CoordinatorControllerDelegate>
@@ -34,18 +32,8 @@
 
 
 #pragma mark - init
-/*
-- (CoordinatorController *)coordinator
-{
-    if (!_coordinator){
-        _coordinator = [[CoordinatorController alloc] init];
-    }
-    
-    return _coordinator;
-}
-*/
 
-@synthesize currentTimerValue = _currentTimerValue;
+//@synthesize currentTimerValue = _currentTimerValue;
 
 
 - (NSInteger)currentTimerValue
@@ -65,7 +53,7 @@
     [super viewDidLoad];
     
     
-    //inst delegate CoordinatorController
+    //inst delegate Coordinator
     [[self coordinator] setDelegate:self];
     
     [self.startTimerButton setEnabled:YES];
@@ -79,13 +67,13 @@
 
 #pragma mark - IBAction
 
-
-- (IBAction)tapCurrentTaskLabel:(UITapGestureRecognizer *)sender {
-/*
-    TasksViewController *tasksViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"TaskViewController"];
+// switch to another screen
+- (IBAction)tapCurrentTaskLabel:(UITapGestureRecognizer *)sender
+{
     
-    [self.navigationController pushViewController:tasksViewController animated:YES];
- */
+    [self.navigationController pushViewController:self.tasksViewController animated:YES];
+    
+    //??? tap back button - no animated
 }
 
 
@@ -101,7 +89,6 @@
         [self.timePicker setDatePickerMode:UIDatePickerModeCountDownTimer];
         self.timePicker.countDownDuration = self.currentTimerValue;
     }
-    
 };
 
 
@@ -161,7 +148,7 @@
 {
     CDUser *user = [self.coordinator giveCurrentUser];
     CDTask *task = [self.coordinator giveCurrentTask];
-    NSString *inf = [NSString stringWithFormat:@" User: %@ \n Task: %@ \n Pomodors: %lu", user.login, task.name, task.pomodors.count]; // all pomodors - choose complit pomodors
+    NSString *inf = [NSString stringWithFormat:@" User: %@ \n Task: %@ \n Pomodors: %lu \n Breaks: %lu", user.login, task.name, task.pomodors.count, task.breaks.count]; // all pomodors - choose complit pomodors
     self.informationLabel.text = inf;
     
     self.currentTaskLabel.text = task.name;
@@ -173,7 +160,7 @@
 
 #pragma mark - CoordinatorControllerDelegate
 
-- (void)coordinatorController:(CoordinatorController *)coordinator timerDidChanged:(NSTimeInterval)time;
+- (void)coordinatorController:(Coordinator *)coordinator timerDidChanged:(NSTimeInterval)time;
 {
     self.currentTimerValue = time;
     [self updateUI];
@@ -211,4 +198,13 @@
              }];
     
 }
+
+
+#pragma mark - Lifecycle
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self updateUI];
+}
+
 @end

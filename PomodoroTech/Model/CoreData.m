@@ -33,7 +33,7 @@
 {
     NSString *entityName = @"CDUser";
     NSString *attributeName = @"login";
-    return (CDUser *)[self getObjectWithEntityName:entityName withAttributeName:attributeName forPredicate:login];
+    return (CDUser *)[self getObjectWithEntityName:entityName withAttributeName:attributeName forAttributeValue:login];
 }
 
 
@@ -41,9 +41,12 @@
 {
     NSString *entityName = @"CDTask";
     NSString *attributeName = @"name";
-    CDTask *task = (CDTask *)[self getObjectWithEntityName:entityName withAttributeName:attributeName forPredicate:name];
+    CDTask *task = (CDTask *)[self getObjectWithEntityName:entityName withAttributeName:attributeName forAttributeValue:name];
+    task.lastUseTime = [NSDate date];
 
     return task;
+    
+//???
 }
 
 
@@ -71,7 +74,7 @@
     task.whoseUser = user;
     task.complit = @(NO);
     
-    [user.managedObjectContext save:nil];
+    [task.managedObjectContext save:nil];
     
     return task;
 }
@@ -117,14 +120,14 @@
 
 - (NSManagedObject *)getObjectWithEntityName:(NSString *)entityName
                                      withAttributeName:(NSString *)attributeName
-                                forPredicate:(NSString *)predicateName
+                                forAttributeValue:(NSString *)attributeValue
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
  
     NSEntityDescription *description = [NSEntityDescription entityForName:entityName
                                                    inManagedObjectContext:self.mainContext];
     request.entity = description;
-    request.predicate = [NSPredicate predicateWithFormat:@"%@ == %@", attributeName, predicateName];
+    request.predicate = [NSPredicate predicateWithFormat:@"%K == %@", attributeName, attributeValue];
     
     NSError *requestErr = nil;
     NSArray *objectsCD = [self.mainContext executeFetchRequest:request error: &requestErr];

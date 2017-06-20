@@ -9,11 +9,13 @@
 @import UserNotifications;
 #import "AppDelegate.h"
 #import "TimerViewController.h"
-#import "CoordinatorController.h"
+#import "Coordinator.h"
 #import "CoreData.h"
 #import "Loader.h"
 
 #import "TasksDataManager.h"
+
+#import "AddTaskViewController.h"
 
 @interface AppDelegate ()
 
@@ -38,20 +40,36 @@
     
     CoreData *coreData = [[CoreData alloc] init];
     
-    CoordinatorController *coordinator = [[CoordinatorController alloc] initWithLoader:self.loader
+    Coordinator *coordinator = [[Coordinator alloc] initWithLoader:self.loader
                                                                               coreData:coreData];
 
     TimerViewController *timerViewController = (TimerViewController *)rootNavigationController.topViewController;
+
     timerViewController.coordinator = coordinator;
     
-    // ???
+    
     TasksDataManager *tasksDataManager = [[TasksDataManager alloc] initWithManagedObjectContext:coreData.mainContext];
+    
+    TasksViewController* tasksViewController = [mainStoryboard instantiateViewControllerWithIdentifier:@"TaskViewController"];
+    
+    timerViewController.tasksViewController = tasksViewController;
+
+    tasksViewController.dataSource = tasksDataManager;
+    tasksViewController.coordinator = coordinator;
+    
+//    tasksDataManager.delegate = tasksViewController;
+    
     
     self.window.rootViewController = rootNavigationController;
     [self.window makeKeyAndVisible];
     
     
+    AddTaskViewController *addTaskViewController = [mainStoryboard instantiateViewControllerWithIdentifier:@"AddTaskVC"];
     
+    addTaskViewController.coordinator = coordinator;
+    addTaskViewController.coreData = coreData;
+    
+    tasksViewController.addTaskViewController = addTaskViewController;
     
     
     
