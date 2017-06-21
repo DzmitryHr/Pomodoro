@@ -12,7 +12,7 @@
 #import "AddTaskViewController.h"
 #import "Coordinator.h"
 //#import "TasksDataManager.h"
-#import "TasksDataManagerProtocol.h"
+
 
 @class TasksViewController;
 
@@ -37,7 +37,7 @@
 
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
-@property (strong, nonatomic) AddTaskViewController *addTaskViewController;
+//@property (strong, nonatomic) AddTaskViewController *addTaskViewController;
 
 @property (strong, nonatomic) Coordinator *coordinator;
 

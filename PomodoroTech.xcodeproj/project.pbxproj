@@ -52,7 +52,7 @@
 		8C363B1A1EB68640007729F8 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8C448D511EEDCBC70034E2B5 /* Loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Loader.h; path = Model/Loader.h; sourceTree = "<group>"; };
 		8C448D521EEDCBC70034E2B5 /* Loader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Loader.m; path = Model/Loader.m; sourceTree = "<group>"; };
-		8C641F5F1EF9790100876B68 /* TasksDataManagerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TasksDataManagerProtocol.h; path = Protocol/TasksDataManagerProtocol.h; sourceTree = "<group>"; };
+		8C641F601EFAA83700876B68 /* TasksDMDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TasksDMDelegate.h; path = Protocol/TasksDMDelegate.h; sourceTree = "<group>"; };
 		8CA751831EEDCFE4002D6EFD /* TasksViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TasksViewCell.h; path = View/TasksViewCell.h; sourceTree = "<group>"; };
 		8CA751841EEDCFE4002D6EFD /* TasksViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TasksViewCell.m; path = View/TasksViewCell.m; sourceTree = "<group>"; };
 		8CA751861EEDCFF7002D6EFD /* HTTPCommunication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTTPCommunication.h; path = Model/HTTPCommunication.h; sourceTree = "<group>"; };
@@ -95,7 +95,6 @@
 		8C363AF31EB3510F007729F8 /* PomodoroTech */ = {
 			isa = PBXGroup;
 			children = (
-				8C641F5F1EF9790100876B68 /* TasksDataManagerProtocol.h */,
 				8C363B681EB72C8D007729F8 /* CoreData */,
 				8CAE97AE1EC791A2009369E1 /* Controllers */,
 				8C363B141EB367A0007729F8 /* Model */,
@@ -119,6 +118,7 @@
 				8C448D521EEDCBC70034E2B5 /* Loader.m */,
 				8C1556961EEDB399000A12B3 /* TasksDataManager.h */,
 				8C1556971EEDB399000A12B3 /* TasksDataManager.m */,
+				8C641F601EFAA83700876B68 /* TasksDMDelegate.h */,
 			);
 			name = Model;
 			sourceTree = "<group>";

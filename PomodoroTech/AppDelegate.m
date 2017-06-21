@@ -66,10 +66,7 @@
     
     AddTaskViewController *addTaskViewController = [mainStoryboard instantiateViewControllerWithIdentifier:@"AddTaskVC"];
     
-    addTaskViewController.coordinator = coordinator;
-    addTaskViewController.coreData = coreData;
-    
-    tasksViewController.addTaskViewController = addTaskViewController;
+   // tasksViewController.addTaskViewController = addTaskViewController;
     
     
     

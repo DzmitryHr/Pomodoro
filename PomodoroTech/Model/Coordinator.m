@@ -6,11 +6,7 @@
 //  Copyright © 2017 Kronan. All rights reserved.
 //
 
-
-
 #import "Coordinator.h"
-#import "CoreData.h"
-
 
 
 typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
@@ -31,7 +27,6 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
     exitFromBackground
     
 };
-
 
 
 @interface Coordinator()
@@ -344,6 +339,16 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
     return breaK;
 }
 */
+
+#pragma mark - AddTaskVCDelegate
+
+- (void)createNewTaskWithTaskName:(NSString *)nameOfTask andAmountOfPomodors:(NSInteger)amountOfPomodors
+{
+    [self.coreData createTaskInMainContextWithName:nameOfTask forUser:self.user];
+}
+
+
+#pragma mark - Lifecycle
 
 - (void)dealloc
 {

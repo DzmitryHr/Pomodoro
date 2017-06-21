@@ -10,17 +10,22 @@
 #import "CoreData.h"
 #import "Loader.h"
 
+#import "AddTaskViewController.h"
+
+
 @class Coordinator;
 
 @protocol CoordinatorControllerDelegate<NSObject>
+
 @required
 - (void)coordinatorController:(Coordinator *)coordinator timerDidChanged:(NSTimeInterval)time;
+
 @end
 
 
-@interface Coordinator : NSObject
+@interface Coordinator : NSObject <AddTaskVCDelegate>
 
-@property (nonatomic, weak) id <CoordinatorControllerDelegate> delegate;
+@property (nonatomic, weak) id<CoordinatorControllerDelegate> delegate;
 
 @property (nonatomic, readonly, assign) NSTimeInterval uiTimer;
 

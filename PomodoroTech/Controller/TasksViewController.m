@@ -31,7 +31,12 @@
 
 - (IBAction)newTaskBarButton:(UIBarButtonItem *)sender
 {
-    [self.navigationController pushViewController:self.addTaskViewController animated:NO];
+    UIStoryboard *mainStotyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    AddTaskViewController *addTaskViewController = [mainStotyboard instantiateViewControllerWithIdentifier:@"AddTaskVC"];
+   
+    addTaskViewController.delegate = self.coordinator;
+    
+    [self.navigationController pushViewController:addTaskViewController animated:NO];
 }
 
 # pragma mark - tableView DataSource

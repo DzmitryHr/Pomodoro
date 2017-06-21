@@ -7,15 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Coordinator.h"
-#import "CoreData.h"
+
+
+@protocol AddTaskVCDelegate <NSObject>
+
+@required
+- (void)createNewTaskWithTaskName:(NSString *)nameOfTask andAmountOfPomodors:(NSInteger)amountOfPomodors;
+
+@end
+
 
 @interface AddTaskViewController : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource>
 
-@property (nonatomic, strong, readonly) NSString *taskName;
-@property (nonatomic, assign, readonly) NSInteger amountOfPomodors;
-
-@property (nonatomic, strong) Coordinator *coordinator;
-@property (nonatomic, strong) CoreData *coreData;
+@property (nonatomic, weak) id<AddTaskVCDelegate> delegate;
 
 @end
