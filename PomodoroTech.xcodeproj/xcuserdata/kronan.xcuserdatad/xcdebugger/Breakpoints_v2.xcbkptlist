@@ -202,11 +202,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PomodoroTech/Model/CoreData.m"
-            timestampString = "519152428.14338"
+            timestampString = "520264518.065107"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "192"
-            endingLineNumber = "192"
+            startingLineNumber = "199"
+            endingLineNumber = "199"
             landmarkName = "-printObjects:withEntityName:"
             landmarkType = "7">
          </BreakpointContent>

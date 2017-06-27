@@ -25,13 +25,19 @@
 
 @protocol TasksVCDelegate <NSObject>
 @required
-//- (void)goToAddTasksVCformTasksVC:(TasksViewController *)tasksVC;
 - (void)tasksVC:(TasksViewController *)tasksVC changeCurrentTask:(NSManagedObject *)task;
+
+- (void)tasksVC:(TasksViewController *)tasksVC didPushDelButtonInCellWithTask:(NSManagedObject *)task;
+
+- (void)tasksVC:(TasksViewController *)tasksVC didPushEditButtonInCellWithTask:(NSManagedObject *)task;
+
 @end
+
 
 @protocol TasksVCNavigation <NSObject>
 @required
 - (void)goToAddTasksVCformTasksVC:(TasksViewController *)tasksVC;
+- (void)goToBackFromTasksVC:(TasksViewController *)tasksVC;
 
 @end
 

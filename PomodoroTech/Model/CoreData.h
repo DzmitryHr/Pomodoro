@@ -27,6 +27,7 @@
                                               forTask:(CDTask *)task;
 - (CDBreak *)createBreakInMainContextWithDuration:(NSInteger)breakDuration
                                           forTask:(CDTask *)task;
+- (void)delTaskInMainContext:(CDTask *)task;
 
 
 

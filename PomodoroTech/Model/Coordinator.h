@@ -19,6 +19,7 @@
 
 
 @interface Coordinator : NSObject <AddTaskVCDelegate,
+                                   AddTaskVCNavigation,
                                    TasksVCDelegate,
                                    TasksVCNavigation,
                                    TimerVCNavigation,

@@ -12,16 +12,23 @@
 @class AddTaskViewController;
 
 @protocol AddTaskVCDelegate <NSObject>
-
 @required
 - (void)vc:(AddTaskViewController *)taskVC createNewTaskWithTaskName:(NSString *)nameOfTask andAmountOfPomodors:(NSInteger)amountOfPomodors;
+
+@end
+
+
+@protocol AddTaskVCNavigation <NSObject>
+@required
 - (void)popVCfromVC:(AddTaskViewController *)taskVC;
 
 @end
 
 
+
 @interface AddTaskViewController : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource>
 
 @property (nonatomic, weak) id<AddTaskVCDelegate> delegate;
+@property (nonatomic, weak) id<AddTaskVCNavigation> navigationCoordinator;
 
 @end

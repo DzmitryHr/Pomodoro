@@ -81,7 +81,8 @@
 {
     [self createNewTask];
     
-    [self.delegate popVCfromVC:self];
+    //[self.delegate popVCfromVC:self];
+    [self.navigationCoordinator popVCfromVC:self];
 }
 
 

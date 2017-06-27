@@ -115,6 +115,13 @@
     return breaK;
 }
 
+- (void)delTaskInMainContext:(CDTask *)task
+{
+    [self.mainContext deleteObject:task];
+    NSLog(@"del task");
+}
+
+
 
 #pragma mark - accesory methods
 

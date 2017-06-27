@@ -50,12 +50,20 @@
 
 - (void)configureCell:(TasksViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    NSManagedObject *dataObject = [self.dataSource tasksViewController:self forIndexPath:indexPath];
+//    NSManagedObject *dataObject = [self.dataSource tasksViewController:self forIndexPath:indexPath];
+    NSManagedObject *dataObject = [self giveObjectInTableViewForIndexPath:indexPath];
     
     cell.taskLabel.text = [dataObject valueForKey:@"name"];
     cell.amtPomodorLabel.text = [NSString stringWithFormat:@"%@",[dataObject valueForKey:@"createTime"]];
 }
 
+
+- (NSManagedObject *)giveObjectInTableViewForIndexPath:(NSIndexPath *)indexPath
+{
+    NSManagedObject *dataObject = [self.dataSource tasksViewController:self forIndexPath:indexPath];
+    
+    return dataObject;
+}
 
 #pragma mark - DataSource: tableView
 
@@ -85,9 +93,41 @@
     NSManagedObject *task = [self.dataSource tasksViewController:self forIndexPath:indexPath];
     
     [self.delegate tasksVC:self changeCurrentTask:task];
+    
+    [self.navigationCoordinator goToBackFromTasksVC:self];
 }
 
 
+// cell editing
+- (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    UITableViewRowAction *delButton = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive
+                                                                         title:@"Del"
+                                                                       handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+                                                                           NSLog(@"title Del Block===");
+                                                                           NSLog(@"action = %@", action);
+                                                                           NSLog(@"indexP = %@", indexPath);
+                                                                           
+                                                                           CDTask *task = (CDTask *)[self giveObjectInTableViewForIndexPath:indexPath];
+                                                                           
+                                                                           [self.delegate tasksVC:self didPushDelButtonInCellWithTask:task];
+                                            
+                                                                           
+                                                                       }];
+    
+    UITableViewRowAction *editButton = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault
+                                                                          title:@"Edit"
+                                                                        handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+                                                                            NSLog(@"title Edit Block===");
+                                                                        }];
+    
+    editButton.backgroundColor = [UIColor blueColor];
+    
+    NSArray *tableViewRowActions = @[delButton,editButton];
+    
+    return tableViewRowActions;
+}
 
 #pragma mark - Delegate: TaskDataManager
 

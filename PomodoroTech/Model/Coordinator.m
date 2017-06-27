@@ -425,6 +425,21 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
 }
 
 
+#pragma mark - Delegate: TasksVCDelegate
+
+- (void)tasksVC:(TasksViewController *)tasksVC changeCurrentTask:(NSManagedObject *)task
+{
+    [self changeCurrentTask:(CDTask *)task];
+}
+
+
+- (void)tasksVC:(TasksViewController *)tasksVC didPushDelButtonInCellWithTask:(NSManagedObject *)task
+{
+    // del task
+    [self.coreData delTaskInMainContext:(CDTask *)task];
+    NSLog(@"del task");
+}
+
 #pragma mark - Navigation: TasksVCNavigation
 
 // init addTaskViewController
@@ -435,19 +450,14 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
     AddTaskViewController *addTaskVC = [mainStotyboard instantiateViewControllerWithIdentifier:@"AddTaskVC"];
     
     addTaskVC.delegate = self;
+    addTaskVC.navigationCoordinator = self;
     
     [tasksVC.navigationController pushViewController:addTaskVC animated:YES];
 }
 
-
-#pragma mark - Delegate: TasksVCDelegate
-
-- (void)tasksVC:(TasksViewController *)tasksVC changeCurrentTask:(NSManagedObject *)task
+- (void)goToBackFromTasksVC:(TasksViewController *)tasksVC
 {
-    [self changeCurrentTask:(CDTask *)task];
-    
-    [tasksVC.navigationController popViewControllerAnimated:YES];
-
+     [tasksVC.navigationController popViewControllerAnimated:YES];
 }
 
 
@@ -457,6 +467,9 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
 {
     [self.coreData createTaskInMainContextWithName:nameOfTask forUser:self.user];
 }
+
+
+#pragma mark - Navigation: AddTaskVCNavigation
 
 - (void)popVCfromVC:(AddTaskViewController *)taskVC
 {
