@@ -11,45 +11,32 @@
 #import "Loader.h"
 
 #import "AddTaskViewController.h"
+#import "TasksViewController.h"
+#import "TimerViewController.h"
+#import "TasksDataManager.h"
+
+#import "CoordinatorDelegate.h"
 
 
-@class Coordinator;
+@interface Coordinator : NSObject <AddTaskVCDelegate,
+                                   TasksVCDelegate,
+                                   TasksVCNavigation,
+                                   TimerVCNavigation,
+                                   TimerVCDataSource>
 
-@protocol CoordinatorControllerDelegate<NSObject>
-
-@required
-- (void)coordinatorController:(Coordinator *)coordinator timerDidChanged:(NSTimeInterval)time;
-
-@end
-
-
-@interface Coordinator : NSObject <AddTaskVCDelegate>
-
-@property (nonatomic, weak) id<CoordinatorControllerDelegate> delegate;
+@property (nonatomic, weak) id<CoordinatorDelegate> delegate;
 
 @property (nonatomic, readonly, assign) NSTimeInterval uiTimer;
 
+@property (nonatomic, strong, readonly) CoreData *coreData;
 
 // designated initializer
-- (instancetype)initWithLoader:(Loader *)loader coreData:(CoreData *)coreData;
+- (instancetype)initWithLoader:(Loader *)loader coreData:(CoreData *)coreData delegate:(id)delegate;
 
 
 // current Objects
 - (NSInteger)giveCurentDurationPomodor;
-- (void)changeCurrentDurationPomodor:(NSInteger)newCurrentDurationPomodor;
-
-- (CDUser *)giveCurrentUser;
-- (CDTask *)giveCurrentTask;
-
-- (NSString *)giveCurrentStage;
 
 - (void)changeCurrentTask:(CDTask *)task;
-
-// run count Work Cycle:
-// duration pomodor (WORK) and run count Long or Short BREAK (Break)
-- (void)runWorkCycle;
-
-- (void)stopWorkCycle;
-
 
 @end

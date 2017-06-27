@@ -9,27 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "TasksViewController.h"
 
-typedef NS_ENUM(NSInteger, ChangeDataType)
-{
-    insertData = 0,
-    deleteData,
-    updateData,
-    moveData
-};
-
-@class TasksDataManager;
-
-@protocol TasksDataManagerDelegate <NSObject>
-
-- (void)dataWillChangeForTasksDataManager:(TasksDataManager *)tasksDataManager;
-- (void)dataDidChangeForTasksDataManager:(TasksDataManager *)tasksDataManager;
-- (void)tasksDataManager:(TasksDataManager *)tasksDataManager
-             atIndexPath:(NSIndexPath *)indexPath
-              changeType:(ChangeDataType)type
-            newIndexPath:(NSIndexPath *)newIndexPath;
-
-
-@end
+#import "TaskDataManagerDelegate.h"
 
 
 @interface TasksDataManager : NSObject <TasksViewControllerDataSource, NSFetchedResultsControllerDelegate>

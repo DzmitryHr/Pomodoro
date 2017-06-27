@@ -7,11 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CoreData.h"
 #import "TasksViewCell.h"
-#import "AddTaskViewController.h"
-#import "Coordinator.h"
-//#import "TasksDataManager.h"
+#import "TaskDataManagerDelegate.h"
+#import "CoreData.h"
 
 
 @class TasksViewController;
@@ -25,20 +23,26 @@
 @end
 
 
+@protocol TasksVCDelegate <NSObject>
+@required
+//- (void)goToAddTasksVCformTasksVC:(TasksViewController *)tasksVC;
+- (void)tasksVC:(TasksViewController *)tasksVC changeCurrentTask:(NSManagedObject *)task;
+@end
+
+@protocol TasksVCNavigation <NSObject>
+@required
+- (void)goToAddTasksVCformTasksVC:(TasksViewController *)tasksVC;
+
+@end
+
 @interface TasksViewController : UIViewController <UITableViewDataSource,
-                                                   UITableViewDelegate>
+                                                   UITableViewDelegate,
+                                                   TasksDataManagerDelegate>
 
-//@interface TasksViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,TasksDataManagerDelegate>
-
-
-@property (strong, nonatomic) id <TasksViewControllerDataSource> dataSource;
+@property (nonatomic, strong) id <TasksViewControllerDataSource> dataSource;
+@property (nonatomic, weak) id <TasksVCDelegate> delegate;
+@property (nonatomic, weak) id<TasksVCNavigation> navigationCoordinator;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableViewTasks;
-
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-
-//@property (strong, nonatomic) AddTaskViewController *addTaskViewController;
-
-@property (strong, nonatomic) Coordinator *coordinator;
 
 @end

@@ -9,10 +9,13 @@
 #import <UIKit/UIKit.h>
 
 
+@class AddTaskViewController;
+
 @protocol AddTaskVCDelegate <NSObject>
 
 @required
-- (void)createNewTaskWithTaskName:(NSString *)nameOfTask andAmountOfPomodors:(NSInteger)amountOfPomodors;
+- (void)vc:(AddTaskViewController *)taskVC createNewTaskWithTaskName:(NSString *)nameOfTask andAmountOfPomodors:(NSInteger)amountOfPomodors;
+- (void)popVCfromVC:(AddTaskViewController *)taskVC;
 
 @end
 

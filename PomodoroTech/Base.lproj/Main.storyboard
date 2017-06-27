@@ -32,22 +32,23 @@
                                 </connections>
                             </textField>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HRt-DJ-rzB">
-                                <rect key="frame" x="0.0" y="191" width="320" height="325"/>
+                                <rect key="frame" x="0.0" y="126" width="320" height="442"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="numbers of pomodors" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bb5-OR-jIu">
-                                        <rect key="frame" x="40" y="8" width="241" height="34"/>
+                                        <rect key="frame" x="40" y="156" width="241" height="34"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AgT-N0-evr">
-                                        <rect key="frame" x="0.0" y="50" width="320" height="216"/>
+                                        <rect key="frame" x="0.0" y="164" width="320" height="216"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="0.40000000600000002" alpha="0.25746468321917809" colorSpace="calibratedRGB"/>
                                     </pickerView>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RvO-FK-lLy">
-                                        <rect key="frame" x="125" y="274" width="71" height="31"/>
+                                        <rect key="frame" x="125" y="361" width="71" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal">
                                             <attributedString key="attributedTitle">
@@ -315,7 +316,7 @@
         <!--Tasks-->
         <scene sceneID="ddy-RZ-bZk">
             <objects>
-                <viewController storyboardIdentifier="TaskViewController" automaticallyAdjustsScrollViewInsets="NO" id="TFv-uY-dRA" customClass="TasksViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TasksViewController" automaticallyAdjustsScrollViewInsets="NO" id="TFv-uY-dRA" customClass="TasksViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="gTy-Aa-KJb"/>
                         <viewControllerLayoutGuide type="bottom" id="3AG-7Y-BFV"/>

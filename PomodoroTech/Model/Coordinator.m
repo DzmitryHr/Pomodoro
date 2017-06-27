@@ -39,6 +39,7 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
 @property (nonatomic, strong) CDPomodor *pomodor;
 @property (nonatomic, strong) CDBreak *breaK;
 
+
 @property (nonatomic, strong) Loader *loader;
 
 #define     durationPomodor             self.loader.lastDurationPomodor
@@ -49,7 +50,7 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
 #define     taskName                    self.loader.lastTaskName
 
 
-@property (nonatomic, strong) CoreData *coreData;
+@property (nonatomic, strong, readwrite) CoreData *coreData;
 
 @property (nonatomic, strong) NSTimer *timer;
 
@@ -62,14 +63,14 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
 
 @implementation Coordinator
 
-#pragma mark - load
+#pragma mark - Lifecycle
 
-// initialization
-
-- (instancetype)initWithLoader:(Loader *)loader coreData:(CoreData *)coreData
+- (instancetype)initWithLoader:(Loader *)loader coreData:(CoreData *)coreData delegate:(id)delegate
 {
     self = [super init];
     if (self) {
+        
+        self.delegate = delegate;
         
         self.loader = loader;
         self.coreData = coreData;
@@ -91,9 +92,29 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
         
         self.uiTimer = durationPomodor;
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applicationWillTerminateNotification:)
+                                                 name:UIApplicationWillTerminateNotification
+                                               object:nil];
+    
     return self;
 }
 
+
+- (void)dealloc
+{
+    userLogin = self.user.login;
+    taskName = self.task.name;
+    
+    //  ???
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIApplicationWillTerminateNotification
+                                                  object:nil];
+}
+
+
+#pragma mark - Custom Accessors
 
 - (void)setUiTimer:(NSTimeInterval)uiTimer
 {
@@ -102,17 +123,11 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
 }
 
 
-#pragma mark - ohter metods
+#pragma mark - Public
 
 - (NSInteger)giveCurentDurationPomodor
 {
    return(self.pomodor ? (NSTimeInterval)[self.pomodor.duration integerValue] : self.durationPomodor);
-}
-
-
-- (void)changeCurrentDurationPomodor:(NSInteger)newCurrentDurationPomodor
-{
-    durationPomodor = newCurrentDurationPomodor;
 }
 
 
@@ -128,23 +143,18 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
 }
 
 
-- (void)saveCoreDataForEntity:(NSManagedObject *)entity
-{
-    [entity.managedObjectContext save:nil];
-}
-
-
 - (NSString *)giveCurrentStage
 {
     return [NSString stringWithFormat:@"%li", (long)self.currentStage];
 }
 
+
 - (void)changeCurrentTask:(CDTask *)task
 {
+    task.lastUseTime = [NSDate date];
     self.task = task;
 }
 
-#pragma mark - State
 
 - (void)runWorkCycle
 {
@@ -159,6 +169,21 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
     self.currentStage = stateStopCount;
     
     [self processState];
+}
+
+
+#pragma mark - Private
+
+- (void)changeCurrentDurationPomodor:(NSInteger)newCurrentDurationPomodor
+{
+    durationPomodor = newCurrentDurationPomodor;
+    self.uiTimer = newCurrentDurationPomodor;
+}
+
+
+- (void)saveCoreDataForEntity:(NSManagedObject *)entity
+{
+    [entity.managedObjectContext save:nil];
 }
 
 
@@ -235,7 +260,7 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
         }
             
             
-# warning - stop this???
+        # warning - stop this???
         case stateStopCount:{
             
             [self stopTimer];
@@ -340,20 +365,115 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
 }
 */
 
-#pragma mark - AddTaskVCDelegate
 
-- (void)createNewTaskWithTaskName:(NSString *)nameOfTask andAmountOfPomodors:(NSInteger)amountOfPomodors
+#pragma mark - Delegate: TimerVCNavigation
+
+// init TasksViewController and TasksDataManager
+// transition to TasksViewController
+- (void)goToTasksVCFromTimerVC:(TimerViewController *)timerVC
+{
+    TasksDataManager *tasksDM = [[TasksDataManager alloc] initWithManagedObjectContext:self.coreData.mainContext];
+    
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    TasksViewController *tasksVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"TasksViewController"];
+    
+    tasksVC.delegate = self;
+    tasksVC.dataSource = tasksDM;
+    tasksVC.navigationCoordinator = self;
+    
+    tasksDM.delegate = tasksVC;
+    
+    [timerVC.navigationController pushViewController:tasksVC animated:YES];
+}
+
+
+#pragma mark - DataSource: TimerVCDataSource
+
+- (CDUser *)currentUserForTimerVC:(TimerViewController *)timerVC
+{
+    return self.user;
+}
+
+
+- (CDTask *)currentTaskForTimerVC:(TimerViewController *)timerVC
+{
+    return self.task;
+}
+
+
+- (NSString *)currentStageForTimerVC:(TimerViewController *)timerVC
+{
+    return [NSString stringWithFormat:@"%li", (long)self.currentStage];
+}
+
+
+- (void)changeDurationPomodor:(NSTimeInterval)pomodorDuration{
+    [self changeCurrentDurationPomodor:pomodorDuration];
+}
+
+
+- (void)runWorkCycleFromTimerVC
+{
+    [self runWorkCycle];
+}
+
+
+- (void)stopWorkCycleFromTimerVC
+{
+    [self stopWorkCycle];
+}
+
+
+#pragma mark - Navigation: TasksVCNavigation
+
+// init addTaskViewController
+// go to addTaskViewController
+- (void)goToAddTasksVCformTasksVC:(TasksViewController *)tasksVC
+{
+    UIStoryboard *mainStotyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    AddTaskViewController *addTaskVC = [mainStotyboard instantiateViewControllerWithIdentifier:@"AddTaskVC"];
+    
+    addTaskVC.delegate = self;
+    
+    [tasksVC.navigationController pushViewController:addTaskVC animated:YES];
+}
+
+
+#pragma mark - Delegate: TasksVCDelegate
+
+- (void)tasksVC:(TasksViewController *)tasksVC changeCurrentTask:(NSManagedObject *)task
+{
+    [self changeCurrentTask:(CDTask *)task];
+    
+    [tasksVC.navigationController popViewControllerAnimated:YES];
+
+}
+
+
+#pragma mark - Delegate: AddTaskVCDelegate
+
+- (void)vc:(AddTaskViewController *)taskVC createNewTaskWithTaskName:(NSString *)nameOfTask andAmountOfPomodors:(NSInteger)amountOfPomodors
 {
     [self.coreData createTaskInMainContextWithName:nameOfTask forUser:self.user];
 }
 
+- (void)popVCfromVC:(AddTaskViewController *)taskVC
+{
+    [taskVC.navigationController popViewControllerAnimated:YES];
+}
 
-#pragma mark - Lifecycle
 
-- (void)dealloc
+#pragma mark - Notifications: exiting the application
+
+- (void)applicationWillTerminateNotification:(NSNotification *)notification
 {
     userLogin = self.user.login;
     taskName = self.task.name;
+    
+    [self.loader saveSettings];
+    
+    NSLog(@"appWillTerminate");
 }
 
 @end

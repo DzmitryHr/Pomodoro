@@ -7,14 +7,38 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Coordinator.h"
 #import "TasksViewController.h"
+#import "TasksDataManager.h"
+#import "CoreData.h"
+#import "CoordinatorDelegate.h"
 
 
-@interface TimerViewController : UIViewController
+@class TimerViewController;
 
-@property (nonatomic, strong) Coordinator *coordinator;
+@protocol TimerVCNavigation <NSObject>
+@required
+- (void)goToTasksVCFromTimerVC:(TimerViewController *)timerVC;
 
-@property (nonatomic, strong) TasksViewController *tasksViewController;
+@end
+
+
+@protocol TimerVCDataSource <NSObject>
+@required
+- (CDUser *)currentUserForTimerVC:(TimerViewController *)timerVC;
+- (CDTask *)currentTaskForTimerVC:(TimerViewController *)timerVC;
+- (NSString *)currentStageForTimerVC:(TimerViewController *)timerVC;
+
+- (void)changeDurationPomodor:(NSTimeInterval)pomodorDuration;
+- (void)runWorkCycleFromTimerVC;
+- (void)stopWorkCycleFromTimerVC;
+
+@end
+
+
+@interface TimerViewController : UIViewController <CoordinatorDelegate>
+
+@property (nonatomic, weak) id<TimerVCNavigation> navigationCoordinator;
+@property (nonatomic, strong) id<TimerVCDataSource> dataSource;
+
 
 @end

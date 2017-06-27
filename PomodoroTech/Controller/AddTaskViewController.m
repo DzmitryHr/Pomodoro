@@ -21,11 +21,12 @@
 @property (nonatomic, strong, readwrite) NSString *taskName;
 @property (nonatomic, assign, readwrite) NSInteger amountOfPomodors;
 
-
 @end
 
 
 @implementation AddTaskViewController
+
+#pragma mark - Life Cicle VC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -43,12 +44,61 @@
 }
 
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    self.navigationController.navigationBarHidden = NO;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardDidShow:)
+                                                 name:UIKeyboardDidShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+    
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    self.navigationController.navigationBarHidden = YES;
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardDidShowNotification
+                                                  object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
+}
+
+
+#pragma mark - IBAction
+
+- (IBAction)addTaskButton:(UIButton *)sender
+{
+    [self createNewTask];
+    
+    [self.delegate popVCfromVC:self];
+}
+
+
+- (IBAction)hideKeyboardField:(UITextField *)sender
+{
+    [self hideKeyboard];
+}
+
+
+#pragma mark - Private
+
 - (void)createNewTask
 {
     if (self.taskNameTextField.text && self.taskNameTextField.text.length > 0){
         self.taskName = self.taskNameTextField.text;
         
-        [self.delegate createNewTaskWithTaskName:self.taskName andAmountOfPomodors:self.amountOfPomodors];
+        [self.delegate vc:self createNewTaskWithTaskName:self.taskName andAmountOfPomodors:self.amountOfPomodors];
     }
 }
 
@@ -59,7 +109,8 @@
     [self.taskNameTextField resignFirstResponder];
 }
 
-#pragma mark - Keyboard Methods
+
+#pragma mark - Notification: Keyboard Methods
 
 - (void)keyboardDidShow:(NSNotification *)notification
 {
@@ -91,23 +142,7 @@
 }
 
 
-#pragma mark - IBAction
-
-- (IBAction)addTaskButton:(UIButton *)sender
-{
-    [self createNewTask];
-    
-    [self.navigationController popViewControllerAnimated:NO];
-}
-
-
-- (IBAction)hideKeyboardField:(UITextField *)sender
-{
-    [self hideKeyboard];
-}
-
-#pragma mark - PickerView DataSource
-
+#pragma mark - DataSource: PickerView
 
 // returns the number of 'columns' to display.
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
@@ -123,7 +158,7 @@
 }
 
 
-#pragma mark - PickerView Delegate
+#pragma mark - Delegate: PickerView
 
 - (NSString *)pickerView:(UIPickerView *)pickerView
              titleForRow:(NSInteger)row
@@ -140,37 +175,5 @@
     self.amountOfPomodors = row +1;
 }
 
-
-#pragma mark - Life Cicle VC
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    self.navigationController.navigationBarHidden = NO;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardDidShow:)
-                                                 name:UIKeyboardDidShowNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
-    
-}
-
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    self.navigationController.navigationBarHidden = YES;
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardDidShowNotification
-                                                  object:nil];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardWillHideNotification
-                                                  object:nil];
-}
 
 @end

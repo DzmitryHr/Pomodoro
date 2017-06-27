@@ -11,35 +11,53 @@
 
 @interface TasksViewController ()
 
-@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
-
-
 @end
 
 
 @implementation TasksViewController
 
+#pragma mark - Lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-
 }
 
 
-# pragma mark - action
+- (void)viewWillAppear:(BOOL)animated
+{
+    self.navigationController.navigationBarHidden = NO;
+
+// ??? maybe not need ???
+//    [self.tableViewTasks reloadData];
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    self.navigationController.navigationBarHidden = YES;
+}
+
+
+# pragma mark - IBAction
 
 - (IBAction)newTaskBarButton:(UIBarButtonItem *)sender
 {
-    UIStoryboard *mainStotyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    AddTaskViewController *addTaskViewController = [mainStotyboard instantiateViewControllerWithIdentifier:@"AddTaskVC"];
-   
-    addTaskViewController.delegate = self.coordinator;
-    
-    [self.navigationController pushViewController:addTaskViewController animated:NO];
+    [self.navigationCoordinator goToAddTasksVCformTasksVC:self];
 }
 
-# pragma mark - tableView DataSource
+
+#pragma mark - Private
+
+- (void)configureCell:(TasksViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+{
+    NSManagedObject *dataObject = [self.dataSource tasksViewController:self forIndexPath:indexPath];
+    
+    cell.taskLabel.text = [dataObject valueForKey:@"name"];
+    cell.amtPomodorLabel.text = [NSString stringWithFormat:@"%@",[dataObject valueForKey:@"createTime"]];
+}
+
+
+#pragma mark - DataSource: tableView
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -59,27 +77,19 @@
 }
 
 
-- (void)configureCell:(TasksViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
-{
-    NSManagedObject *dataObject = [self.dataSource tasksViewController:self forIndexPath:indexPath];
-    
-    cell.taskLabel.text = [dataObject valueForKey:@"name"];
-    cell.amtPomodorLabel.text = [NSString stringWithFormat:@"%@",[dataObject valueForKey:@"createTime"]];
-}
+# pragma mark - Delegate: tableView
 
 // change current task
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSManagedObject *task = [self.dataSource tasksViewController:self forIndexPath:indexPath];
     
-    [self.coordinator changeCurrentTask:(CDTask*)task];
-    
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.delegate tasksVC:self changeCurrentTask:task];
 }
 
 
-/*
-#pragma mark - TaskDataManager Delegate
+
+#pragma mark - Delegate: TaskDataManager
 
 - (void)dataWillChangeForTasksDataManager:(TasksDataManager *)tasksDataManager
 {
@@ -131,19 +141,7 @@
         }
     }
 }
-*/
 
-#pragma mark - Lifecycle
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [self.tableViewTasks reloadData];
-    self.navigationController.navigationBarHidden = NO;
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    self.navigationController.navigationBarHidden = YES;
-}
 
 @end

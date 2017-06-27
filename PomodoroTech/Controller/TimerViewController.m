@@ -9,7 +9,7 @@
 #import "TimerViewController.h"
 
 
-@interface TimerViewController () <CoordinatorControllerDelegate>
+@interface TimerViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *timerLabel;
 @property (weak, nonatomic) IBOutlet UIDatePicker *timePicker;
@@ -27,53 +27,37 @@
 @end
 
 
-
 @implementation TimerViewController
 
-
-#pragma mark - init
-
-//@synthesize currentTimerValue = _currentTimerValue;
-
-
-- (NSInteger)currentTimerValue
-{
-    if (!_currentTimerValue){
-        _currentTimerValue = [self.coordinator uiTimer];
-    };
-    
-    [self repaintTimerLableWithTime:_currentTimerValue];
-    
-    return _currentTimerValue;
-}
-
+#pragma mark - Lifecycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    
-    //inst delegate Coordinator
-    [[self coordinator] setDelegate:self];
-    
     [self.startTimerButton setEnabled:YES];
     [self.stopTimerButton setEnabled:NO];
-    
     [self.timePicker setHidden:YES];
     
     [self updateUI];
 }
 
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self updateUI];
+}
+
+
+#pragma mark - Custom Accessors
+
+
 #pragma mark - IBAction
 
-// switch to another screen
+// switch to TasksVC screen
 - (IBAction)tapCurrentTaskLabel:(UITapGestureRecognizer *)sender
 {
-    
-    [self.navigationController pushViewController:self.tasksViewController animated:YES];
-    
-    //??? tap back button - no animated
+    [self.navigationCoordinator goToTasksVCFromTimerVC:self];
 }
 
 
@@ -96,11 +80,7 @@
 {
     CGFloat durationSec = [self.timePicker countDownDuration];
     
-    self.currentTimerValue = (NSInteger)durationSec;
-    
-    [self.coordinator changeCurrentDurationPomodor:self.currentTimerValue];
-
-    [self repaintTimerLableWithTime:self.currentTimerValue];
+    [self.dataSource changeDurationPomodor:durationSec];
 }
 
 
@@ -118,7 +98,7 @@
     [self updateUI];
     
     // chops and changes
-    [self.coordinator runWorkCycle];
+    [self.dataSource runWorkCycleFromTimerVC];
 }
 
 
@@ -128,11 +108,13 @@
     [self.stopTimerButton setEnabled:NO];
     [self.timePicker setEnabled:YES];
     
-    [self.coordinator stopWorkCycle];
+    [self.dataSource stopWorkCycleFromTimerVC];
     
     [self updateUI];
 }
 
+
+#pragma mark - Private
 
 - (void)repaintTimerLableWithTime:(NSTimeInterval)durationSec
 {
@@ -146,19 +128,20 @@
 
 - (void)updateUI
 {
-    CDUser *user = [self.coordinator giveCurrentUser];
-    CDTask *task = [self.coordinator giveCurrentTask];
+    CDUser *user = [self.dataSource currentUserForTimerVC:self];
+    CDTask *task = [self.dataSource currentTaskForTimerVC:self];
     NSString *inf = [NSString stringWithFormat:@" User: %@ \n Task: %@ \n Pomodors: %lu \n Breaks: %lu", user.login, task.name, task.pomodors.count, task.breaks.count]; // all pomodors - choose complit pomodors
     self.informationLabel.text = inf;
     
     self.currentTaskLabel.text = task.name;
     
-    self.currentStageLabel.text = [NSString stringWithFormat:@"stage: %@", [self.coordinator giveCurrentStage]];
+    self.currentStageLabel.text = [NSString stringWithFormat:@"stage: %@", [self.dataSource currentStageForTimerVC:self]];
     
     [self repaintTimerLableWithTime:self.currentTimerValue];
 }
 
-#pragma mark - CoordinatorControllerDelegate
+
+#pragma mark - Delegate: CoordinatorDelegate
 
 - (void)coordinatorController:(Coordinator *)coordinator timerDidChanged:(NSTimeInterval)time;
 {
@@ -166,6 +149,14 @@
     [self updateUI];
 }
 
+/*
+#pragma mark - Delegate: CoordinatorControllerDelegate
+
+- (void)coordinatorController:(Coordinator *)coordinator userDidChanged:(CDUser *)user currentTask:(CDTask *)task
+{
+    
+}
+*/
 
 #pragma mark - Notification
 
@@ -196,15 +187,6 @@
                      NSLog(@"Add NotificationRequest succeeded!");
                  }
              }];
-    
-}
-
-
-#pragma mark - Lifecycle
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [self updateUI];
 }
 
 @end

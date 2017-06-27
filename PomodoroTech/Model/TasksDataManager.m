@@ -64,15 +64,15 @@
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
+    // tableView begin update
     [self.delegate dataWillChangeForTasksDataManager:self];
-//    [self.tableViewTasks beginUpdates];
 }
 
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
+    // tableView end update
     [self.delegate dataDidChangeForTasksDataManager:self];
-//    [self.tableViewTasks endUpdates];
 }
 
 
@@ -88,10 +88,7 @@
                                 atIndexPath:indexPath
                                  changeType:insertData
                                newIndexPath:newIndexPath];
-            /*
-            [self.tableViewTasks insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
-                                       withRowAnimation:UITableViewRowAnimationFade];
-             */
+            
             break;
         }
         case NSFetchedResultsChangeDelete: {
@@ -99,10 +96,7 @@
                                 atIndexPath:indexPath
                                  changeType:deleteData
                                newIndexPath:newIndexPath];
-            /*
-            [self.tableViewTasks deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
-                                       withRowAnimation:UITableViewRowAnimationFade];
-             */
+            
             break;
         }
         case NSFetchedResultsChangeUpdate: {
@@ -110,10 +104,7 @@
                                 atIndexPath:indexPath
                                  changeType:updateData
                                newIndexPath:newIndexPath];
-            /*
-            [self configureCell:(TasksViewCell *)[self.tableViewTasks cellForRowAtIndexPath:indexPath]
-                    atIndexPath:indexPath];
-             */
+           
             break;
         }
         case NSFetchedResultsChangeMove: {
@@ -121,19 +112,14 @@
                                 atIndexPath:indexPath
                                  changeType:moveData
                                newIndexPath:newIndexPath];
-            /*
-            [self.tableViewTasks deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
-                                       withRowAnimation:UITableViewRowAnimationFade];
-            [self.tableViewTasks insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
-                                       withRowAnimation:UITableViewRowAnimationFade];
-             */
+           
             break;
         }
     }
 }
 
 
-#pragma mark - <TasksViewControllerDataSource>
+#pragma mark - DataSource: TasksViewControllerDataSource
 
 - (NSInteger)numberOfDataForTasksViewController:(TasksViewController *)taskViewController
 {
