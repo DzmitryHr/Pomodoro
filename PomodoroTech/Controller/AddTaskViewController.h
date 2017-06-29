@@ -14,6 +14,7 @@
 @protocol AddTaskVCDelegate <NSObject>
 @required
 - (void)vc:(AddTaskViewController *)taskVC createNewTaskWithTaskName:(NSString *)nameOfTask andAmountOfPomodors:(NSInteger)amountOfPomodors;
+- (void)vc:(AddTaskViewController *)taskVC changeTaskWithTaskName:(NSString *)nameOfTask andAmountOfPomodors:(NSInteger)amountOfPomodors;
 
 @end
 
@@ -30,5 +31,10 @@
 
 @property (nonatomic, weak) id<AddTaskVCDelegate> delegate;
 @property (nonatomic, weak) id<AddTaskVCNavigation> navigationCoordinator;
+
+@property (nonatomic, strong, readwrite) NSString *nameOfTask;
+@property (nonatomic, assign, readwrite) NSInteger amountOfPomodors;
+
+@property (assign, nonatomic) BOOL isEditTask;
 
 @end

@@ -18,7 +18,31 @@
 @implementation CoreData
 
 
-#pragma mark - init
+#pragma mark - Lifecycle
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(contextWasChanged:)
+                                                     name:NSManagedObjectContextDidSaveNotification
+                                                   object:nil];
+    }
+    return self;
+}
+
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:NSManagedObjectContextDidSaveNotification
+                                                  object:nil];
+}
+
+
+#pragma mark - Custom Accessors
 
 @dynamic mainContext;
 - (NSManagedObjectContext *)mainContext
@@ -27,7 +51,7 @@
 }
 
 
-#pragma mark - API methods
+#pragma mark - Public
 
 - (CDUser *)getUserWithLogin:(NSString *)login;
 {
@@ -45,8 +69,6 @@
     task.lastUseTime = [NSDate date];
 
     return task;
-    
-//???
 }
 
 
@@ -64,13 +86,14 @@
 }
 
 
-- (CDTask *)createTaskInMainContextWithName:(NSString *)name forUser:(CDUser *)user
+- (CDTask *)createTaskInMainContextWithName:(NSString *)name andAmountOfPomodors:(NSInteger)amountOfPomodors forUser:(CDUser *)user
 {
     NSString *entityName = @"CDTask";
     CDTask *task = (CDTask *)[self createObject:self.mainContext withEntityName:entityName];
     
     task.createTime = [NSDate date];
     task.name = name;
+    task.planQuantityPomodors = @(amountOfPomodors);
     task.whoseUser = user;
     task.complit = @(NO);
     
@@ -115,109 +138,35 @@
     return breaK;
 }
 
-- (void)delTaskInMainContext:(CDTask *)task
+
+- (void)editTaskInBackgroundContextWithObjectID:(NSManagedObjectID *)objectID nameTask:(NSString *)nameTask amountOfPomodors:(NSInteger)amountOfPomodors
 {
-    [self.mainContext deleteObject:task];
-    NSLog(@"del task");
+    NSManagedObjectContext *backgroundContext = [self.persistentContainer newBackgroundContext];
+    
+    CDTask *task = [backgroundContext objectWithID:objectID];
+    
+    task.name = nameTask;
+    task.planQuantityPomodors = @(amountOfPomodors);
+    
+    [task.managedObjectContext save:nil];
 }
 
 
-
-#pragma mark - accesory methods
-
-- (NSManagedObject *)getObjectWithEntityName:(NSString *)entityName
-                                     withAttributeName:(NSString *)attributeName
-                                forAttributeValue:(NSString *)attributeValue
+- (void)delObjectInBackgroundContext:(NSManagedObject *)object
 {
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
- 
-    NSEntityDescription *description = [NSEntityDescription entityForName:entityName
-                                                   inManagedObjectContext:self.mainContext];
-    request.entity = description;
-    request.predicate = [NSPredicate predicateWithFormat:@"%K == %@", attributeName, attributeValue];
+    NSManagedObjectID *objectID = object.objectID;
     
-    NSError *requestErr = nil;
-    NSArray *objectsCD = [self.mainContext executeFetchRequest:request error: &requestErr];
-    if (requestErr){
-        NSLog(@"giveObjectsFromCoreData err = %@", [requestErr localizedDescription]);
-    }
+    NSManagedObjectContext *backgroundContext = [self.persistentContainer newBackgroundContext];
     
-//    [self printObjects:self.mainContext withEntityName:entityName];
+    NSManagedObject *objectInBackgroundContext = [backgroundContext objectWithID:objectID];
     
-    return [objectsCD firstObject];
+    [backgroundContext deleteObject:objectInBackgroundContext];
+    
+    [backgroundContext save:nil];
 }
 
 
-- (NSArray *)getAllObjectsWithEntityName:(NSString *)entityName
-{
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    NSEntityDescription *description = [NSEntityDescription entityForName:entityName
-                                                   inManagedObjectContext:self.mainContext];
-    request.entity = description;
-    
-    NSError *requestErr = nil;
-    NSArray *objectsCD = [self.mainContext executeFetchRequest:request error: &requestErr];
-    if (requestErr){
-        NSLog(@"giveObjectsFromCoreData err = %@", [requestErr localizedDescription]);
-    }
-    
-    return objectsCD;
-    
-}
-
-
-- (NSManagedObject *)createObject:(NSManagedObjectContext *)context
-                   withEntityName:(NSString *)entityName
-{
-    NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:entityName
-                                                            inManagedObjectContext:context];
-    return object;
-}
-
-
-- (void)deleteAllObjectsWithEntityName:entityName
-{
-    NSArray *allObjects = [self getAllObjectsWithEntityName:entityName];
-    
-    for (id object in allObjects) {
-        [self.mainContext deleteObject:object];
-        NSLog(@"=== all objects are delete === ");
-    }
-    
-    [self.mainContext save:nil];
-};
- 
-
- - (void)printObjects:(NSManagedObjectContext *)context withEntityName:entityName
- {
-     
-     NSFetchRequest *request = [[NSFetchRequest alloc] init];
-     
-     NSEntityDescription *description = [NSEntityDescription entityForName:entityName
-                                                    inManagedObjectContext:self.mainContext];
-     request.entity = description;
-   //  request.predicate = [NSPredicate predicateWithFormat:@"%@ == %@", predicateName, name];
-     
-     NSError *requestErr = nil;
-     NSArray *allObjects = [self.mainContext executeFetchRequest:request error: &requestErr];
-     if (requestErr){
-         NSLog(@"giveObjectsFromCoreData err = %@", [requestErr localizedDescription]);
-     }
-    
-     int i = 0;
-     for (id object in allObjects) {
-         NSLog(@"===%@", object);
-         i++;
-     }
-    
-     
-     NSLog(@"=== all elements in DB %i", i);
- }
-
-
-
-
-#pragma mark - API methods with block
+#pragma mark - Public with block
 
 - (void)createBreakWithDuration:(NSInteger)breakDuration
                         forTask:(CDTask *)task
@@ -323,6 +272,97 @@
 }
 
 
+#pragma mark - Private
+
+- (NSManagedObject *)getObjectWithEntityName:(NSString *)entityName
+                                     withAttributeName:(NSString *)attributeName
+                                forAttributeValue:(NSString *)attributeValue
+{
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+ 
+    NSEntityDescription *description = [NSEntityDescription entityForName:entityName
+                                                   inManagedObjectContext:self.mainContext];
+    request.entity = description;
+    request.predicate = [NSPredicate predicateWithFormat:@"%K == %@", attributeName, attributeValue];
+    
+    NSError *requestErr = nil;
+    NSArray *objectsCD = [self.mainContext executeFetchRequest:request error: &requestErr];
+    if (requestErr){
+        NSLog(@"giveObjectsFromCoreData err = %@", [requestErr localizedDescription]);
+    }
+    
+//    [self printObjects:self.mainContext withEntityName:entityName];
+    
+    return [objectsCD firstObject];
+}
+
+
+- (NSArray *)getAllObjectsWithEntityName:(NSString *)entityName
+{
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    NSEntityDescription *description = [NSEntityDescription entityForName:entityName
+                                                   inManagedObjectContext:self.mainContext];
+    request.entity = description;
+    
+    NSError *requestErr = nil;
+    NSArray *objectsCD = [self.mainContext executeFetchRequest:request error: &requestErr];
+    if (requestErr){
+        NSLog(@"giveObjectsFromCoreData err = %@", [requestErr localizedDescription]);
+    }
+    
+    return objectsCD;
+    
+}
+
+
+- (NSManagedObject *)createObject:(NSManagedObjectContext *)context
+                   withEntityName:(NSString *)entityName
+{
+    NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:entityName
+                                                            inManagedObjectContext:context];
+    return object;
+}
+
+
+- (void)deleteAllObjectsWithEntityName:entityName
+{
+    NSArray *allObjects = [self getAllObjectsWithEntityName:entityName];
+    
+    for (id object in allObjects) {
+        [self.mainContext deleteObject:object];
+        NSLog(@"=== all objects are delete === ");
+    }
+    
+    [self.mainContext save:nil];
+};
+ 
+
+ - (void)printObjects:(NSManagedObjectContext *)context withEntityName:entityName
+ {
+     
+     NSFetchRequest *request = [[NSFetchRequest alloc] init];
+     
+     NSEntityDescription *description = [NSEntityDescription entityForName:entityName
+                                                    inManagedObjectContext:self.mainContext];
+     request.entity = description;
+   //  request.predicate = [NSPredicate predicateWithFormat:@"%@ == %@", predicateName, name];
+     
+     NSError *requestErr = nil;
+     NSArray *allObjects = [self.mainContext executeFetchRequest:request error: &requestErr];
+     if (requestErr){
+         NSLog(@"giveObjectsFromCoreData err = %@", [requestErr localizedDescription]);
+     }
+    
+     int i = 0;
+     for (id object in allObjects) {
+         NSLog(@"===%@", object);
+         i++;
+     }
+    
+     
+     NSLog(@"=== all elements in DB %i", i);
+ }
+
 
 #pragma mark - Core Data stack
 
@@ -368,5 +408,13 @@
     }
 }
 
+
+#pragma mark - Notification
+
+// sync with main context
+- (void)contextWasChanged:(NSNotification *)notification
+{
+    [self.mainContext mergeChangesFromContextDidSaveNotification:notification];
+}
 
 @end

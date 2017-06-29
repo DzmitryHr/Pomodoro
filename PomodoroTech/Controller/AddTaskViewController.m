@@ -18,8 +18,7 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *contentScroll;
 @property (weak, nonatomic) IBOutlet UIButton *addTaskButton;
 
-@property (nonatomic, strong, readwrite) NSString *taskName;
-@property (nonatomic, assign, readwrite) NSInteger amountOfPomodors;
+
 
 @end
 
@@ -58,6 +57,12 @@
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
     
+    if (self.isEditTask){
+    
+        self.taskNameTextField.text = self.nameOfTask;
+        [self.numberOfPomodorPicker selectRow:(self.amountOfPomodors) inComponent:0 animated:YES];
+    
+    }
 }
 
 
@@ -77,9 +82,13 @@
 
 #pragma mark - IBAction
 
-- (IBAction)addTaskButton:(UIButton *)sender
+- (IBAction)saveTaskButton:(UIButton *)sender
 {
-    [self createNewTask];
+    if (!self.isEditTask){
+        [self createNewTask];
+    } else {
+        [self changeTask];
+    }
     
     //[self.delegate popVCfromVC:self];
     [self.navigationCoordinator popVCfromVC:self];
@@ -97,10 +106,18 @@
 - (void)createNewTask
 {
     if (self.taskNameTextField.text && self.taskNameTextField.text.length > 0){
-        self.taskName = self.taskNameTextField.text;
+        self.nameOfTask = self.taskNameTextField.text;
         
-        [self.delegate vc:self createNewTaskWithTaskName:self.taskName andAmountOfPomodors:self.amountOfPomodors];
+        [self.delegate vc:self createNewTaskWithTaskName:self.nameOfTask andAmountOfPomodors:self.amountOfPomodors];
     }
+}
+
+
+- (void)changeTask
+{
+    self.nameOfTask = self.taskNameTextField.text;
+    
+    [self.delegate vc:self changeTaskWithTaskName:self.nameOfTask andAmountOfPomodors:self.amountOfPomodors];
 }
 
 
@@ -165,7 +182,7 @@
              titleForRow:(NSInteger)row
             forComponent:(NSInteger)component
 {
-    return [NSString stringWithFormat:@"%ld", (long)row + 1];
+    return [NSString stringWithFormat:@"%ld", (long)row];
 }
 
 
@@ -173,7 +190,7 @@
       didSelectRow:(NSInteger)row
        inComponent:(NSInteger)component
 {
-    self.amountOfPomodors = row +1;
+    self.amountOfPomodors = row;
 }
 
 

@@ -52,7 +52,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal">
                                             <attributedString key="attributedTitle">
-                                                <fragment content="Add">
+                                                <fragment content="Save">
                                                     <attributes>
                                                         <font key="NSFont" size="24" name=".SFNSDisplay"/>
                                                         <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
@@ -61,7 +61,7 @@
                                             </attributedString>
                                         </state>
                                         <connections>
-                                            <action selector="addTaskButton:" destination="Iqr-0S-z9J" eventType="touchUpInside" id="FzI-Io-lX3"/>
+                                            <action selector="saveTaskButton:" destination="Iqr-0S-z9J" eventType="touchUpInside" id="POf-4B-JiR"/>
                                         </connections>
                                     </button>
                                 </subviews>

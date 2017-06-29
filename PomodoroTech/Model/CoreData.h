@@ -22,14 +22,17 @@
 - (CDTask *)getTaskWithName:(NSString *)name;
 
 - (CDUser *)createUserInMainContextWithLogin:(NSString *)login;
-- (CDTask *)createTaskInMainContextWithName:(NSString *)name forUser:(CDUser *)user;
+- (CDTask *)createTaskInMainContextWithName:(NSString *)name
+                        andAmountOfPomodors:(NSInteger)amountOfPomodors
+                                    forUser:(CDUser *)user;
 - (CDPomodor *)createPomodorInMainContextWithDuration:(NSInteger)pomodorDuration
                                               forTask:(CDTask *)task;
 - (CDBreak *)createBreakInMainContextWithDuration:(NSInteger)breakDuration
                                           forTask:(CDTask *)task;
-- (void)delTaskInMainContext:(CDTask *)task;
-
-
+- (void)editTaskInBackgroundContextWithObjectID:(NSManagedObjectID *)objectID
+                                       nameTask:(NSString *)nameTask
+                               amountOfPomodors:(NSInteger)amountOfPomodors;
+- (void)delObjectInBackgroundContext:(NSManagedObject *)object;
 
 - (void)createUserWithLogin:(NSString *)login withBlock:(void(^)(CDUser *))block;
 - (void)createTaskWithName:(NSString *)name forUser:(CDUser *)user withBlock:(void(^)(CDTask *))block;

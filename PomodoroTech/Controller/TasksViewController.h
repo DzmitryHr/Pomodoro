@@ -25,11 +25,11 @@
 
 @protocol TasksVCDelegate <NSObject>
 @required
-- (void)tasksVC:(TasksViewController *)tasksVC changeCurrentTask:(NSManagedObject *)task;
+- (void)tasksVC:(TasksViewController *)tasksVC changeCurrentTask:(CDTask *)task;
 
-- (void)tasksVC:(TasksViewController *)tasksVC didPushDelButtonInCellWithTask:(NSManagedObject *)task;
+- (void)tasksVC:(TasksViewController *)tasksVC didPushDelButtonInCellWithTask:(CDTask *)task;
 
-- (void)tasksVC:(TasksViewController *)tasksVC didPushEditButtonInCellWithTask:(NSManagedObject *)task;
+- (void)tasksVC:(TasksViewController *)tasksVC didPushEditButtonInCellWithTask:(CDTask *)task;
 
 @end
 

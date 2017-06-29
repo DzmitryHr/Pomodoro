@@ -17,6 +17,7 @@
         <attribute name="createTime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="lastUseTime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="planQuantityPomodors" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="breaks" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDBreak" inverseName="whoseTask" inverseEntity="CDBreak" syncable="YES"/>
         <relationship name="pomodors" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDPomodor" inverseName="whoseTask" inverseEntity="CDPomodor" syncable="YES"/>
         <relationship name="whoseUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDUser" inverseName="tasks" inverseEntity="CDUser" syncable="YES"/>
@@ -29,7 +30,7 @@
     <elements>
         <element name="CDBreak" positionX="-19061" positionY="-737" width="128" height="103"/>
         <element name="CDPomodor" positionX="-19062" positionY="-585" width="128" height="103"/>
-        <element name="CDTask" positionX="-18812" positionY="-707" width="128" height="148"/>
+        <element name="CDTask" positionX="-18812" positionY="-707" width="128" height="163"/>
         <element name="CDUser" positionX="-18567" positionY="-662" width="128" height="88"/>
     </elements>
 </model>

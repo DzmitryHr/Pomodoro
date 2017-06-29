@@ -34,6 +34,8 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
 
 @property (nonatomic, readwrite, assign) CoordinatorControllerStage currentStage;
 
+@property (nonatomic, strong) UIStoryboard *mainStoryboard;
+
 @property (nonatomic, strong) CDUser *user;
 @property (nonatomic, strong) CDTask *task;
 @property (nonatomic, strong) CDPomodor *pomodor;
@@ -56,6 +58,7 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
 
 @property (nonatomic, readwrite, assign) NSTimeInterval uiTimer;
 
+@property (nonatomic, strong) NSManagedObjectID *editingTaskObjectID;
 
 @end
 
@@ -83,7 +86,7 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
         
         CDTask *task = [self.coreData getTaskWithName:taskName];
         if (!task){
-            task = [self.coreData createTaskInMainContextWithName:taskName forUser:self.user];
+            task = [self.coreData createTaskInMainContextWithName:taskName andAmountOfPomodors:NO forUser:self.user];
         }
         self.task = task;
         
@@ -98,6 +101,8 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
                                                  name:UIApplicationWillTerminateNotification
                                                object:nil];
     
+    self.mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+
     return self;
 }
 
@@ -374,9 +379,7 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
 {
     TasksDataManager *tasksDM = [[TasksDataManager alloc] initWithManagedObjectContext:self.coreData.mainContext];
     
-    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    
-    TasksViewController *tasksVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"TasksViewController"];
+    TasksViewController *tasksVC = [self.mainStoryboard instantiateViewControllerWithIdentifier:@"TasksViewController"];
     
     tasksVC.delegate = self;
     tasksVC.dataSource = tasksDM;
@@ -427,18 +430,40 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
 
 #pragma mark - Delegate: TasksVCDelegate
 
-- (void)tasksVC:(TasksViewController *)tasksVC changeCurrentTask:(NSManagedObject *)task
+- (void)tasksVC:(TasksViewController *)tasksVC changeCurrentTask:(CDTask *)task
 {
     [self changeCurrentTask:(CDTask *)task];
 }
 
 
-- (void)tasksVC:(TasksViewController *)tasksVC didPushDelButtonInCellWithTask:(NSManagedObject *)task
+- (void)tasksVC:(TasksViewController *)tasksVC didPushDelButtonInCellWithTask:(CDTask *)task
 {
     // del task
-    [self.coreData delTaskInMainContext:(CDTask *)task];
+    //[self.coreData delTaskInMainContext:task];
+    [self.coreData delObjectInBackgroundContext:task];
+    
     NSLog(@"del task");
 }
+
+
+- (void)tasksVC:(TasksViewController *)tasksVC didPushEditButtonInCellWithTask:(CDTask *)task
+{
+    self.editingTaskObjectID = task.objectID;
+    
+    // seque addTasksVC with data
+    AddTaskViewController *addTaskVC = [self.mainStoryboard instantiateViewControllerWithIdentifier:@"AddTaskVC"];
+    
+    addTaskVC.delegate = self;
+    addTaskVC.navigationCoordinator = self;
+    
+    addTaskVC.nameOfTask = task.name;
+    addTaskVC.amountOfPomodors = [task.planQuantityPomodors integerValue];
+    addTaskVC.isEditTask = YES;
+    
+    [tasksVC.navigationController pushViewController:addTaskVC animated:YES];
+    
+}
+
 
 #pragma mark - Navigation: TasksVCNavigation
 
@@ -446,11 +471,12 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
 // go to addTaskViewController
 - (void)goToAddTasksVCformTasksVC:(TasksViewController *)tasksVC
 {
-    UIStoryboard *mainStotyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    AddTaskViewController *addTaskVC = [mainStotyboard instantiateViewControllerWithIdentifier:@"AddTaskVC"];
+    AddTaskViewController *addTaskVC = [self.mainStoryboard instantiateViewControllerWithIdentifier:@"AddTaskVC"];
     
     addTaskVC.delegate = self;
     addTaskVC.navigationCoordinator = self;
+    
+    addTaskVC.isEditTask = NO;
     
     [tasksVC.navigationController pushViewController:addTaskVC animated:YES];
 }
@@ -465,7 +491,15 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
 
 - (void)vc:(AddTaskViewController *)taskVC createNewTaskWithTaskName:(NSString *)nameOfTask andAmountOfPomodors:(NSInteger)amountOfPomodors
 {
-    [self.coreData createTaskInMainContextWithName:nameOfTask forUser:self.user];
+    [self.coreData createTaskInMainContextWithName:nameOfTask andAmountOfPomodors:amountOfPomodors forUser:self.user];
+}
+
+
+- (void)vc:(AddTaskViewController *)taskVC changeTaskWithTaskName:(NSString *)nameOfTask andAmountOfPomodors:(NSInteger)amountOfPomodors
+{
+    [self.coreData editTaskInBackgroundContextWithObjectID:self.editingTaskObjectID
+                                           nameTask:nameOfTask
+                                   amountOfPomodors:amountOfPomodors];
 }
 
 
