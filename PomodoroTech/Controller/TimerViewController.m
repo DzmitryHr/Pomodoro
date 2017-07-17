@@ -19,6 +19,11 @@
 @property (weak, nonatomic) IBOutlet UILabel *currentTaskLabel;
 @property (weak, nonatomic) IBOutlet UILabel *currentStageLabel;
 
+@property (weak, nonatomic) IBOutlet UILabel *userLabel;
+@property (weak, nonatomic) IBOutlet UILabel *taskLabel;
+@property (weak, nonatomic) IBOutlet UILabel *pomodorLabel;
+@property (weak, nonatomic) IBOutlet UILabel *breakLabel;
+
 
 @property (assign, nonatomic) NSInteger currentTimerValue;
 
@@ -128,14 +133,32 @@
 
 - (void)updateUI
 {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"yyyy.MM.dd HH:mm";
+    
     CDUser *user = [self.dataSource currentUserForTimerVC:self];
     CDTask *task = [self.dataSource currentTaskForTimerVC:self];
+    CDPomodor *pomodor = [self.dataSource currentPomodorForTimerVC:self];
+    CDBreak *breaK = [self.dataSource currentBreakForTimerVC:self];
+    
     NSString *inf = [NSString stringWithFormat:@" User: %@ \n Task: %@ \n Pomodors: %lu \n Breaks: %lu", user.login, task.name, task.pomodors.count, task.breaks.count]; // all pomodors - choose complit pomodors
     self.informationLabel.text = inf;
     
     self.currentTaskLabel.text = task.name;
     
-    self.currentStageLabel.text = [NSString stringWithFormat:@"stage: %@", [self.dataSource currentStageForTimerVC:self]];
+    self.currentStageLabel.text = [NSString stringWithFormat:@"state: %@", [self.dataSource currentStageForTimerVC:self]];
+    
+    NSString *userInfo = [NSString stringWithFormat:@" User \n login: %@ \n create: %@ \n tasks: %lu", user.login, [dateFormatter stringFromDate:user.createTime], user.tasks.count];
+    self.userLabel.text = userInfo;
+
+    NSString *taskInfo = [NSString stringWithFormat:@" Task \n name: %@ \n complit: %@ \n create: %@ \n lastUse: %@ \n planPomodors: %li \n pomodors: %li \n breaks: %li", task.name, task.complit, [dateFormatter stringFromDate:task.createTime], [dateFormatter stringFromDate:task.lastUseTime], [task.planQuantityPomodors integerValue], task.pomodors.count, task.breaks.count];
+    self.taskLabel.text = taskInfo;
+    
+    NSString *pomodorInfo = [NSString stringWithFormat:@" Pomodor \n complit: %@ \n create: %@ \n duration: %@", pomodor.complit, [dateFormatter stringFromDate:pomodor.createTime], pomodor.duration];
+    self.pomodorLabel.text = pomodorInfo;
+    
+    NSString *breakInfo = [NSString stringWithFormat:@" Break \n complit: %@ \n create: %@ \n duration: %@", breaK.complit, [dateFormatter stringFromDate:breaK.createTime], breaK.duration];
+    self.breakLabel.text = breakInfo;
     
     [self repaintTimerLableWithTime:self.currentTimerValue];
 }

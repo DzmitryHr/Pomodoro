@@ -274,6 +274,8 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
             
             self.currentStage = stateReadyForWork;
             
+            self.pomodor = nil;
+            self.breaK = nil;
             
             break;
         }
@@ -402,6 +404,18 @@ typedef NS_ENUM(NSInteger, CoordinatorControllerStage)
 - (CDTask *)currentTaskForTimerVC:(TimerViewController *)timerVC
 {
     return self.task;
+}
+
+
+- (CDPomodor *)currentPomodorForTimerVC:(TimerViewController *)timerVC
+{
+    return self.pomodor;
+}
+
+
+- (CDBreak *)currentBreakForTimerVC:(TimerViewController *)timerVC
+{
+    return self.breaK;
 }
 
 

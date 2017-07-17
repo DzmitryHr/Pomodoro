@@ -18,7 +18,6 @@
 @protocol TimerVCNavigation <NSObject>
 @required
 - (void)goToTasksVCFromTimerVC:(TimerViewController *)timerVC;
-
 @end
 
 
@@ -26,12 +25,13 @@
 @required
 - (CDUser *)currentUserForTimerVC:(TimerViewController *)timerVC;
 - (CDTask *)currentTaskForTimerVC:(TimerViewController *)timerVC;
+- (CDPomodor *)currentPomodorForTimerVC:(TimerViewController *)timerVC;
+- (CDBreak *)currentBreakForTimerVC:(TimerViewController *)timerVC;
 - (NSString *)currentStageForTimerVC:(TimerViewController *)timerVC;
 
 - (void)changeDurationPomodor:(NSTimeInterval)pomodorDuration;
 - (void)runWorkCycleFromTimerVC;
 - (void)stopWorkCycleFromTimerVC;
-
 @end
 
 
